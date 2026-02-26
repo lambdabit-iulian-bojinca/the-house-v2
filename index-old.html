@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HOUSE IMOBILIARE | Proprietăți de clasă</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            /* Lighter theme to contrast with the dark teal logo */
+            --bg-dark: #f8fafc;
+            /* Light gray/white background */
+            --bg-card: #ffffff;
+            /* White cards */
+            --text-light: #0f172a;
+            /* Dark text for readability */
+            --text-muted: #64748b;
+            /* Slate gray for muted text */
+            --accent: #1e6c73;
+            /* Dark teal matched to the logo */
+            --accent-hover: #134e5e;
+            /* Darker teal for hover */
+            --overlay: rgba(248, 250, 252, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            /* Opaque white glass */
+            --glass-border: rgba(0, 0, 0, 0.08);
+            /* Subtle dark border */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Accessibility: Focus States */
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 5%;
+            /* Slightly tighter padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            /* Stronger blur */
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            /* Add subtle shadow for depth */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(30, 108, 115, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 17, 21, 0.9) 0%, rgba(15, 17, 21, 0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            margin-top: 60px;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(15, 23, 42, 0.85);
+            /* Dark solid background */
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            /* White text for contrast */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+            color: #ffffff;
+            /* Explicitly white */
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            /* Explicitly white/transparent */
+            margin-bottom: 48px;
+            font-weight: 300;
+            max-width: 700px;
+            margin-inline: auto;
+        }
+
+        /* Glass Search Box */
+        .search-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-group {
+            flex: 1;
+            padding: 12px 24px;
+            border-right: 1px solid var(--glass-border);
+            text-align: left;
+            position: relative;
+        }
+
+        .search-group:last-of-type {
+            border-right: none;
+        }
+
+        .search-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .search-group select,
+        .search-group input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        .search-group select option {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 10px;
+        }
+
+        .search-group i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .btn-search {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 0 32px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-search:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Properties Section */
+        .properties {
+            padding: 120px 5%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            text-decoration: none;
+            border: 1px solid var(--glass-border);
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-img {
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .card-img img {
+            transform: scale(1.08);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-badge.special {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+        }
+
+        .card-price {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            /* Dark solid background for contrast */
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            /* White text */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        .card-location {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .card-features {
+            display: flex;
+            gap: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Stats */
+        .stats {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+            padding: 80px 5%;
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .stat-item p {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            /* Dark navy background */
+            color: #f8fafc;
+            padding: 60px 5% 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .footer-col p {
+            color: #cbd5e1;
+            font-size: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .footer-col ul a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav aria-label="Navigație principală">
+        <a href="#" class="logo" aria-label="Pagina principală THE HOUSE IMOBILIARE">
+            <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE"
+                style="height: 60px; width: auto;">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Acasă</a></li>
+            <li><a href="#">Vânzări</a></li>
+            <li><a href="#">Închirieri</a></li>
+            <li><a href="#">Despre Noi</a></li>
+            <li><a href="#">Comision 0%</a></li>
+        </ul>
+        <a href="#" class="btn-primary">Contactează-ne</a>
+    </nav>
+
+    <main id="main-content">
+        <div class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <span class="badge">Agenție Imobiliară Premium, Timișoara</span>
+                <h1>Găsește Proprietatea Ta de Clasã.</h1>
+                <p>Peste 16 ani de excelență, respect și onestitate pe piața imobiliară din Timișoara. Descoperă
+                    selecția
+                    noastră exclusivistă.</p>
+
+                <div class="search-container" role="search" aria-label="Căutare proprietăți">
+                    <div class="search-group">
+                        <label for="search-purpose">Scop</label>
+                        <select id="search-purpose" aria-label="Alege scopul (Vânzare sau Închiriere)">
+                            <option>Vânzare</option>
+                            <option>Închiriere</option>
+                        </select>
+                        <i class="ph-bold ph-caret-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="search-group">
+                        <label for="search-type">Tip Proprietate</label>
+                        <select id="search-type" aria-label="Alege tipul de proprietate dorit">
+                            <option>Toate tipurile</option>
+                            <option>Apartamente</option>
+                            <option>Case / Vile</option>
+                            <option>Spații Comerciale</option>
+                        </select>
+                        <i class="ph-bold ph-caret-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="search-group">
+                        <label for="search-location">Locație</label>
+                        <input type="text" id="search-location" placeholder="Ex: Piața Unirii, Dumbrăvița..."
+                            aria-label="Introdu locația dorită">
+                        <i class="ph-bold ph-map-pin" aria-hidden="true"></i>
+                    </div>
+                    <button class="btn-search" aria-label="Caută proprietăți conform criteriilor selectate">
+                        <i class="ph-bold ph-magnifying-glass" aria-hidden="true"></i> Caută
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="properties">
+            <div class="section-header">
+                <div>
+                    <h2>Proprietăți Reprezentative</h2>
+                    <p>O selecție aleasă cu grijă din portofoliul nostru exclusiv.</p>
+                </div>
+                <a href="#" class="btn-outline">
+                    Toate ofertele <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="grid">
+                <!-- Property 1 -->
+                <div class="card">
+                    <div class="card-img">
+                        <div class="card-badge special">COMISION 0%</div>
+                        <img src="https://images.unsplash.com/photo-1628012166699-2a9baeff3fe9?auto=format&fit=crop&q=80&w=800"
+                            alt="Penthouse"
+                            onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';">
+                        <div class="card-price">€265,000</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-location"><i class="ph-fill ph-map-pin"></i> DUMBRĂVIȚA, TIMIȘ</div>
+                        <h3 class="card-title">Vila cu un design unical, luxul la el acasă</h3>
+                        <div class="card-features">
+                            <div class="feature"><i class="ph ph-bed"></i> 4 Pat.</div>
+                            <div class="feature"><i class="ph ph-bathtub"></i> 3 Băi</div>
+                            <div class="feature"><i class="ph ph-square-logo"></i> 240 m²</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 2 -->
+                <div class="card">
+                    <div class="card-img">
+                        <div class="card-badge">DE ÎNCHIRIAT</div>
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800"
+                            alt="Office">
+                        <div class="card-price">€800<span style="font-size:14px; font-weight:400">/lună</span></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-location"><i class="ph-fill ph-map-pin"></i> GHIRODA, TIMIȘ</div>
+                        <h3 class="card-title">Vilă confortabilă și spațioasă, complet mobilată</h3>
+                        <div class="card-features">
+                            <div class="feature"><i class="ph ph-bed"></i> 3 Pat.</div>
+                            <div class="feature"><i class="ph ph-bathtub"></i> 2 Băi</div>
+                            <div class="feature"><i class="ph ph-square-logo"></i> 180 m²</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 3 -->
+                <div class="card">
+                    <div class="card-img">
+                        <div class="card-badge">DE VÂNZARE</div>
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800"
+                            alt="Apartment">
+                        <div class="card-price">€439,000</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-location"><i class="ph-fill ph-map-pin"></i> LUNEI, TIMIȘOARA</div>
+                        <h3 class="card-title">Casa spațioasă cu piscină privată, dotări premium</h3>
+                        <div class="card-features">
+                            <div class="feature"><i class="ph ph-bed"></i> 5 Pat.</div>
+                            <div class="feature"><i class="ph ph-bathtub"></i> 4 Băi</div>
+                            <div class="feature"><i class="ph ph-square-logo"></i> 310 m²</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>16+</h3>
+                    <p>Ani Experiență</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0%</h3>
+                    <p>Comision pe oferte</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1000+</h3>
+                    <p>Clienți Fericiți</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Consultanță</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer aria-label="Footer principal">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE Logo"
+                    style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 20px; opacity: 0.9;">
+                <p>O selecție aleasă cu grijă din portofoliul nostru exclusiv de proprietăți din Timișoara și
+                    împrejurimi.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Info</h4>
+                <p><i class="ph-fill ph-map-pin" aria-hidden="true" style="color: var(--accent);"></i> Timișoara,
+                    România</p>
+                <p><i class="ph-fill ph-phone" aria-hidden="true" style="color: var(--accent);"></i> <a
+                        href="tel:+40700000000" style="color: inherit; text-decoration: none;">+40 700 000 000</a></p>
+                <p><i class="ph-fill ph-envelope-simple" aria-hidden="true" style="color: var(--accent);"></i> <a
+                        href="mailto:contact@the-house.ro"
+                        style="color: inherit; text-decoration: none;">contact@the-house.ro</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Legături Utile</h4>
+                <ul>
+                    <li><a href="#">Despre Noi</a></li>
+                    <li><a href="#">Proprietăți de Vânzare</a></li>
+                    <li><a href="#">Proprietăți de Închiriat</a></li>
+                    <li><a href="#">Servicii și Comisioane</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Termeni și Condiții</a></li>
+                    <li><a href="#">Politica de Confidențialitate (GDPR)</a></li>
+                    <li><a href="#">Politica de Cookies</a></li>
+                    <li><a href="#">ANPC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 THE HOUSE IMOBILIARE. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

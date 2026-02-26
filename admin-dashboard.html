@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HOUSE CMS | Dashboard View</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            /* Admin Theme Variables */
+            --bg-main: #f1f5f9;
+            --bg-sidebar: #0f172a;
+            --bg-card: #ffffff;
+            --text-main: #334155;
+            --text-heading: #0f172a;
+            --text-sidebar: #94a3b8;
+            --accent: #1e6c73;
+            --accent-light: #e0f2fe;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles (Reused from admin.html) */
+        aside {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header img {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .sidebar-title {
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-label {
+            padding: 0 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-sidebar);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 15px;
+            margin-bottom: 4px;
+            font-weight: 400;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            border-left-color: var(--accent);
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            padding: 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Main Content Area */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--bg-card);
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            margin-left: 8px;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-icon-only {
+            padding: 8px;
+            border-radius: 6px;
+            color: var(--text-sidebar);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .btn-icon-only:hover {
+            background: var(--bg-main);
+            color: var(--accent);
+        }
+
+        .badge-dot {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--bg-card);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-main);
+            color: var(--text-heading);
+        }
+
+        .content-area {
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: var(--text-sidebar);
+            margin-bottom: 32px;
+        }
+
+        /* Dashboard Specific Grid & Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border-color: rgba(30, 108, 115, 0.3);
+        }
+
+        .stat-content h3 {
+            font-size: 14px;
+            color: var(--text-sidebar);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 4px;
+        }
+
+        .stat-trend {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        .trend-neutral {
+            color: var(--text-sidebar);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-blue {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .icon-teal {
+            background: rgba(30, 108, 115, 0.1);
+            color: var(--accent);
+        }
+
+        .icon-orange {
+            background: #fff7ed;
+            color: #f97316;
+        }
+
+        .icon-purple {
+            background: #faf5ff;
+            color: #a855f7;
+        }
+
+        /* Two Column Layout for Main Section */
+        .main-columns {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        .btn-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Latest Inquiries List */
+        .inquiry-list {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .inquiry-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+
+        .inquiry-item:last-child {
+            border-bottom: none;
+        }
+
+        .inquiry-item:hover {
+            background-color: var(--bg-main);
+        }
+
+        .inquiry-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-main);
+            color: var(--text-sidebar);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .inquiry-content {
+            flex-grow: 1;
+        }
+
+        .inquiry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            align-items: baseline;
+        }
+
+        .inquiry-name {
+            font-weight: 600;
+            color: var(--text-heading);
+            font-size: 14px;
+        }
+
+        .inquiry-time {
+            font-size: 12px;
+            color: var(--text-sidebar);
+        }
+
+        .inquiry-subject {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .inquiry-preview {
+            font-size: 13px;
+            color: var(--text-sidebar);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+
+        .inquiry-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .status-new {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .status-handled {
+            background: #f1f5f9;
+            color: var(--text-sidebar);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .action-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .action-card:hover {
+            background: #fff;
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--text-sidebar);
+        }
+
+        .action-card:hover .action-icon {
+            color: var(--accent);
+        }
+
+        .action-label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* System Info */
+        .system-info {
+            padding: 24px;
+            flex-grow: 1;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 13px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-sidebar);
+        }
+
+        .info-val {
+            font-weight: 500;
+            color: var(--text-heading);
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside>
+        <div class="sidebar-header">
+            <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE">
+            <span class="sidebar-title">CMS</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">General</div>
+            <a href="admin-dashboard.html" class="nav-item active"><i class="ph ph-squares-four"></i> Dashboard</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Imobiliare</div>
+            <a href="admin.html" class="nav-item"><i class="ph ph-house"></i> Proprietăți</a>
+            <a href="#" class="nav-item"><i class="ph ph-list-dashes"></i> Categorii</a>
+            <a href="#" class="nav-item"><i class="ph ph-map-pin"></i> Orașe & Zone</a>
+            <a href="#" class="nav-item"><i class="ph ph-wrench"></i> Câmpuri Dinamice</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Comunicare</div>
+            <a href="#" class="nav-item"><i class="ph ph-envelope-simple"></i> Mesaje / Inquiries</a>
+            <a href="#" class="nav-item"><i class="ph ph-image"></i> Banners (Imagine start)</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Sistem</div>
+            <a href="#" class="nav-item"><i class="ph ph-gear"></i> Setări Cont</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">SB</div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 500;">Sorin Bratu</div>
+                    <div style="font-size: 12px; color: var(--text-sidebar);">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="search-bar">
+                <i class="ph ph-magnifying-glass" style="color: var(--text-sidebar);"></i>
+                <input type="text" placeholder="Caută...">
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon-only">
+                    <i class="ph ph-bell"></i>
+                    <span class="badge-dot"></span>
+                </button>
+                <button class="btn-outline"><i class="ph ph-sign-out"></i> Delogare</button>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <h1 class="page-title">Panou de Control (Dashboard)</h1>
+            <p class="page-subtitle">Bine ai revenit! Iată o privire de ansamblu asupra activității agenției.</p>
+
+            <div class="dashboard-grid">
+                <!-- Stat Card 1 -->
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h3>Total Proprietăți</h3>
+                        <div class="stat-value">124</div>
+                        <div class="stat-trend trend-neutral">
+                            <i class="ph-bold ph-minus"></i>
+                            <span>Activ (102) / Inactiv (22)</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon icon-blue">
+                        <i class="ph-fill ph-house-line"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h3>Mesaje Noi</h3>
+                        <div class="stat-value">8</div>
+                        <div class="stat-trend trend-down">
+                            <i class="ph-bold ph-warning-circle"></i>
+                            <span>3 necitite din weekend</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon icon-orange">
+                        <i class="ph-fill ph-envelope-simple"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h3>Vizualizări (Azi)</h3>
+                        <div class="stat-value">1,405</div>
+                        <div class="stat-trend trend-up">
+                            <i class="ph-bold ph-trend-up"></i>
+                            <span>+15% față de ieri</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon icon-teal">
+                        <i class="ph-fill ph-chart-line-up"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 4 -->
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h3>Alerte Sistem</h3>
+                        <div class="stat-value">0</div>
+                        <div class="stat-trend trend-success" style="color: var(--success);">
+                            <i class="ph-bold ph-check-circle"></i>
+                            <span>Sistemul funcționează optim</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon icon-purple">
+                        <i class="ph-fill ph-shield-check"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-columns">
+                <!-- Left Column (Wider) -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <!-- Latest Inquiries -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <h2>Ultimele Mesaje (Inquiries)</h2>
+                            <a href="#" class="btn-link">Vezi toate <i class="ph-bold ph-arrow-right"></i></a>
+                        </div>
+                        <ul class="inquiry-list">
+                            <!-- Inquiry Item -->
+                            <li class="inquiry-item">
+                                <div class="inquiry-avatar"><i class="ph-fill ph-user"></i></div>
+                                <div class="inquiry-content">
+                                    <div class="inquiry-header">
+                                        <span class="inquiry-name">Popescu Mihai - 0755 123 456</span>
+                                        <span class="inquiry-time">Acum 2 ore</span>
+                                    </div>
+                                    <div class="inquiry-subject">Interes pentru Vila #VL-4091</div>
+                                    <div class="inquiry-preview">"Buna ziua, aș dori să programez o vizionare pentru
+                                        proprietatea din Dumbrăvița sâmbătă..."</div>
+                                    <span class="inquiry-status status-new">NOU</span>
+                                </div>
+                            </li>
+                            <!-- Inquiry Item -->
+                            <li class="inquiry-item">
+                                <div class="inquiry-avatar" style="background: #eff6ff; color: #3b82f6;"><i
+                                        class="ph-fill ph-info"></i></div>
+                                <div class="inquiry-content">
+                                    <div class="inquiry-header">
+                                        <span class="inquiry-name">Elena Ionescu - elena@example.com</span>
+                                        <span class="inquiry-time">Ieri, 14:30</span>
+                                    </div>
+                                    <div class="inquiry-subject">Întrebare generală de pe contact</div>
+                                    <div class="inquiry-preview">"Căutăm un spațiu comercial de minim 200mp în zona
+                                        centrală. Aveți ceva disponibil care să..."</div>
+                                    <span class="inquiry-status status-handled">Preluat</span>
+                                </div>
+                            </li>
+                            <!-- Inquiry Item -->
+                            <li class="inquiry-item">
+                                <div class="inquiry-avatar"><i class="ph-fill ph-user"></i></div>
+                                <div class="inquiry-content">
+                                    <div class="inquiry-header">
+                                        <span class="inquiry-name">Spam Bot - no-reply@spam.com</span>
+                                        <span class="inquiry-time">Ieri, 09:15</span>
+                                    </div>
+                                    <div class="inquiry-subject">SEO Services Guarantee</div>
+                                    <div class="inquiry-preview">"We can put you on the first page of Google in just 5
+                                        days! Click here to..."</div>
+                                    <span class="inquiry-status status-new">Suspect / NOU</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <!-- Quick Actions -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <h2>Acțiuni Rapide</h2>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><i class="ph ph-plus-circle"></i></div>
+                                <div class="action-label">Proprietate Nouă</div>
+                            </a>
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><i class="ph ph-image"></i></div>
+                                <div class="action-label">Adaugă Banner</div>
+                            </a>
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><i class="ph ph-users"></i></div>
+                                <div class="action-label">Client Nou</div>
+                            </a>
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><i class="ph ph-file-text"></i></div>
+                                <div class="action-label">Raport Trafic</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- System Info -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <h2>Informații Sistem</h2>
+                        </div>
+                        <div class="system-info">
+                            <div class="info-row">
+                                <span class="info-label">Versiune CMS</span>
+                                <span class="info-val">v2.1.0</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ultimul Backup DB</span>
+                                <span class="info-val" style="color: var(--success);">Azi, 03:00 AM</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Spațiu Stocare Imagini</span>
+                                <span class="info-val">2.4 GB / 10 GB</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Activitate recentă admin</span>
+                                <span class="info-val">Acum 5 minute</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>

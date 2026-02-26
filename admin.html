@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HOUSE CMS | Panou Administrare</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            /* Admin Theme Variables */
+            --bg-main: #f1f5f9;
+            /* Light slate background */
+            --bg-sidebar: #0f172a;
+            /* Dark navy sidebar */
+            --bg-card: #ffffff;
+            --text-main: #334155;
+            --text-heading: #0f172a;
+            --text-sidebar: #94a3b8;
+            --accent: #1e6c73;
+            /* Dark teal matched to the logo */
+            --accent-light: #e0f2fe;
+            --danger: #ef4444;
+            --success: #10b981;
+            --border: #e2e8f0;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header img {
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+
+        .sidebar-title {
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-label {
+            padding: 0 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-sidebar);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 15px;
+            margin-bottom: 4px;
+            font-weight: 400;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            border-left-color: var(--accent);
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            padding: 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--bg-card);
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            margin-left: 8px;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .content-area {
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(30, 108, 115, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #134e5e;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-main);
+            color: var(--text-heading);
+        }
+
+        .btn-icon-only {
+            padding: 8px;
+            border-radius: 6px;
+            color: var(--text-sidebar);
+            background: transparent;
+        }
+
+        .btn-icon-only:hover {
+            background: var(--bg-main);
+            color: var(--accent);
+        }
+
+        /* Data Table inside Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table-controls {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filters select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            outline: none;
+            background: #fff;
+            color: var(--text-main);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 16px 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--text-sidebar);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: var(--bg-main);
+        }
+
+        .prop-main {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .prop-thumb {
+            width: 60px;
+            height: 48px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .prop-details h4 {
+            color: var(--text-heading);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .prop-details span {
+            font-size: 12px;
+            color: var(--text-sidebar);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-sidebar);
+            font-size: 14px;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-numbers button {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-numbers button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .page-numbers button:hover:not(.active) {
+            background: var(--bg-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside>
+        <div class="sidebar-header">
+            <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE">
+            <span class="sidebar-title">CMS</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">General</div>
+            <a href="admin-dashboard.html" class="nav-item"><i class="ph ph-squares-four"></i> Dashboard</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Imobiliare</div>
+            <a href="admin.html" class="nav-item active"><i class="ph ph-house"></i> Proprietăți</a>
+            <a href="#" class="nav-item"><i class="ph ph-list-dashes"></i> Categorii</a>
+            <a href="#" class="nav-item"><i class="ph ph-map-pin"></i> Orașe & Zone</a>
+            <a href="#" class="nav-item"><i class="ph ph-wrench"></i> Câmpuri Dinamice</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Comunicare</div>
+            <a href="#" class="nav-item"><i class="ph ph-envelope-simple"></i> Mesaje / Inquiries</a>
+            <a href="#" class="nav-item"><i class="ph ph-image"></i> Banners (Imagine start)</a>
+
+            <div class="nav-label" style="margin-top: 24px;">Sistem</div>
+            <a href="#" class="nav-item"><i class="ph ph-gear"></i> Setări Cont</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">SB</div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 500;">Sorin Bratu</div>
+                    <div style="font-size: 12px; color: var(--text-sidebar);">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="search-bar">
+                <i class="ph ph-magnifying-glass" style="color: var(--text-sidebar);"></i>
+                <input type="text" placeholder="Caută după cod proprietate sau titlu...">
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <button class="btn-icon-only"><i class="ph ph-bell"></i></button>
+                <button class="btn-outline" style="padding: 8px 16px;"><i class="ph ph-sign-out"></i> Delogare</button>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="page-title">
+                Administrare Proprietăți
+                <button class="btn btn-primary"><i class="ph-bold ph-plus"></i> Adaugă Proprietate</button>
+            </div>
+
+            <div class="card">
+                <div class="table-controls">
+                    <div class="filters">
+                        <select>
+                            <option>Toate categoriile</option>
+                            <option>Apartamente</option>
+                            <option>Case / Vile</option>
+                        </select>
+                        <select>
+                            <option>Tip Tranzacție</option>
+                            <option>Vânzare</option>
+                            <option>Închiriere</option>
+                        </select>
+                        <select>
+                            <option>Status: Orice</option>
+                            <option>Activ</option>
+                            <option>Inactiv</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proprietate</th>
+                            <th>Cod / Zona</th>
+                            <th>Tranzacție</th>
+                            <th>Preț</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Acțiuni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr>
+                            <td>
+                                <div class="prop-main">
+                                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=150"
+                                        alt="Penthouse" class="prop-thumb">
+                                    <div class="prop-details">
+                                        <h4>Vila cu un design unical, luxul la el acasă</h4>
+                                        <span>Adăugat pe 12 Noiembrie 2025</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <strong>#VL-4091</strong><br>
+                                <span style="font-size: 13px; color: var(--text-sidebar);">Dumbrăvița</span>
+                            </td>
+                            <td>
+                                <span
+                                    style="display: inline-block; padding: 4px 8px; background: #f1f5f9; border-radius: 4px; font-size: 13px; font-weight: 500;">Vânzare</span>
+                            </td>
+                            <td style="font-weight: 600;">€265,000</td>
+                            <td>
+                                <span class="status-badge active"><i class="ph-fill ph-check-circle"></i> Activ</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-icon-only" title="Editează"><i
+                                        class="ph ph-pencil-simple"></i></button>
+                                <button class="btn-icon-only" title="Previzualizare front-end"><i
+                                        class="ph ph-eye"></i></button>
+                                <button class="btn-icon-only" title="Șterge" style="color: var(--danger);"><i
+                                        class="ph ph-trash"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr>
+                            <td>
+                                <div class="prop-main">
+                                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=150"
+                                        alt="Office" class="prop-thumb">
+                                    <div class="prop-details">
+                                        <h4>Vilă confortabilă și spațioasă, complet mobilată</h4>
+                                        <span>Adăugat pe 05 Noiembrie 2025</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <strong>#IN-8820</strong><br>
+                                <span style="font-size: 13px; color: var(--text-sidebar);">Ghiroda</span>
+                            </td>
+                            <td>
+                                <span
+                                    style="display: inline-block; padding: 4px 8px; background: #f1f5f9; border-radius: 4px; font-size: 13px; font-weight: 500;">Închiriere</span>
+                            </td>
+                            <td style="font-weight: 600;">€800 / lună</td>
+                            <td>
+                                <span class="status-badge active"><i class="ph-fill ph-check-circle"></i> Activ</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-icon-only" title="Editează"><i
+                                        class="ph ph-pencil-simple"></i></button>
+                                <button class="btn-icon-only" title="Previzualizare front-end"><i
+                                        class="ph ph-eye"></i></button>
+                                <button class="btn-icon-only" title="Șterge" style="color: var(--danger);"><i
+                                        class="ph ph-trash"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3 -->
+                        <tr>
+                            <td>
+                                <div class="prop-main">
+                                    <div
+                                        style="width: 60px; height: 48px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #94a3b8;">
+                                        <i class="ph-fill ph-image" style="font-size: 24px;"></i>
+                                    </div>
+                                    <div class="prop-details">
+                                        <h4>Apartament 3 camere, etaj 1, vedere centrală</h4>
+                                        <span>Adăugat pe 01 Noiembrie 2025</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <strong>#AP-2019</strong><br>
+                                <span style="font-size: 13px; color: var(--text-sidebar);">Piața Unirii</span>
+                            </td>
+                            <td>
+                                <span
+                                    style="display: inline-block; padding: 4px 8px; background: #f1f5f9; border-radius: 4px; font-size: 13px; font-weight: 500;">Vânzare</span>
+                            </td>
+                            <td style="font-weight: 600;">€155,000</td>
+                            <td>
+                                <span class="status-badge inactive"><i class="ph-fill ph-minus-circle"></i> Inactiv
+                                    (Vândut)</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-icon-only" title="Editează"><i
+                                        class="ph ph-pencil-simple"></i></button>
+                                <button class="btn-icon-only" title="Previzualizare front-end"><i
+                                        class="ph ph-eye"></i></button>
+                                <button class="btn-icon-only" title="Șterge" style="color: var(--danger);"><i
+                                        class="ph ph-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <div>Se afișează 1 la 3 din 124 proprietăți</div>
+                    <div class="page-numbers">
+                        <button disabled><i class="ph-bold ph-caret-left"></i></button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>4</button>
+                        <button><i class="ph-bold ph-caret-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>
