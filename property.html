@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavilionul de Sticlă — Dumbrăvița | THE HOUSE Imobiliare</title>
+    <meta name="description"
+        content="Vilă de excepție cu 6 camere, piscină și grădină cu irigare automată în zona selectă Dumbrăvița. THE HOUSE Imobiliare Timișoara.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-light: #f4f4f0;
+            --text-dark: #050505;
+            --text-light: #f4f4f0;
+            --accent: #1e6c73;
+            --accent-neon: #fff;
+            --border-dark: rgba(244, 244, 240, 0.12);
+            --border-light: rgba(5, 5, 5, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--text-light);
+            outline-offset: 4px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Unbounded', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            filter: invert(1) brightness(2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* ===== PROPERTY HERO / GALLERY ===== */
+        .prop-hero {
+            padding-top: 100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 60vh 30vh;
+            gap: 2px;
+            background: #111;
+        }
+
+        .gallery-main {
+            grid-column: 1;
+            grid-row: 1 / 3;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gallery-main:hover img {
+            transform: scale(1.04);
+        }
+
+        .gallery-thumb {
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-thumb:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-count {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: rgba(5, 5, 5, 0.85);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: 1px solid var(--border-dark);
+        }
+
+        /* ===== PROPERTY LAYOUT ===== */
+        .prop-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 0;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        /* ===== LEFT: CONTENT ===== */
+        .prop-content {
+            padding: 5rem 4rem;
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .prop-breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .prop-breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .prop-breadcrumb a:hover {
+            color: var(--text-light);
+        }
+
+        .prop-breadcrumb span {
+            color: #333;
+        }
+
+        .prop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            gap: 2rem;
+        }
+
+        .prop-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 0.9;
+        }
+
+        .prop-price-big {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .prop-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Quick stats strip */
+        .prop-stats-strip {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--border-dark);
+            margin-bottom: 4rem;
+            overflow-x: auto;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+            padding: 1.5rem 2rem;
+            border-right: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .stat-val {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .stat-unit {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Tabs */
+        .prop-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 3rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1.2rem 2rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--text-light);
+            border-bottom-color: var(--text-light);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-light);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border-dark);
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-dark);
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .spec-row:nth-child(even) {
+            border-right: none;
+        }
+
+        .spec-row:nth-last-child(-n+2) {
+            border-bottom: none;
+        }
+
+        .spec-key {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .spec-val {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .feature-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-dark);
+            font-size: 0.85rem;
+            color: #c0c0c0;
+        }
+
+        .feature-tag i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        /* Description */
+        .prop-desc {
+            margin-bottom: 4rem;
+        }
+
+        .prop-desc h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            color: #888;
+        }
+
+        .prop-desc p {
+            color: #c0c0c0;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Map */
+        .prop-map {
+            margin-top: 4rem;
+        }
+
+        .prop-map h3 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .map-embed {
+            width: 100%;
+            height: 350px;
+            border: 1px solid var(--border-dark);
+            filter: grayscale(80%) invert(90%);
+        }
+
+        /* ===== RIGHT: SIDEBAR ===== */
+        .prop-sidebar {
+            padding: 3rem 2.5rem;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .prop-code {
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-price {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-price-note {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .agent-card {
+            border: 1px solid var(--border-dark);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-label {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 0;
+            border: 1px solid var(--border-dark);
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .agent-name {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .agent-title {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .btn-call {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--text-light);
+            color: var(--text-dark);
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        .btn-call:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-call-outline {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border-dark);
+        }
+
+        .btn-call-outline:hover {
+            background: var(--border-dark);
+        }
+
+        /* Contact form */
+        .contact-form {
+            border: 1px solid var(--border-dark);
+            padding: 1.5rem;
+        }
+
+        .contact-form h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field {
+            margin-bottom: 1rem;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            padding: 0.75rem 0;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: none;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            border-bottom-color: var(--text-light);
+        }
+
+        .form-field input::placeholder,
+        .form-field textarea::placeholder {
+            color: #555;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #156068;
+        }
+
+        /* ===== SIMILAR PROPERTIES ===== */
+        .similar-section {
+            padding: 5rem 4rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .see-all {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #888;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .see-all:hover {
+            color: var(--text-light);
+            border-color: var(--text-light);
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+
+        .similar-card {
+            text-decoration: none;
+            color: var(--text-light);
+            display: block;
+            position: relative;
+            overflow: hidden;
+            background: #0d0d0d;
+        }
+
+        .similar-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .similar-card:hover .similar-img {
+            transform: scale(1.05);
+        }
+
+        .similar-info {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .similar-title {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .similar-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .similar-loc {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .similar-price {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .footer-logo {
+            padding: 4rem;
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .footer-logo img {
+            height: 80px;
+            width: auto;
+            filter: invert(1) brightness(2);
+            mix-blend-mode: screen;
+        }
+
+        .footer-col {
+            padding: 4rem 3rem;
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .footer-col:last-child {
+            border-right: none;
+        }
+
+        .footer-col h4 {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul a {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--text-light);
+        }
+
+        .footer-bottom {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV -->
+    <nav aria-label="Navigare principală">
+        <a href="index.html" class="logo" aria-label="THE HOUSE Imobiliare - acasă">
+            <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE">
+        </a>
+        <ul class="nav-links" role="list">
+            <li><a href="listings.html">Proprietăți</a></li>
+            <li><a href="index.html#filozofie">Filozofie</a></li>
+            <li><a href="index.html#echipa">Echipă</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- GALLERY HERO -->
+    <section class="prop-hero" aria-label="Galerie foto proprietate">
+        <div class="gallery-main">
+            <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80&w=1400"
+                alt="Vedere frontală vilă — Pavilionul de Sticlă, Dumbrăvița">
+        </div>
+        <div class="gallery-thumb">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6d350ac9?auto=format&fit=crop&q=80&w=800"
+                alt="Zonă de living interior">
+        </div>
+        <div class="gallery-thumb" style="position:relative;">
+            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800"
+                alt="Piscina exterioară cu terasă">
+            <div class="gallery-count">+ 14 FOTO</div>
+        </div>
+    </section>
+
+    <!-- MAIN LAYOUT -->
+    <div class="prop-layout">
+        <!-- LEFT CONTENT -->
+        <article class="prop-content">
+
+            <nav class="prop-breadcrumb" aria-label="Breadcrumb">
+                <a href="listings.html">Proprietăți</a>
+                <span>›</span>
+                <a href="listings.html">Vânzare</a>
+                <span>›</span>
+                <a href="listings.html">Case / Vile</a>
+                <span>›</span>
+                <span>Pavilionul de Sticlă</span>
+            </nav>
+
+            <div class="prop-header">
+                <h1 class="prop-title">Pavilionul<br>de Sticlă</h1>
+                <div class="prop-price-big">€585.000</div>
+            </div>
+
+            <div class="prop-location">
+                <i class="ph ph-map-pin" aria-hidden="true"></i>
+                Dumbrăvița, Timișoara — Zona Rezidențială Selectă
+            </div>
+
+            <!-- Quick stats -->
+            <div class="prop-stats-strip" role="list" aria-label="Caracteristici principale">
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Suprafață</span>
+                    <span class="stat-val">360<span class="stat-unit"> mp</span></span>
+                </div>
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Teren</span>
+                    <span class="stat-val">940<span class="stat-unit"> mp</span></span>
+                </div>
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Camere</span>
+                    <span class="stat-val">6</span>
+                </div>
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Băi</span>
+                    <span class="stat-val">3</span>
+                </div>
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Niveluri</span>
+                    <span class="stat-val" style="font-size:1rem;">D+P+1E</span>
+                </div>
+                <div class="stat-item" role="listitem">
+                    <span class="stat-label">Confort</span>
+                    <span class="stat-val" style="font-size:1rem; color:var(--accent);">LUX</span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="prop-tabs" role="tablist">
+                <button class="tab-btn active" role="tab" aria-selected="true"
+                    onclick="showTab('caractere', this)">Caracteristici</button>
+                <button class="tab-btn" role="tab" aria-selected="false" onclick="showTab('utilitati', this)">Utilități
+                    & Încălzire</button>
+                <button class="tab-btn" role="tab" aria-selected="false"
+                    onclick="showTab('finisaje', this)">Finisaje</button>
+                <button class="tab-btn" role="tab" aria-selected="false" onclick="showTab('spatii', this)">Spații &
+                    Dotări</button>
+            </div>
+
+            <div id="tab-caractere" class="tab-panel active">
+                <div class="spec-grid">
+                    <div class="spec-row"><span class="spec-key">An construcție</span><span class="spec-val">2003</span>
+                    </div>
+                    <div class="spec-row"><span class="spec-key">Compartimentare</span><span
+                            class="spec-val">Decomandat</span></div>
+                    <div class="spec-row"><span class="spec-key">Nr. dormitoare</span><span class="spec-val">4</span>
+                    </div>
+                    <div class="spec-row"><span class="spec-key">Nr. birouri</span><span class="spec-val">1</span></div>
+                    <div class="spec-row"><span class="spec-key">Nr. terase</span><span class="spec-val">1</span></div>
+                    <div class="spec-row"><span class="spec-key">Front stradal</span><span class="spec-val">20 ml</span>
+                    </div>
+                    <div class="spec-row"><span class="spec-key">Nr. fronturi</span><span class="spec-val">1</span>
+                    </div>
+                    <div class="spec-row"><span class="spec-key">Nr. garaje</span><span class="spec-val">1</span></div>
+                    <div class="spec-row"><span class="spec-key">Nr. locuri parcare</span><span
+                            class="spec-val">2</span></div>
+                    <div class="spec-row"><span class="spec-key">Izolație</span><span class="spec-val">Nu
+                            necesită</span></div>
+                </div>
+            </div>
+
+            <div id="tab-utilitati" class="tab-panel">
+                <div class="features-list">
+                    <div class="feature-tag"><i class="ph ph-drop" aria-hidden="true"></i> Apă rețea</div>
+                    <div class="feature-tag"><i class="ph ph-fire" aria-hidden="true"></i> Gaz</div>
+                    <div class="feature-tag"><i class="ph ph-lightning" aria-hidden="true"></i> Curent monofazic</div>
+                    <div class="feature-tag"><i class="ph ph-phone" aria-hidden="true"></i> Telefon</div>
+                    <div class="feature-tag"><i class="ph ph-wifi-high" aria-hidden="true"></i> Internet</div>
+                    <div class="feature-tag"><i class="ph ph-thermometer" aria-hidden="true"></i> Centrală termică GAZ
+                    </div>
+                    <div class="feature-tag"><i class="ph ph-wind" aria-hidden="true"></i> Climatizare
+                        ventiloconvectoare</div>
+                    <div class="feature-tag"><i class="ph ph-car" aria-hidden="true"></i> Calorifere oțel</div>
+                </div>
+            </div>
+
+            <div id="tab-finisaje" class="tab-panel">
+                <div class="features-list">
+                    <div class="feature-tag"><i class="ph ph-door" aria-hidden="true"></i> Tâmplărie lemn stratificat
+                    </div>
+                    <div class="feature-tag"><i class="ph ph-paint-roller" aria-hidden="true"></i> Pereți vopsea
+                        lavabilă, faianță</div>
+                    <div class="feature-tag"><i class="ph ph-rows" aria-hidden="true"></i> Podele parchet masiv, gresie
+                    </div>
+                    <div class="feature-tag"><i class="ph ph-door-open" aria-hidden="true"></i> Uși interior lemn</div>
+                    <div class="feature-tag"><i class="ph ph-tree" aria-hidden="true"></i> Uși exterior lemn</div>
+                </div>
+            </div>
+
+            <div id="tab-spatii" class="tab-panel">
+                <div class="features-list">
+                    <div class="feature-tag"><i class="ph ph-stairs" aria-hidden="true"></i> Demisol</div>
+                    <div class="feature-tag"><i class="ph ph-wardrobe" aria-hidden="true"></i> Dressing</div>
+                    <div class="feature-tag"><i class="ph ph-archive" aria-hidden="true"></i> Debara</div>
+                    <div class="feature-tag"><i class="ph ph-gear" aria-hidden="true"></i> Cameră tehnică</div>
+                    <div class="feature-tag"><i class="ph ph-flower" aria-hidden="true"></i> Grădină cu irigare
+                        automatizată</div>
+                    <div class="feature-tag"><i class="ph ph-staircase" aria-hidden="true"></i> Scară interioară</div>
+                    <div class="feature-tag"><i class="ph ph-car" aria-hidden="true"></i> Telecomandă garaj/curte</div>
+                    <div class="feature-tag"><i class="ph ph-shield-check" aria-hidden="true"></i> Alarmă securitate
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="prop-desc" style="margin-top: 3rem;">
+                <h3>Descriere</h3>
+                <p>Proprietate de excepție situată în zona rezidențială selectă din Dumbrăvița, oferind o combinație
+                    rară de lux, confort și liniște. Vila cu structură D+P+1E dispune de 6 camere generoase, finisaje de
+                    cea mai înaltă calitate și o grădină amenajată cu sistem de irigare automată.</p>
+                <p style="margin-top:1rem;">Spațiile interioare sunt concepute pentru familie mare, cu zonă de zi
+                    open-space ce se deschide spre terasa cu piscina, birou separat, dressing-uri ample și o cameră
+                    tehnică complet echipată. Garajul dublu completează oferta unui imobil ce nu necesită niciun fel de
+                    investiție suplimentară.</p>
+            </div>
+
+            <!-- Map -->
+            <div class="prop-map">
+                <h3>Localizare — Dumbrăvița, Timișoara</h3>
+                <iframe class="map-embed"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22322.09!2d21.23!3d45.79!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47455d984a7f4c1d%3A0xa4b17ebbbba7cb2d!2sDumbr%C4%83vi%C8%9Ba!5e0!3m2!1sro!2sro!4v1700000000000"
+                    allowfullscreen="" loading="lazy" title="Hartă localizare proprietate — Dumbrăvița"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+        </article>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="prop-sidebar" aria-label="Contact agent și preț">
+            <div class="prop-code">COD: HOUSE935</div>
+            <div class="sidebar-price">€585.000</div>
+            <div class="sidebar-price-note">Preț negociabil • Comision 0%</div>
+
+            <div class="agent-card">
+                <div class="agent-label">Agent responsabil</div>
+                <div class="agent-info">
+                    <div class="agent-avatar" aria-hidden="true">SB</div>
+                    <div>
+                        <div class="agent-name">Sorin T. Bratu</div>
+                        <div class="agent-title">Consultant Senior</div>
+                    </div>
+                </div>
+                <a href="tel:0735444408" class="btn-call" aria-label="Apelați agentul la 0735 44 44 08">
+                    <i class="ph ph-phone-call" aria-hidden="true"></i>
+                    0735.44.44.08
+                </a>
+                <a href="tel:0735444407" class="btn-call btn-call-outline"
+                    aria-label="Apelați Mirela Bratu la 0735 44 44 07">
+                    <i class="ph ph-phone" aria-hidden="true"></i>
+                    Mirela Bratu — 0735.44.44.07
+                </a>
+            </div>
+
+            <div class="contact-form">
+                <h4>Cerere detalii suplimentare</h4>
+                <form>
+                    <div class="form-field">
+                        <input type="text" placeholder="Numele dvs." required aria-label="Numele dvs.">
+                    </div>
+                    <div class="form-field">
+                        <input type="tel" placeholder="Telefon" required aria-label="Număr de telefon">
+                    </div>
+                    <div class="form-field">
+                        <input type="email" placeholder="Email (opțional)" aria-label="Adresă email">
+                    </div>
+                    <div class="form-field">
+                        <textarea rows="3" placeholder="Mesaj (opțional)" aria-label="Mesaj"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Trimite cererea</button>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- SIMILAR PROPERTIES -->
+    <section class="similar-section">
+        <div class="section-header">
+            <h2 class="section-title">Proprietăți similare</h2>
+            <a href="listings.html" class="see-all">Vezi toate →</a>
+        </div>
+        <div class="similar-grid">
+            <a href="property.html" class="similar-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800"
+                    alt="Monolitul Brutalist — Ghiroda" class="similar-img" loading="lazy">
+                <div class="similar-info">
+                    <div class="similar-title">Monolitul Brutalist</div>
+                    <div class="similar-meta">
+                        <span class="similar-loc">Ghiroda, TM</span>
+                        <span class="similar-price">€850.000</span>
+                    </div>
+                </div>
+            </a>
+            <a href="property.html" class="similar-card">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800"
+                    alt="Casa Spațioasă Ghiroda" class="similar-img" loading="lazy">
+                <div class="similar-info">
+                    <div class="similar-title">Casa Spațioasă Ghiroda</div>
+                    <div class="similar-meta">
+                        <span class="similar-loc">Ghiroda, TM</span>
+                        <span class="similar-price">€320.000</span>
+                    </div>
+                </div>
+            </a>
+            <a href="property.html" class="similar-card">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800"
+                    alt="Proprietate Piața Balcescu" class="similar-img" loading="lazy">
+                <div class="similar-info">
+                    <div class="similar-title">Proprietate Piața Balcescu</div>
+                    <div class="similar-meta">
+                        <span class="similar-loc">Centru, TM</span>
+                        <span class="similar-price">€4.200 / lună</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-logo">
+                <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE">
+            </div>
+            <div class="footer-col">
+                <h4>Index</h4>
+                <ul>
+                    <li><a href="listings.html">Proprietăți</a></li>
+                    <li><a href="index.html#filozofie">Filozofie</a></li>
+                    <li><a href="index.html#echipa">Echipă</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Conectare</h4>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 THE HOUSE IMOBILIARE</div>
+            <div>Timișoara • 16+ ani pe piață</div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabId, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+        }
+    </script>
+</body>
+
+</html>

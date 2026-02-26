@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proprietăți Imobiliare Timișoara | THE HOUSE Imobiliare</title>
+    <meta name="description"
+        content="Apartamente, case, vile și terenuri de vânzare și închiriere în Timișoara și împrejurimi. THE HOUSE Imobiliare — 16+ ani experiență.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-light: #f4f4f0;
+            --text-dark: #050505;
+            --text-light: #f4f4f0;
+            --accent: #1e6c73;
+            --border-dark: rgba(244, 244, 240, 0.12);
+            --border-light: rgba(5, 5, 5, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--text-light);
+            outline-offset: 4px;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Unbounded', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            filter: invert(1) brightness(2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .nav-links a.active::before,
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 9rem 4rem 3rem;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 0.9;
+        }
+
+        .result-count {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ===== TYPE SWITCHER ===== */
+        .type-switcher {
+            display: flex;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            border-right: 1px solid var(--border-dark);
+            color: #666;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .type-btn:last-child {
+            border-right: none;
+        }
+
+        .type-btn.active {
+            color: var(--text-light);
+            border-bottom-color: var(--accent);
+        }
+
+        .type-btn:hover {
+            color: var(--text-light);
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .listings-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+        }
+
+        /* ===== FILTER SIDEBAR ===== */
+        .filter-sidebar {
+            border-right: 1px solid var(--border-dark);
+            padding: 3rem 2rem;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        .filter-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-reset {
+            font-size: 0.65rem;
+            color: #888;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            text-decoration: underline;
+        }
+
+        .filter-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-group-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-check {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            color: #c0c0c0;
+            transition: color 0.2s;
+        }
+
+        .filter-check:hover {
+            color: var(--text-light);
+        }
+
+        .filter-check input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #444;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .filter-check input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .filter-count {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: #555;
+        }
+
+        .price-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .price-input {
+            background: transparent;
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .price-input:focus {
+            border-color: var(--accent);
+        }
+
+        .price-input::placeholder {
+            color: #444;
+        }
+
+        .range-slider {
+            width: 100%;
+            accent-color: var(--accent);
+            margin-top: 0.75rem;
+        }
+
+        .btn-apply-filter {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-apply-filter:hover {
+            background: #156068;
+        }
+
+        /* ===== LISTINGS AREA ===== */
+        .listings-area {
+            padding: 0;
+        }
+
+        /* Sort/View bar */
+        .list-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .sort-select {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .sort-select select {
+            background: transparent;
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .view-btn {
+            background: none;
+            border: 1px solid var(--border-dark);
+            color: #666;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* Property Grid */
+        .prop-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            background: #111;
+        }
+
+        .prop-card {
+            text-decoration: none;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .prop-card-img-wrapper {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prop-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: block;
+        }
+
+        .prop-card:hover .prop-card-img {
+            transform: scale(1.05);
+        }
+
+        .prop-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.4rem 0.75rem;
+        }
+
+        .prop-card-body {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-dark);
+            flex: 1;
+        }
+
+        .prop-card-type {
+            font-size: 0.65rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .prop-card-title {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .prop-card-specs {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .prop-card-specs span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .prop-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .prop-card-loc {
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .prop-card-price {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .page-btn {
+            width: 48px;
+            height: 48px;
+            background: none;
+            border: 1px solid var(--border-dark);
+            border-right: none;
+            color: #888;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .page-btn:last-child {
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .page-btn:hover {
+            background: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .footer-logo {
+            padding: 4rem;
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .footer-logo img {
+            height: 80px;
+            width: auto;
+            filter: invert(1) brightness(2);
+            mix-blend-mode: screen;
+        }
+
+        .footer-col {
+            padding: 4rem 3rem;
+            border-right: 1px solid var(--border-dark);
+        }
+
+        .footer-col:last-child {
+            border-right: none;
+        }
+
+        .footer-col h4 {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul a {
+            color: #c0c0c0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--text-light);
+        }
+
+        .footer-bottom {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <nav aria-label="Navigare principală">
+        <a href="index.html" class="logo" aria-label="THE HOUSE - acasă">
+            <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE">
+        </a>
+        <ul class="nav-links" role="list">
+            <li><a href="listings.html" class="active">Proprietăți</a></li>
+            <li><a href="index.html#filozofie">Filozofie</a></li>
+            <li><a href="index.html#echipa">Echipă</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1 class="page-title">Proprietăți<br><span style="color:var(--accent);">Imobiliare</span></h1>
+        <div class="result-count">47 proprietăți disponibile</div>
+    </header>
+
+    <!-- TYPE SWITCHER -->
+    <div class="type-switcher" role="tablist" aria-label="Tip tranzacție">
+        <button class="type-btn active" role="tab" aria-selected="true">Toate</button>
+        <button class="type-btn" role="tab" aria-selected="false">De Vânzare</button>
+        <button class="type-btn" role="tab" aria-selected="false">De Închiriat</button>
+    </div>
+
+    <div class="listings-layout">
+        <!-- FILTER SIDEBAR -->
+        <aside class="filter-sidebar" aria-label="Filtre căutare">
+            <div class="filter-title">
+                Filtre
+                <button class="filter-reset">Resetează</button>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-group-title">Tip proprietate</div>
+                <div class="filter-options">
+                    <label class="filter-check">
+                        <input type="checkbox" checked aria-label="Apartamente">
+                        Apartamente <span class="filter-count">15</span>
+                    </label>
+                    <label class="filter-check">
+                        <input type="checkbox" checked aria-label="Case / Vile">
+                        Case / Vile <span class="filter-count">14</span>
+                    </label>
+                    <label class="filter-check">
+                        <input type="checkbox" aria-label="Terenuri">
+                        Terenuri <span class="filter-count">6</span>
+                    </label>
+                    <label class="filter-check">
+                        <input type="checkbox" aria-label="Birouri">
+                        Birouri <span class="filter-count">5</span>
+                    </label>
+                    <label class="filter-check">
+                        <input type="checkbox" aria-label="Spații industriale">
+                        Spații industriale <span class="filter-count">2</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-group-title">Preț (EUR)</div>
+                <div class="price-inputs">
+                    <input type="number" class="price-input" placeholder="Min" aria-label="Preț minim" value="">
+                    <input type="number" class="price-input" placeholder="Max" aria-label="Preț maxim" value="">
+                </div>
+                <input type="range" class="range-slider" min="0" max="2000000" value="2000000"
+                    aria-label="Filtru preț maxim">
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-group-title">Nr. camere</div>
+                <div class="filter-options">
+                    <label class="filter-check"><input type="checkbox" aria-label="1 cameră"> 1 cameră</label>
+                    <label class="filter-check"><input type="checkbox" checked aria-label="2 camere"> 2 camere</label>
+                    <label class="filter-check"><input type="checkbox" checked aria-label="3 camere"> 3 camere</label>
+                    <label class="filter-check"><input type="checkbox" checked aria-label="4 camere"> 4 camere</label>
+                    <label class="filter-check"><input type="checkbox" aria-label="5+ camere"> 5+ camere</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-group-title">Zonă</div>
+                <div class="filter-options">
+                    <label class="filter-check"><input type="checkbox" aria-label="Centru"> Centru <span
+                            class="filter-count">8</span></label>
+                    <label class="filter-check"><input type="checkbox" checked aria-label="Dumbrăvița"> Dumbrăvița <span
+                            class="filter-count">7</span></label>
+                    <label class="filter-check"><input type="checkbox" checked aria-label="Ghiroda"> Ghiroda <span
+                            class="filter-count">6</span></label>
+                    <label class="filter-check"><input type="checkbox" aria-label="Mehala"> Mehala <span
+                            class="filter-count">4</span></label>
+                    <label class="filter-check"><input type="checkbox" aria-label="Lipovei"> Lipovei <span
+                            class="filter-count">4</span></label>
+                    <label class="filter-check"><input type="checkbox" aria-label="Freidorf"> Freidorf <span
+                            class="filter-count">3</span></label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-group-title">Suprafață utilă (mp)</div>
+                <div class="price-inputs">
+                    <input type="number" class="price-input" placeholder="Min" aria-label="Suprafață minimă">
+                    <input type="number" class="price-input" placeholder="Max" aria-label="Suprafață maximă">
+                </div>
+            </div>
+
+            <button class="btn-apply-filter">Aplică filtrele</button>
+        </aside>
+
+        <!-- LISTINGS AREA -->
+        <main class="listings-area" id="main-content">
+            <div class="list-toolbar">
+                <div class="sort-select">
+                    <span>Sortare:</span>
+                    <select aria-label="Sortare proprietăți">
+                        <option>Relevanță</option>
+                        <option>Preț crescător</option>
+                        <option>Preț descrescător</option>
+                        <option>Cele mai noi</option>
+                        <option>Suprafață</option>
+                    </select>
+                </div>
+                <div class="view-toggle" role="group" aria-label="Mod de afișare">
+                    <button class="view-btn active" aria-label="Afișare grilă" title="Grilă">
+                        <i class="ph ph-grid-four" aria-hidden="true"></i>
+                    </button>
+                    <button class="view-btn" aria-label="Afișare listă" title="Listă">
+                        <i class="ph ph-list" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="prop-grid" role="list">
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Pavilionul de Sticlă, Dumbrăvița, 585.000 EUR">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80&w=900"
+                            alt="Pavilionul de Sticlă — Dumbrăvița" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge">Vânzare</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Vilă — Lux</div>
+                        <div class="prop-card-title">Pavilionul de Sticlă</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 360 mp</span>
+                            <span><i class="ph ph-bed" aria-hidden="true"></i> 6 camere</span>
+                            <span><i class="ph ph-shower" aria-hidden="true"></i> 3 băi</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i>
+                                Dumbrăvița</span>
+                            <span class="prop-card-price">€585.000</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Monolitul Brutalist, Ghiroda, 850.000 EUR">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=900"
+                            alt="Monolitul Brutalist — Ghiroda" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge">Vânzare</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Casă — Lux</div>
+                        <div class="prop-card-title">Monolitul Brutalist</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 410 mp</span>
+                            <span><i class="ph ph-bed" aria-hidden="true"></i> 6 camere</span>
+                            <span><i class="ph ph-shower" aria-hidden="true"></i> 4 băi</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i> Ghiroda</span>
+                            <span class="prop-card-price">€850.000</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Apartament Piața Balcescu, Centru, 4200 EUR pe luna">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=900"
+                            alt="Apartament Piața Balcescu — Centru" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge" style="background:#555;">Închiriere</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Apartament — 4 camere</div>
+                        <div class="prop-card-title">Apartamente de vis, Piața Balcescu</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 140 mp</span>
+                            <span><i class="ph ph-bed" aria-hidden="true"></i> 4 camere</span>
+                            <span><i class="ph ph-shower" aria-hidden="true"></i> 2 băi</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i> Centru,
+                                TM</span>
+                            <span class="prop-card-price">€4.200 / lună</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Duplex Ultracentral, Centru, 2800 EUR pe luna">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=900"
+                            alt="Duplex ultracentral" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge" style="background:#555;">Închiriere</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Appartament tip Duplex</div>
+                        <div class="prop-card-title">Duplex Ultracentral Superb</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 120 mp</span>
+                            <span><i class="ph ph-bed" aria-hidden="true"></i> 3 camere</span>
+                            <span><i class="ph ph-shower" aria-hidden="true"></i> 2 băi</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i> Centru,
+                                TM</span>
+                            <span class="prop-card-price">€2.800 / lună</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Casă Spațioasă Ghiroda, 320.000 EUR">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=900"
+                            alt="Casă spațioasă Ghiroda" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge">Vânzare</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Casă — Confort 1</div>
+                        <div class="prop-card-title">Casa Spațioasă Ghiroda</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 267 mp</span>
+                            <span><i class="ph ph-bed" aria-hidden="true"></i> 5 camere</span>
+                            <span><i class="ph ph-shower" aria-hidden="true"></i> 2 băi</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i> Ghiroda</span>
+                            <span class="prop-card-price">€320.000</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property.html" class="prop-card" role="listitem"
+                    aria-label="Spații birouri moderne Lipovei, 3500 EUR pe luna">
+                    <div class="prop-card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=900"
+                            alt="Birouri Lipovei" class="prop-card-img" loading="lazy">
+                        <div class="prop-badge" style="background:#555;">Închiriere</div>
+                    </div>
+                    <div class="prop-card-body">
+                        <div class="prop-card-type">Spații Birouri</div>
+                        <div class="prop-card-title">Birouri Open Space Lipovei</div>
+                        <div class="prop-card-specs">
+                            <span><i class="ph ph-house" aria-hidden="true"></i> 320 mp</span>
+                            <span><i class="ph ph-office-chair" aria-hidden="true"></i> Open space</span>
+                            <span><i class="ph ph-car" aria-hidden="true"></i> 6 locuri</span>
+                        </div>
+                        <div class="prop-card-footer">
+                            <span class="prop-card-loc"><i class="ph ph-map-pin" aria-hidden="true"></i> Zona
+                                Industrială</span>
+                            <span class="prop-card-price">€3.500 / lună</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Pagination -->
+            <nav class="pagination" aria-label="Paginare rezultate">
+                <a href="#" class="page-btn" aria-label="Pagina anterioară">
+                    <i class="ph ph-caret-left" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="page-btn active" aria-label="Pagina 1" aria-current="page">1</a>
+                <a href="#" class="page-btn" aria-label="Pagina 2">2</a>
+                <a href="#" class="page-btn" aria-label="Pagina 3">3</a>
+                <a href="#" class="page-btn" aria-label="Pagina 4">4</a>
+                <a href="#" class="page-btn" aria-label="Pagina 5">5</a>
+                <a href="#" class="page-btn" aria-label="Pagina următoare">
+                    <i class="ph ph-caret-right" aria-hidden="true"></i>
+                </a>
+            </nav>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-logo">
+                <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE">
+            </div>
+            <div class="footer-col">
+                <h4>Index</h4>
+                <ul>
+                    <li><a href="listings.html">Proprietăți</a></li>
+                    <li><a href="index.html#filozofie">Filozofie</a></li>
+                    <li><a href="index.html#echipa">Echipă</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Conectare</h4>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 THE HOUSE IMOBILIARE</div>
+            <div>Timișoara • 16+ ani pe piață</div>
+        </div>
+    </footer>
+
+    <script>
+        // Type switcher tabs
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.type-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+            });
+        });
+
+        // View toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
