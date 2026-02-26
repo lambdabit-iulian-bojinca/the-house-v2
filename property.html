@@ -54,33 +54,33 @@
         }
 
         /* ===== NAV ===== */
-        nav {
+        .site-nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.5rem 4rem;
+            padding: 1rem 4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(5, 5, 5, 0.97);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-dark);
         }
 
-        .logo img {
+        .site-nav .logo img {
             height: 60px;
             width: auto;
             filter: invert(1) brightness(2);
         }
 
-        .nav-links {
+        .site-nav .nav-links {
             display: flex;
             gap: 3rem;
             list-style: none;
         }
 
-        .nav-links a {
+        .site-nav .nav-links a {
             color: #fff;
             text-decoration: none;
             font-family: 'Unbounded', sans-serif;
@@ -91,7 +91,7 @@
             position: relative;
         }
 
-        .nav-links a::before {
+        .site-nav .nav-links a::before {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -104,18 +104,19 @@
             transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .nav-links a:hover::before {
+        .site-nav .nav-links a.active::before,
+        .site-nav .nav-links a:hover::before {
             transform: scaleX(1);
             transform-origin: left;
         }
 
         /* ===== PROPERTY HERO / GALLERY ===== */
         .prop-hero {
-            padding-top: 100px;
+            padding-top: 88px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 60vh 30vh;
-            gap: 2px;
+            grid-template-columns: 3fr 2fr;
+            grid-template-rows: 50vh 22vh;
+            gap: 3px;
             background: #111;
         }
 
@@ -213,17 +214,20 @@
             align-items: flex-start;
             margin-bottom: 1.5rem;
             gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .prop-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
             line-height: 0.9;
+            flex: 1;
+            min-width: 240px;
         }
 
         .prop-price-big {
             font-family: 'Unbounded', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--accent);
             white-space: nowrap;
@@ -760,7 +764,7 @@
 
 <body>
     <!-- NAV -->
-    <nav aria-label="Navigare principală">
+    <nav class="site-nav" aria-label="Navigare principală">
         <a href="index.html" class="logo" aria-label="THE HOUSE Imobiliare - acasă">
             <img src="https://www.the-house.ro/images/logos/the-house-logo.png?v=2" alt="THE HOUSE IMOBILIARE">
         </a>
@@ -779,7 +783,7 @@
                 alt="Vedere frontală vilă — Pavilionul de Sticlă, Dumbrăvița">
         </div>
         <div class="gallery-thumb">
-            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6d350ac9?auto=format&fit=crop&q=80&w=800"
+            <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&q=80&w=800"
                 alt="Zonă de living interior">
         </div>
         <div class="gallery-thumb" style="position:relative;">
