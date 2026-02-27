@@ -484,6 +484,184 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
+        /* Echipa Section */
+        .echipa-wrapper {
+            position: relative;
+            z-index: 10;
+            padding: 8rem 4rem;
+            color: #fff;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .echipa-title {
+            font-size: 4vw;
+            font-weight: 900;
+            margin-bottom: 3rem;
+            letter-spacing: -1px;
+        }
+
+        .echipa-text {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #e5e7eb;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 900px) {
+            nav {
+                position: absolute;
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 50;
+            }
+
+            .logo img {
+                height: 32px;
+            }
+
+            .nav-links {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 1.5rem;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                height: auto;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hero-left {
+                padding: 18rem 1.5rem 4rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-dark);
+            }
+
+            .hero-headline {
+                font-size: 2.4rem;
+                line-height: 1.1;
+                text-align: left;
+                hyphens: auto;
+            }
+
+            .hero-sub {
+                max-width: 100%;
+                font-size: 1.15rem;
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+
+            .hero-right {
+                min-height: 50vh;
+            }
+
+            .search-brutal {
+                flex-direction: column;
+                position: relative;
+            }
+
+            .search-field {
+                padding: 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-dark);
+            }
+
+            .search-field input,
+            .search-field select {
+                font-size: 1.5rem;
+            }
+
+            .btn-brutal {
+                padding: 1.5rem;
+                font-size: 1.25rem;
+            }
+
+            .statement {
+                grid-template-columns: 1fr;
+                padding: 4rem 1.5rem !important;
+                gap: 2rem;
+            }
+
+            .statement-text {
+                font-size: 2.2rem !important;
+            }
+
+            .portfolio {
+                grid-template-columns: 1fr;
+            }
+
+            .prop-item {
+                border-right: none;
+                height: 450px;
+            }
+
+            .echipa-wrapper {
+                padding: 4rem 1.5rem;
+            }
+
+            .echipa-title {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .echipa-text {
+                font-size: 1rem;
+            }
+
+            .footer-brutal {
+                padding: 4rem 1.5rem 2rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                margin-bottom: 2rem;
+                text-align: left;
+            }
+
+            .footer-logo {
+                display: flex;
+                justify-content: flex-start;
+            }
+
+            .footer-col h4 {
+                margin-bottom: 1rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: left;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 
@@ -605,13 +783,10 @@
 
         <section id="echipa" class="large-break" aria-label="Echipa Noastră">
             <div class="break-overlay"></div>
-            <div
-                style="position: relative; z-index: 10; padding: 4rem; color: #fff; max-width: 1200px; text-align: center;">
-                <h2 style="font-size: 4vw; font-weight: 900; margin-bottom: 3rem; letter-spacing: -1px;">RELAȚII <span
-                        class="serif" style="color: var(--accent-neon);">pe
+            <div class="echipa-wrapper">
+                <h2 class="echipa-title">RELAȚII <span class="serif" style="color: var(--accent);">pe
                         termen</span> LUNG.</h2>
-                <p
-                    style="font-size: 1.25rem; font-weight: 400; line-height: 1.8; max-width: 800px; margin: 0 auto; color: #e5e7eb;">
+                <p class="echipa-text">
                     THE HOUSE IMOBILIARE înseamnă pentru
                     Dumneavoastră o echipă de consultanți imobiliari profesioniști și cu experiență, o echipă deschisă
                     spre

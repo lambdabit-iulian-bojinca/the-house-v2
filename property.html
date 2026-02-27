@@ -1310,6 +1310,189 @@
             font-size: 0.8rem;
             color: #555;
         }
+
+        /* ===== MOBILE RESPONSIVENESS ===== */
+        @media (max-width: 900px) {
+            .site-nav {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .site-nav .logo img {
+                height: 32px;
+            }
+
+            .site-nav .nav-links {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 1.5rem;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .site-nav .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .site-nav .nav-links a {
+                white-space: nowrap;
+            }
+
+            /* Bento Grid */
+            .prop-hero {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                height: auto;
+            }
+
+            .bento-cell {
+                min-height: 250px;
+            }
+
+            .bento-a {
+                grid-column: 1;
+                grid-row: 1;
+                height: 350px;
+            }
+
+            .bento-b {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            .bento-c {
+                grid-column: 1;
+                grid-row: 3;
+            }
+
+            .bento-d {
+                grid-column: 1;
+                grid-row: 4;
+            }
+
+            .bento-e {
+                grid-column: 1;
+                grid-row: 5;
+                height: 120px;
+            }
+
+            /* Specs grids */
+            .specs-grid,
+            .features-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                gap: 2rem;
+            }
+
+            /* Storytelling */
+            .story-overlay {
+                left: 1.5rem;
+                right: 1.5rem;
+                bottom: 15%;
+                padding: 1.5rem;
+                max-width: none;
+            }
+
+            .story-room-label {
+                font-size: 1.5rem;
+            }
+
+            .story-progress {
+                right: 1rem;
+            }
+
+            /* Main dual column */
+            .property-main {
+                grid-template-columns: 1fr;
+            }
+
+            .prop-content {
+                padding: 2.5rem 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-dark);
+            }
+
+            .prop-sidebar {
+                padding: 2.5rem 1.5rem;
+            }
+
+            /* Horizontal carousel */
+            .h-carousel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 0 1.5rem 1.5rem;
+            }
+
+            .h-carousel-track {
+                padding: 0 1.5rem;
+            }
+
+            .h-slide {
+                flex: 0 0 85vw;
+            }
+
+            /* Similar / Footer */
+            .similar-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .similar-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-col,
+            .footer-logo {
+                padding: 2.5rem 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-dark);
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 2rem 1.5rem;
+                text-align: center;
+            }
+
+            /* Lightbox */
+            .lightbox-content {
+                padding: 1rem;
+            }
+
+            .lightbox-stage {
+                padding: 4rem 0 1rem;
+            }
+
+            .lightbox-img {
+                max-height: 50vh;
+            }
+
+            .lightbox-nav {
+                width: 36px;
+                height: 36px;
+            }
+
+            .lightbox-prev {
+                left: 0.5rem;
+            }
+
+            .lightbox-next {
+                right: 0.5rem;
+            }
+
+            .lightbox-thumbs {
+                padding: 0.5rem 1rem 1rem;
+            }
+        }
     </style>
 </head>
 
