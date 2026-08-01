@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE HOUSE Imobiliare — Proprietăți de clasă în Timișoara</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{
+  colors:{charcoal:'#1E293B',charcoalDeep:'#0F172A',gold:'#D4AF37',goldSoft:'#E3C766',mist:'#F8FAFC',lineC:'#E2E8F0',muted:'#64748B'},
+  fontFamily:{display:['Jost','system-ui','sans-serif'],sans:['Inter','system-ui','sans-serif']},
+  boxShadow:{lift:'0 24px 60px -28px rgba(15,23,42,.38)',console:'0 40px 90px -50px rgba(15,23,42,.55)'}
+}}}
+</script>
+<style>
+:root{--charcoal:#1E293B;--deep:#0F172A;--gold:#D4AF37;--gold-soft:#E3C766;--mist:#F8FAFC;--line:#E2E8F0;--muted:#64748B}
+*{-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--charcoal);font-family:Inter,system-ui,sans-serif}
+::selection{background:var(--gold);color:#fff}
+.display{font-family:Jost,system-ui,sans-serif}
+.kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
+.num{font-family:Jost,sans-serif;font-variant-numeric:tabular-nums}
+
+#nav{background:rgba(255,255,255,.72);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);
+  border-bottom:1px solid rgba(226,232,240,0);transition:border-color .4s,box-shadow .4s,background .4s}
+#nav.solid{border-bottom-color:var(--line);box-shadow:0 1px 30px -12px rgba(15,23,42,.16);background:rgba(255,255,255,.88)}
+.navlink{position:relative;font-size:14px;padding-block:4px}
+.navlink::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--gold);transition:width .35s cubic-bezier(.16,1,.3,1)}
+.navlink:hover::after{width:100%}
+
+/* ── photography (with graceful fallback tones if a source image fails) ── */
+.photo{position:relative;overflow:hidden;background:linear-gradient(158deg,#48586C,#2C3B4E 45%,#101A28)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .4s}
+.group:hover .photo img,.photo.zoom:hover img{transform:scale(1.05)}
+.photo .vig{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.62),rgba(15,23,42,.05) 52%,rgba(15,23,42,.12));pointer-events:none}
+.photo.plain .vig{background:linear-gradient(to top,rgba(15,23,42,.34),transparent 55%)}
+.photo.f0{background:linear-gradient(158deg,#3B4A5C,#212F3D 45%,#0F1A24)}
+.photo.f1{background:linear-gradient(158deg,#4A4032,#2C2418 45%,#151009)}
+.photo.f2{background:linear-gradient(158deg,#3D4A44,#22302B 45%,#111A16)}
+.photo.f3{background:linear-gradient(158deg,#4A4230,#2E2712 45%,#171205)}
+.photo.f4{background:linear-gradient(158deg,#40485A,#252E3E 45%,#121722)}
+.photo.f5{background:linear-gradient(158deg,#453A2E,#2A2116 45%,#140F09)}
+
+.field{appearance:none;width:100%;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 38px 12px 14px;font-size:14px;color:var(--charcoal);transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#CBD5E1}
+.field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+.fw{position:relative}
+.fw>svg.caret{position:absolute;right:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted);pointer-events:none}
+.lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;display:block;margin-bottom:8px}
+
+.tabs{display:inline-flex;gap:2px;background:#F1F5F9;border-radius:12px;padding:4px}
+.tabs button{padding:10px 24px;font-size:14px;font-weight:500;border-radius:9px;color:var(--muted);transition:.28s}
+.tabs button[aria-selected="true"]{background:var(--charcoal);color:#fff;box-shadow:0 6px 18px -10px rgba(15,23,42,.9)}
+.tabs button:not([aria-selected="true"]):hover{color:var(--charcoal)}
+
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:13px;color:var(--muted);transition:.22s;white-space:nowrap}
+.chip:hover{border-color:var(--gold);color:var(--charcoal)}
+.chip[aria-pressed="true"]{background:var(--charcoal);border-color:var(--charcoal);color:#fff}
+
+.btn-gold{background:var(--gold);color:#fff;border-radius:10px;font-weight:600;transition:.25s;box-shadow:0 10px 26px -14px rgba(212,175,55,.9)}
+.btn-gold:hover{background:#C29E2C;transform:translateY(-1px)}
+.btn-dark{background:var(--charcoal);color:#fff;border-radius:10px;font-weight:500;transition:.25s}
+.btn-dark:hover{background:var(--deep);transform:translateY(-1px)}
+.btn-line{border:1px solid var(--line);border-radius:10px;transition:.25s}
+.btn-line:hover{border-color:var(--gold)}
+
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:3px;background:var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--gold);box-shadow:0 2px 8px rgba(15,23,42,.22);cursor:pointer;transition:transform .2s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.12)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--gold);cursor:pointer}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -18px rgba(15,23,42,.22);
+  transition:box-shadow .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1),border-color .45s;cursor:pointer}
+.card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -30px rgba(15,23,42,.4);border-color:#DDE3EA}
+.badge{position:absolute;left:14px;top:14px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.93);
+  backdrop-filter:blur(8px);color:var(--charcoal);font-size:11px;font-weight:600;letter-spacing:.06em;padding:7px 12px;border-radius:999px;box-shadow:0 4px 14px -6px rgba(15,23,42,.4)}
+.badge.gold{background:var(--gold);color:#fff}
+.fav{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:999px;display:grid;place-items:center;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(8px);color:var(--charcoal);transition:.22s;box-shadow:0 4px 14px -6px rgba(15,23,42,.35)}
+.fav:hover{background:#fff;color:var(--gold)}
+.fav[aria-pressed="true"]{background:var(--gold);color:#fff}
+.fav[aria-pressed="true"] svg{fill:currentColor}
+.price{font-family:Jost,sans-serif;font-weight:500;font-size:22px;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+
+body.list #grid{grid-template-columns:1fr}
+body.list .card{flex-direction:row}
+body.list .card .ph{width:300px;flex:0 0 300px}
+body.list .card .cbody{flex:1;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:768px){body.list .card{flex-direction:column}body.list .card .ph{width:100%;flex:auto;aspect-ratio:16/11}}
+
+#drawer{transform:translateX(100%);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+#drawer.open{transform:none}
+#scrim{opacity:0;pointer-events:none;transition:opacity .4s}
+#scrim.open{opacity:1;pointer-events:auto}
+.srow{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}
+.thumb{width:76px;height:56px;object-fit:cover;border-radius:7px;cursor:pointer;opacity:.62;transition:.25s;flex:0 0 auto}
+.thumb:hover{opacity:1}
+.thumb.on{opacity:1;outline:2px solid var(--gold);outline-offset:2px}
+
+.rise{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rise.in{opacity:1;transform:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.noscroll{overflow:hidden}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important}html{scroll-behavior:auto}.rise{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8">
+    <div id="navInner" class="flex items-center gap-8 py-4 transition-all duration-500">
+      <a href="#top" class="shrink-0" aria-label="THE HOUSE Imobiliare — prima pagină">
+        <img id="navLogo" src="data:image/png;base64,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" alt="THE HOUSE — Proprietăți de clasă" class="h-11 w-auto transition-all duration-500">
+      </a>
+      <nav class="hidden lg:flex items-center gap-9 ml-4">
+        <a class="navlink" href="#proprietati" data-tx-link="vanzare">Vânzare</a>
+        <a class="navlink" href="#proprietati" data-tx-link="inchiriere">Închiriere</a>
+        <a class="navlink" href="#comision">Comision 0%</a>
+        <a class="navlink" href="#servicii">Servicii</a>
+        <a class="navlink" href="#contact">Contact</a>
+      </nav>
+      <div class="flex items-center gap-2.5 ml-auto">
+        <button id="favBtn" class="relative hidden sm:grid place-items-center w-10 h-10 rounded-full border border-lineC hover:border-gold transition" aria-label="Vezi proprietățile salvate" aria-pressed="false">
+          <span data-i="heart" class="w-[17px] h-[17px]"></span>
+          <span id="favCount" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-gold text-white num text-[10px] leading-[18px] text-center opacity-0 transition-opacity">0</span>
+        </button>
+        <a href="tel:+40735444408" class="btn-line hidden md:flex items-center gap-2 px-4 py-2.5 text-[13.5px] font-medium">
+          <span data-i="phone" class="w-4 h-4 text-gold"></span> 0735.44.44.08
+        </a>
+        <a href="#cauta" class="btn-dark hidden sm:block px-5 py-2.5 text-[13.5px]">Caută proprietăți</a>
+        <button id="menuBtn" class="lg:hidden grid place-items-center w-10 h-10" aria-label="Meniu" aria-expanded="false"><span data-i="menu" class="w-6 h-6"></span></button>
+      </div>
+    </div>
+  </div>
+  <div id="mmenu" class="lg:hidden hidden bg-white border-t border-lineC">
+    <nav class="mx-auto max-w-[1280px] px-5 py-4 flex flex-col">
+      <a class="py-3.5 border-b border-lineC text-[15px]" href="#proprietati">Vânzare</a>
+      <a class="py-3.5 border-b border-lineC text-[15px]" href="#proprietati">Închiriere</a>
+      <a class="py-3.5 border-b border-lineC text-[15px]" href="#comision">Comision 0%</a>
+      <a class="py-3.5 border-b border-lineC text-[15px]" href="#servicii">Servicii</a>
+      <a class="py-3.5 border-b border-lineC text-[15px]" href="#contact">Contact</a>
+      <a class="py-3.5 text-[15px] text-gold font-medium flex items-center gap-2" href="tel:+40735444408"><span data-i="phone" class="w-4 h-4"></span> 0735.44.44.08</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="relative pt-[128px] lg:pt-[152px] pb-[132px] lg:pb-[150px] overflow-hidden">
+  <div class="absolute inset-0 -z-10" style="background:linear-gradient(180deg,#FFF 0%,#F8FAFC 62%,#F1F5F9 100%)"></div>
+  <div class="absolute -z-10 -right-[10%] -top-[10%] w-[720px] h-[720px] rounded-full opacity-60" style="background:radial-gradient(circle,rgba(212,175,55,.14),transparent 62%)"></div>
+  <div class="absolute inset-0 -z-10 opacity-40" style="background-image:linear-gradient(#E2E8F0 1px,transparent 1px);background-size:100% 92px"></div>
+
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8">
+    <div class="grid lg:grid-cols-[1.06fr_.94fr] gap-14 lg:gap-16 items-center">
+      <div>
+        <div class="flex items-center gap-3 rise" style="transition-delay:.05s">
+          <span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Timișoara · agenție de familie din 2010</p>
+        </div>
+        <h1 class="display font-light text-[clamp(2.7rem,6.4vw,5.1rem)] leading-[1.04] tracking-[-.02em] mt-7 rise" style="transition-delay:.12s">
+          Găsește căminul perfect<br class="hidden sm:block"> în <span class="relative inline-block">Timișoara<span class="absolute left-0 -bottom-1 w-full h-[3px] bg-gold/70 rounded-full"></span></span>
+        </h1>
+        <p class="mt-8 text-[17px] leading-[1.75] text-muted max-w-[50ch] rise" style="transition-delay:.2s">
+          Șaizeci și două de proprietăți active, fiecare văzută de noi înainte să ajungă aici. Vile în Ghiroda și Lunei,
+          apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3 rise" style="transition-delay:.26s">
+          <a href="#proprietati" class="btn-gold px-7 py-4 text-[14.5px] flex items-center gap-2">Vezi proprietățile <span data-i="arrow-right" class="w-4 h-4"></span></a>
+          <a href="#contact" class="btn-line px-7 py-4 text-[14.5px] font-medium bg-white">Vorbește cu un consultant</a>
+        </div>
+        <div class="mt-12 grid grid-cols-3 max-w-[540px] rise" style="transition-delay:.32s">
+          <div class="pr-6"><p class="display text-[30px] font-light num">16</p><p class="text-[12.5px] text-muted mt-1.5 leading-snug">ani pe piața locală</p></div>
+          <div class="px-6 border-x border-lineC"><p class="display text-[30px] font-light num">62</p><p class="text-[12.5px] text-muted mt-1.5 leading-snug">oferte active azi</p></div>
+          <div class="pl-6"><p class="display text-[30px] font-light num text-gold">3</p><p class="text-[12.5px] text-muted mt-1.5 leading-snug">oferte cu comision 0%</p></div>
+        </div>
+      </div>
+
+      <div class="relative rise" style="transition-delay:.4s">
+        <div class="absolute -inset-3 border border-gold/35 rounded-[22px] pointer-events-none hidden sm:block"></div>
+        <div class="photo f0 zoom rounded-[18px] shadow-lift" style="aspect-ratio:4/4.6">
+          <img src="https://www.the-house.ro/files/images/08075104img_8167.jpg" alt="Vilă de vânzare în zona Ghirodei, Timișoara" referrerpolicy="no-referrer" onerror="this.style.opacity=0">
+          <div class="vig"></div>
+        </div>
+        <div class="absolute -left-4 sm:-left-8 bottom-8 bg-white rounded-2xl shadow-lift p-5 w-[236px] border border-lineC">
+          <p class="kicker text-gold">Proprietatea săptămânii</p>
+          <p class="display text-[19px] mt-2.5 leading-snug">Vilă în zona Ghirodei</p>
+          <p class="text-[12.5px] text-muted mt-1.5">360 mp utili · teren 940 mp</p>
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-lineC">
+            <span class="num text-[17px] font-medium">498.000 €</span>
+            <span class="text-[11px] text-muted">HOUSE935</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH CONSOLE -->
+<section id="cauta" class="relative z-20 -mt-[92px]">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8">
+    <div class="bg-white rounded-[20px] border border-lineC shadow-console rise">
+      <div class="flex flex-wrap items-center justify-between gap-4 px-6 lg:px-8 pt-6">
+        <div class="tabs" role="tablist" aria-label="Tip de tranzacție">
+          <button role="tab" data-tx="vanzare" aria-selected="true">Cumpăr</button>
+          <button role="tab" data-tx="inchiriere" aria-selected="false">Închiriez</button>
+        </div>
+        <button id="advBtn" class="flex items-center gap-2 text-[13px] text-muted hover:text-charcoal transition"><span data-i="sliders" class="w-4 h-4"></span> Filtre avansate</button>
+      </div>
+      <div class="px-6 lg:px-8 py-6 grid gap-5 lg:grid-cols-[1.1fr_1fr_1fr_1.25fr_auto] lg:items-end">
+        <div>
+          <label class="lbl" for="fZona">Locație</label>
+          <div class="fw"><select id="fZona" class="field"><option value="toate">Toată Timișoara</option></select>
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div>
+          <label class="lbl" for="fTip">Tip proprietate</label>
+          <div class="fw"><select id="fTip" class="field">
+            <option value="toate">Toate tipurile</option><option value="apartament">Apartament</option>
+            <option value="casa">Casă / vilă</option><option value="teren">Teren</option><option value="industrial">Spațiu industrial</option>
+          </select><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div>
+          <label class="lbl" for="fCam">Camere</label>
+          <div class="fw"><select id="fCam" class="field">
+            <option value="">Oricâte</option><option value="2">2 camere</option><option value="3">3 camere</option><option value="4">4+ camere</option>
+          </select><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-1"><span class="lbl !mb-0">Buget maxim</span><span id="pretLbl" class="num text-[14px] font-medium text-gold">600.000 €</span></div>
+          <input id="fPret" type="range" min="50000" max="600000" step="10000" value="600000" class="mt-3" aria-label="Buget maxim">
+          <div class="flex justify-between mt-2 text-[11px] text-muted num"><span id="pMin">50.000 €</span><span id="pMax">600.000 €</span></div>
+        </div>
+        <button id="btnCauta" class="btn-gold h-[46px] px-8 text-[14.5px] flex items-center justify-center gap-2"><span data-i="search" class="w-[17px] h-[17px]"></span> Caută</button>
+      </div>
+      <div id="adv" class="hidden border-t border-lineC px-6 lg:px-8 py-5">
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <div class="flex items-baseline justify-between mb-1"><span class="lbl !mb-0">Suprafață minimă</span><span id="mpLbl" class="num text-[13px] font-medium">0 mp</span></div>
+            <input id="fMp" type="range" min="0" max="400" step="10" value="0" class="mt-3" aria-label="Suprafață minimă">
+          </div>
+          <div class="lg:col-span-2"><span class="lbl">Caracteristici</span><div id="featChips" class="flex flex-wrap gap-2"></div></div>
+          <div class="flex items-end"><button id="reset" class="flex items-center gap-2 text-[13px] text-muted hover:text-gold transition ml-auto"><span data-i="rotate" class="w-4 h-4"></span> Resetează filtrele</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GRID -->
+<section id="proprietati" class="mx-auto max-w-[1280px] px-5 lg:px-8 pt-20 pb-24">
+  <div class="flex flex-wrap items-end justify-between gap-6 mb-9">
+    <div>
+      <div class="flex items-center gap-3"><span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Portofoliu</p></div>
+      <h2 class="display font-light text-[clamp(2rem,4vw,2.9rem)] tracking-[-.02em] mt-4">Proprietăți selectate</h2>
+      <p id="count" class="text-[14px] text-muted mt-2.5"></p>
+    </div>
+    <div class="flex items-center gap-3 ml-auto">
+      <div class="fw w-[196px]">
+        <select id="fSort" class="field !py-3 !text-[13.5px]" aria-label="Ordonează rezultatele">
+          <option value="nou">Cele mai noi</option><option value="pret-asc">Preț crescător</option>
+          <option value="pret-desc">Preț descrescător</option><option value="mp">Suprafață</option>
+        </select><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="tabs !p-1" role="group" aria-label="Mod de afișare">
+        <button id="vGrid" aria-selected="true" class="!px-3.5 !py-2.5" aria-label="Grilă"><span data-i="grid" class="w-[17px] h-[17px] block"></span></button>
+        <button id="vList" aria-selected="false" class="!px-3.5 !py-2.5" aria-label="Listă"><span data-i="rows" class="w-[17px] h-[17px] block"></span></button>
+      </div>
+    </div>
+  </div>
+  <div id="activeFilters" class="flex flex-wrap gap-2 mb-7"></div>
+  <div id="grid" class="grid gap-7 md:grid-cols-2 lg:grid-cols-3"></div>
+  <div id="empty" class="hidden text-center py-24 rounded-2xl border border-dashed border-lineC bg-mist">
+    <div class="w-14 h-14 rounded-full bg-white border border-lineC grid place-items-center mx-auto mb-6"><span data-i="search" class="w-5 h-5 text-muted"></span></div>
+    <p class="display text-[24px] font-light">Nicio proprietate pe aceste filtre</p>
+    <p class="text-[14.5px] text-muted mt-3 max-w-[46ch] mx-auto leading-relaxed">Lărgește bugetul sau schimbă zona. Avem 62 de oferte active — sună-ne și ți le arătăm pe cele care nu apar aici.</p>
+    <button class="btn-gold px-7 py-3.5 text-[14px] mt-7" onclick="resetAll()">Resetează filtrele</button>
+  </div>
+</section>
+
+<!-- COMISION 0 -->
+<section id="comision" class="bg-mist border-y border-lineC py-24">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8 grid lg:grid-cols-[1fr_.92fr] gap-14 lg:gap-20 items-center">
+    <div class="rise">
+      <div class="flex items-center gap-3"><span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Comision 0%</p></div>
+      <h2 class="display font-light text-[clamp(2rem,4vw,2.9rem)] tracking-[-.02em] mt-4 leading-[1.14]">Trei proprietăți la care cumpărătorul nu plătește comision.</h2>
+      <p class="mt-6 text-[16.5px] leading-[1.75] text-muted max-w-[54ch]">
+        La aceste oferte onorariul este acoperit integral de proprietar. Le marcăm cu insignă aurie în listă,
+        ca să știi de la început ce te costă. La restul portofoliului comisionul este afișat pe fiecare ofertă, înainte de vizionare.
+      </p>
+      <ul class="mt-9 grid sm:grid-cols-2 gap-x-9 gap-y-5">
+        <li class="flex gap-3.5"><span data-i="check-circle" class="w-5 h-5 text-gold shrink-0 mt-0.5"></span><span class="text-[14.5px] leading-snug">Comisionul, afișat pe fiecare ofertă</span></li>
+        <li class="flex gap-3.5"><span data-i="check-circle" class="w-5 h-5 text-gold shrink-0 mt-0.5"></span><span class="text-[14.5px] leading-snug">Uși deschise, cu programare prealabilă</span></li>
+        <li class="flex gap-3.5"><span data-i="check-circle" class="w-5 h-5 text-gold shrink-0 mt-0.5"></span><span class="text-[14.5px] leading-snug">Negociere purtată de consultantul tău</span></li>
+        <li class="flex gap-3.5"><span data-i="check-circle" class="w-5 h-5 text-gold shrink-0 mt-0.5"></span><span class="text-[14.5px] leading-snug">Însoțire la bancă și la notar</span></li>
+      </ul>
+      <button class="btn-dark px-7 py-4 text-[14.5px] mt-10 inline-flex items-center gap-2" onclick="filterC0()">Vezi ofertele cu comision 0% <span data-i="arrow-right" class="w-4 h-4"></span></button>
+    </div>
+    <div class="grid grid-cols-2 gap-5">
+      <div class="photo f1 zoom rounded-2xl shadow-lift" style="aspect-ratio:3/4.1">
+        <img src="https://www.the-house.ro/files/images/06112940img_7127.jpg" alt="Apartament duplex Toscana Residence, Mehala" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.opacity=0"><div class="vig"></div></div>
+      <div class="photo f2 zoom rounded-2xl shadow-lift mt-12" style="aspect-ratio:3/4.1">
+        <img src="https://www.the-house.ro/files/images/06112903img_7121.jpg" alt="Interior apartament Toscana Residence" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.opacity=0"><div class="vig"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ZONE -->
+<section class="mx-auto max-w-[1280px] px-5 lg:px-8 py-24">
+  <div class="flex flex-wrap items-end justify-between gap-6 mb-10">
+    <div>
+      <div class="flex items-center gap-3"><span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Zone</p></div>
+      <h2 class="display font-light text-[clamp(2rem,4vw,2.9rem)] tracking-[-.02em] mt-4">Zonele din portofoliu</h2>
+    </div>
+    <p class="text-[15px] text-muted max-w-[42ch] leading-relaxed">Alege o zonă și vezi doar proprietățile de acolo. Fiecare are alt tip de clădire și alt preț pe metru pătrat.</p>
+  </div>
+  <div id="zoneGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</section>
+
+<!-- TRANZACTII RECENTE -->
+<section class="mx-auto max-w-[1280px] px-5 lg:px-8 pb-24">
+  <div class="rounded-[20px] border border-lineC p-8 lg:p-10">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <p class="kicker text-gold">Tranzacții recente</p>
+        <h3 class="display font-light text-[26px] mt-3">Intermediate de noi în ultimele luni</h3>
+      </div>
+      <p class="text-[14px] text-muted max-w-[36ch]">Ofertele închise rămân în arhivă, ca reper de preț pentru zonă.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-6 mt-8">
+      <div class="flex gap-5 items-center">
+        <div class="photo f4 rounded-xl shrink-0" style="width:132px;aspect-ratio:4/3">
+          <img src="https://www.the-house.ro/files/images/17092451img_0079.jpg" alt="Apartament cu 4 camere, vândut" referrerpolicy="no-referrer" loading="lazy" style="filter:grayscale(1)" onerror="this.style.opacity=0"><div class="vig"></div>
+        </div>
+        <div>
+          <span class="inline-block text-[10px] tracking-[.14em] font-semibold px-2.5 py-1 rounded-full bg-charcoal text-white">VÂNDUT</span>
+          <p class="display text-[17px] mt-2.5 leading-snug">Apartament cu 4 camere, mobilat și utilat, cu garaj</p>
+          <p class="text-[12.5px] text-muted mt-1">HOUSE484</p>
+        </div>
+      </div>
+      <div class="flex gap-5 items-center">
+        <div class="photo f5 rounded-xl shrink-0" style="width:132px;aspect-ratio:4/3">
+          <img src="https://www.the-house.ro/files/images/01131957img_6621.jpg" alt="Apartament cu 3 camere, închiriat" referrerpolicy="no-referrer" loading="lazy" style="filter:grayscale(1)" onerror="this.style.opacity=0"><div class="vig"></div>
+        </div>
+        <div>
+          <span class="inline-block text-[10px] tracking-[.14em] font-semibold px-2.5 py-1 rounded-full bg-charcoal text-white">ÎNCHIRIAT</span>
+          <p class="display text-[17px] mt-2.5 leading-snug">Apartament spațios cu 3 camere</p>
+          <p class="text-[12.5px] text-muted mt-1">HOUSE285</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICII -->
+<section id="servicii" class="bg-charcoal text-white py-24">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8">
+    <div class="max-w-[58ch]">
+      <div class="flex items-center gap-3"><span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Servicii</p></div>
+      <h2 class="display font-light text-[clamp(2rem,4vw,2.9rem)] tracking-[-.02em] mt-4">Ce facem, de la prima vizionare până la cheie</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 mt-14 rounded-2xl overflow-hidden">
+      <div class="bg-charcoal p-8"><span data-i="key" class="w-6 h-6 text-gold block"></span><p class="display text-[19px] mt-5">Consultanță gratuită</p><p class="text-[14px] text-white/55 mt-3 leading-relaxed">Discutăm bugetul și zona înainte să pornim la vizionări.</p></div>
+      <div class="bg-charcoal p-8"><span data-i="shield" class="w-6 h-6 text-gold block"></span><p class="display text-[19px] mt-5">Verificarea actelor</p><p class="text-[14px] text-white/55 mt-3 leading-relaxed">Extras de carte funciară și situația sarcinilor, înainte de avans.</p></div>
+      <div class="bg-charcoal p-8"><span data-i="chart" class="w-6 h-6 text-gold block"></span><p class="display text-[19px] mt-5">Evaluare de preț</p><p class="text-[14px] text-white/55 mt-3 leading-relaxed">Îți spunem cât face proprietatea ta, pe baza tranzacțiilor din zonă.</p></div>
+      <div class="bg-charcoal p-8"><span data-i="building" class="w-6 h-6 text-gold block"></span><p class="display text-[19px] mt-5">Spații comerciale</p><p class="text-[14px] text-white/55 mt-3 leading-relaxed">Birouri, hale și terenuri, cu analiză de vad și de acces.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ECHIPA -->
+<section id="contact" class="mx-auto max-w-[1280px] px-5 lg:px-8 py-24">
+  <div class="grid lg:grid-cols-[.85fr_1fr] gap-14 lg:gap-20 items-center">
+    <div class="photo f3 zoom rounded-[18px] shadow-lift order-2 lg:order-1" style="aspect-ratio:4/3.4">
+      <img src="https://www.the-house.ro/files/images/echipa-bratu.jpg" alt="Echipa THE HOUSE Imobiliare" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.opacity=0"><div class="vig"></div>
+    </div>
+    <div class="order-1 lg:order-2">
+      <div class="flex items-center gap-3"><span class="h-px w-9 bg-gold"></span><p class="kicker text-gold">Echipa</p></div>
+      <h2 class="display font-light text-[clamp(2rem,4vw,2.9rem)] tracking-[-.02em] mt-4">Trei consultanți. Nu un call-center.</h2>
+      <p class="mt-5 text-[16.5px] text-muted leading-[1.75] max-w-[48ch]">Sună direct persoana care se ocupă de oferta ta. Suntem o familie de consultanți, aceleași trei numere de șaisprezece ani.</p>
+      <div class="mt-10 divide-y divide-lineC border-y border-lineC">
+        <div class="flex items-center justify-between gap-6 py-5">
+          <div><p class="display text-[19px]">Sorin Traian Bratu</p><p class="text-[13px] text-muted mt-1">Consultant imobiliar · sorin.bratu@the-house.ro</p></div>
+          <a href="tel:+40735444408" class="num text-[16px] font-medium text-charcoal hover:text-gold transition whitespace-nowrap">0735.44.44.08</a>
+        </div>
+        <div class="flex items-center justify-between gap-6 py-5">
+          <div><p class="display text-[19px]">Mirela Bratu</p><p class="text-[13px] text-muted mt-1">Consultant imobiliar</p></div>
+          <a href="tel:+40735444407" class="num text-[16px] font-medium text-charcoal hover:text-gold transition whitespace-nowrap">0735.44.44.07</a>
+        </div>
+        <div class="flex items-center justify-between gap-6 py-5">
+          <div><p class="display text-[19px]">Alexandru Bratu</p><p class="text-[13px] text-muted mt-1">Consultant imobiliar</p></div>
+          <a href="tel:+40735444406" class="num text-[16px] font-medium text-charcoal hover:text-gold transition whitespace-nowrap">0735.44.44.06</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="mx-auto max-w-[1280px] px-5 lg:px-8 pb-24">
+  <div class="relative rounded-[22px] overflow-hidden bg-charcoal px-8 lg:px-16 py-16 lg:py-20">
+    <div class="absolute -right-24 -top-24 w-[420px] h-[420px] rounded-full" style="background:radial-gradient(circle,rgba(212,175,55,.22),transparent 62%)"></div>
+    <div class="relative grid lg:grid-cols-[1.1fr_auto] gap-10 items-center">
+      <div>
+        <p class="kicker text-gold">Vinzi sau închiriezi?</p>
+        <h2 class="display font-light text-white text-[clamp(1.9rem,3.6vw,2.7rem)] tracking-[-.02em] mt-4 leading-[1.14] max-w-[24ch]">Îți spunem în 24 de ore cât face proprietatea ta.</h2>
+        <p class="text-[15.5px] text-white/60 mt-5 max-w-[52ch] leading-relaxed">Evaluare gratuită, pe baza tranzacțiilor reale din zonă. Fără obligația de a semna ceva.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row lg:flex-col gap-3">
+        <a href="tel:+40735444408" class="btn-gold px-8 py-4 text-[15px] text-center">Cere o evaluare</a>
+        <a href="mailto:office@the-house.ro" class="px-8 py-4 text-[15px] text-center border border-white/25 rounded-[10px] text-white hover:border-gold hover:text-gold transition">Scrie-ne un e-mail</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-charcoalDeep text-white pt-20 pb-9">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-12 lg:gap-10 pb-14 border-b border-white/10">
+      <div>
+        <img src="data:image/png;base64,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" alt="THE HOUSE — Proprietăți de clasă" class="h-12 w-auto" style="filter:brightness(0) invert(1)">
+        <p class="text-[14px] text-white/55 mt-6 leading-[1.8] max-w-[34ch]">Timișoara, Bd. Revoluției din 1989, nr. 8, cam. 111<br>Luni–vineri 9:00–19:00 · Sâmbătă 10:00–14:00</p>
+        <div class="flex gap-2.5 mt-7">
+          <a href="#" aria-label="Facebook" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition"><span data-i="facebook" class="w-[17px] h-[17px]"></span></a>
+          <a href="#" aria-label="Instagram" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition"><span data-i="instagram" class="w-[17px] h-[17px]"></span></a>
+          <a href="mailto:office@the-house.ro" aria-label="E-mail" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition"><span data-i="mail" class="w-[17px] h-[17px]"></span></a>
+        </div>
+      </div>
+      <div>
+        <p class="kicker text-gold mb-6">Vânzare</p>
+        <ul class="space-y-3 text-[14px] text-white/60">
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu 2 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu 3 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu 4 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu peste 4 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Case / vile</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Terenuri pentru construcții</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="kicker text-gold mb-6">Închiriere</p>
+        <ul class="space-y-3 text-[14px] text-white/60">
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu o cameră</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu 2 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Apartamente cu 3 camere</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Case / vile</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Spații pentru birouri</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Spații industriale</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="kicker text-gold mb-6">Agenția</p>
+        <ul class="space-y-3 text-[14px] text-white/60">
+          <li><a class="hover:text-white transition" href="#top">Prima pagină</a></li>
+          <li><a class="hover:text-white transition" href="#comision">Comision 0</a></li>
+          <li><a class="hover:text-white transition" href="#proprietati">Toate ofertele</a></li>
+          <li><a class="hover:text-white transition" href="#servicii">Servicii / Comisioane</a></li>
+          <li><a class="hover:text-white transition" href="#contact">Contactează-ne!</a></li>
+          <li><a class="hover:text-white transition" href="#">Protecția datelor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 flex flex-wrap gap-x-8 gap-y-3 justify-between text-[12.5px] text-white/35">
+      <p>© 2010–2026 SC BRATU THE HOUSE SRL · Toate drepturile rezervate</p>
+      <p>Operator de date cu caracter personal nr. 0012979</p>
+    </div>
+  </div>
+</footer>
+
+<div id="scrim" class="fixed inset-0 bg-charcoalDeep/55 backdrop-blur-[3px] z-[60]" onclick="closeDrawer()"></div>
+<aside id="drawer" class="fixed top-0 right-0 h-full w-full sm:w-[560px] bg-white z-[70] overflow-y-auto shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="dTitle" tabindex="-1"><div id="drawerBody"></div></aside>
+
+<script>
+/* ── icons: Lucide path data, inlined ── */
+const ICONS={
+ search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+ phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+ menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+ heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+ 'arrow-right':'<path d="M5 12h14M12 5l7 7-7 7"/>','arrow-up-right':'<path d="M7 7h10v10M7 17 17 7"/>',
+ bed:'<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 4v6M2 18h20"/>',
+ area:'<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+ layers:'<path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
+ pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+ 'check-circle':'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',check:'<path d="M20 6 9 17l-5-5"/>',
+ sliders:'<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3"/><path d="M14 2v4M8 10v4M16 18v4"/>',
+ rotate:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+ mail:'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+ facebook:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+ instagram:'<rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+ grid:'<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+ rows:'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/>',
+ key:'<path d="M2.6 17.4A2 2 0 0 0 2 18.8V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.2a2 2 0 0 0 1.4-.6l.8-.8a6.5 6.5 0 1 0-4-4z"/><path d="M16.5 7.5h.01"/>',
+ shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+ chart:'<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',
+ building:'<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4M10 10h4M10 14h4M10 18h4"/>',
+ calendar:'<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>'
+};
+function paintIcons(root=document){
+  root.querySelectorAll('[data-i]').forEach(el=>{
+    const d=ICONS[el.dataset.i]; if(!d)return;
+    el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%" aria-hidden="true">'+d+'</svg>';
+    el.style.display='inline-block'; el.removeAttribute('data-i');
+  });
+}
+
+/* ── DATA: real offers from the-house.ro, read 31.07.2026 ── */
+const IMG='https://www.the-house.ro/files/images/';
+const TIPL={apartament:'Apartament',casa:'Casă / vilă',teren:'Teren',industrial:'Spațiu industrial'};
+const FEATS=['Comision 0%','Garaj','Piscină','Grădină','Lift','Terasă'];
+
+const L=[
+ {id:'HOUSE935',t:'Proprietate de excepție — lux, confort și liniște',sub:'Casă / vilă, Zona Ghirodei',z:'Ghirodei',tx:'vanzare',tip:'casa',
+  cam:6,mp:360,mpT:940,mpC:480,et:'D+P+1E',an:2003,pret:498000,neg:'negociabil',com:'2% din suma tranzacționată',c0:false,nou:true,
+  ph:['08075104img_8167.jpg','08075001img_8160.jpg','08075021img_8165.jpg','08075038img_8166.jpg','08075135img_8169.jpg','08075204img_8186.jpg'],
+  d:'Vilă construită în 2003, aproape de baza sportivă Tivoli, pe o stradă foarte liniștită. Zidărie de cărămidă de 44 cm, ferestre cu tâmplărie de stejar stratificat, pardoseli din lemn de salcâm aburit. Demisolul de 90 mp cuprinde spălătorie, cameră tehnică și hobby room.',
+  hi:['4 dormitoare, fiecare cu dressing încorporat','3 băi + baie de serviciu','Garaj și 2 locuri de parcare','Grădină cu irigare automatizată','Climatizare cu ventiloconvectoare','Teren de 940 mp, front 20 ml'],
+  f:['Garaj','Grădină']},
+
+ {id:'HOUSE872',t:'Casă spațioasă cu piscină',sub:'Casă / vilă, Zona Lunei',z:'Lunei',tx:'vanzare',tip:'casa',
+  cam:5,mp:254,mpT:705,mpC:0,et:'P+M',an:2005,pret:439000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,
+  ph:['03082649img_2861.jpg','03082706img_2864.jpg','03082617img_2871.jpg','03082732img_2876.jpg','03082810img_2881.jpg','03082835img_2892.jpg'],
+  d:'Edificată în 2005 și renovată impecabil în 2017, retrasă de la stradă. Se vinde mobilată și utilată. Ferestre cu trei rânduri de sticlă, parchet masiv la parter, șemineu, sistem de alarmă și camere de supraveghere.',
+  hi:['Piscină exterioară de 10 × 4 m','4 dormitoare și 4 băi','Carport pentru 3 autoturisme, 5 locuri','Două terase acoperite','Clasă energetică B','Grădină irigată automatizat, cu foraj'],
+  f:['Piscină','Garaj','Grădină','Terasă']},
+
+ {id:'HOUSE920',t:'Apartament duplex de excepție, Toscana Residence',sub:'Apartament duplex, Zona Mehala',z:'Mehala',tx:'vanzare',tip:'apartament',
+  cam:5,mp:198,mpT:0,mpC:290,et:'3+M / D+P+3+M',an:2012,pret:295000,neg:'negociabil',com:'NU SE PERCEPE COMISION',c0:true,nou:true,
+  ph:['06112940img_7127.jpg','06112812img_7113.jpg','06112842img_7120.jpg','06112903img_7121.jpg','06112919img_7123.jpg','06112754img_7134.jpg'],
+  d:'Duplex pe două niveluri în ansamblul Toscana Residence. Finisaje de excepție: parchet exotic de 2 cm, pardoseli de marmură Carrara, Porto Nero și Dorato, băi placate integral cu marmură, obiecte sanitare Villeroy & Boch.',
+  hi:['Terasă de 64 mp','3 dormitoare, fiecare cu dressing și baie','Garaj închis la demisol','Scară interioară placată cu marmură de Carrara','Clasă energetică A','Centrală Viessmann în condensație'],
+  f:['Comision 0%','Garaj','Lift','Terasă']},
+
+ {id:'HOUSE324',t:'Proprietate premium în Ghiroda',sub:'Casă / vilă, Zona Ghiroda',z:'Ghiroda',tx:'vanzare',tip:'casa',
+  cam:6,mp:410,mpT:0,mpC:0,et:'P+1E',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,
+  ph:['13101211img_6483.jpg'],
+  d:'Proprietate premium în Ghiroda, cu birou, sufragerie, zonă de zi și bucătărie la parter, plus baie de serviciu. Confort lux, 410 mp utili.',
+  hi:['6 camere, 410 mp utili','Regim de înălțime P+1E','Confort lux'],f:['Grădină']},
+
+ {id:'HOUSE612',t:'Teren la stradă, zona Aeroportului Internațional',sub:'Teren 14.300 mp, Zona Aeroport',z:'Aeroport',tx:'vanzare',tip:'teren',
+  cam:0,mp:14300,mpT:14300,mpC:0,et:'—',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,
+  ph:['25085852terenaeroport14300mp2.jpg'],
+  d:'Teren situat în zona aeroportului internațional Timișoara, la stradă, pe sensul Timișoara–aeroport.',
+  hi:['14.300 mp','Front stradal de 101,72 m','Un singur front, acces direct la stradă'],f:[]},
+
+ {id:'HOUSE948',t:'Apartament superb, tip duplex, în Piața Unirii',sub:'Apartament duplex, Zona Piața Unirii',z:'Piața Unirii',tx:'inchiriere',tip:'apartament',
+  cam:3,mp:72,mpT:0,mpC:0,et:'Mansardă / P+2E+M',an:0,pret:650,neg:'negociabil',com:'80% din chiria unei luni',c0:false,nou:true,
+  ph:['07113210img_9933.jpg','07113156img_9928.jpg','07113222img_9950.jpg','07113234img_9972.jpg','07113257img_9912.jpg','07113313img_9946.jpg'],
+  d:'Duplex renovat recent, într-un imobil din Piața Unirii. Primul nivel: salon de oaspeți, zonă de dining, bucătărie și baie. Etaj: living, dormitor și baie. Mobilier realizat de designeri italieni.',
+  hi:['Scară interioară proprie','Două băi','Centrală termică proprie pe gaz','Aer condiționat','Parchet masiv și granit','Bucătărie mobilată și dotată'],
+  f:['Terasă']},
+
+ {id:'HOUSE941',t:'ReHabitat 56 — apartamente într-o clădire din 1900',sub:'Apartament 2 camere, Zona Piața Bălcescu',z:'Piața Bălcescu',tx:'inchiriere',tip:'apartament',
+  cam:2,mp:53,mpT:0,mpC:0,et:'Parter înalt / D+P+1+M',an:0,pret:430,neg:'preț final',com:'80% din chiria primei luni',c0:false,nou:true,
+  ph:['13133922img_8512.jpg','13133943img_8518.jpg','13134002img_8521.jpg','13134023img_8527.jpg','13134108img_8528.jpg','13134153img_8530.jpg'],
+  d:'Clădire istorică din 1900, renovată exemplar de designerul Ciprian Șipoș după principii de economie circulară: pardoseli recuperate, detalii recondiționate, bolți salvate. Ansamblul cuprinde șase spații, fiecare cu propria identitate.',
+  hi:['Pardoseli și materiale recuperate','Parter înalt, cu curte','Centrală termică proprie','Parchet masiv','Zidărie de cărămidă','Camere video zi/noapte'],
+  f:['Grădină']},
+
+ {id:'HOUSE841',t:'Apartament spațios în zona centrală',sub:'Apartament 3 camere, Zona Central',z:'Central',tx:'inchiriere',tip:'apartament',
+  cam:3,mp:99,mpT:0,mpC:0,et:'3 / P+5E+Er',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,
+  ph:['06122507img_9889.jpg'],
+  d:'Apartament situat într-un imobil nou, foarte aproape de centru. Hol de acces prevăzut cu dulapuri de depozitare, confort 1.',
+  hi:['99,42 mp utili','Etaj 3, imobil nou','Confort 1'],f:['Lift']},
+
+ {id:'HOUSE636',t:'Hală de producție pe două niveluri',sub:'Spațiu industrial 4.200 mp, Calea Buziașului',z:'Buziașului',tx:'inchiriere',tip:'industrial',
+  cam:0,mp:4200,mpT:0,mpC:0,et:'P+1',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,
+  ph:['17094224img_0186.jpg'],
+  d:'Hală de producție pe Calea Buziașului, dispusă pe două niveluri, cu 2.355 mp destinați producției la parter.',
+  hi:['4.200 mp în total','2.355 mp de producție la parter','Acces direct din Calea Buziașului'],f:[]}
+];
+
+/* ── state ── */
+const S={tx:'vanzare',zona:'toate',tip:'toate',cam:'',pret:600000,mp:0,feats:new Set(),sort:'nou',favs:new Set(),onlyFav:false};
+const MAXP={vanzare:600000,inchiriere:5000},MINP={vanzare:50000,inchiriere:200},STEP={vanzare:10000,inchiriere:50};
+const fmt=n=>n.toLocaleString('ro-RO');
+const eur=l=>l.pret===null?'<span class="text-[17px] font-normal text-muted">Preț la cerere</span>'
+  :(l.tx==='vanzare'?fmt(l.pret)+' €':fmt(l.pret)+' €<span class="text-[13px] font-normal text-muted">/lună</span>');
+
+function results(){
+  let r=L.filter(l=>l.tx===S.tx
+    &&(S.zona==='toate'||l.z===S.zona)
+    &&(S.tip==='toate'||l.tip===S.tip)
+    &&(!S.cam||(S.cam==='4'?l.cam>=4:l.cam===+S.cam))
+    &&(l.pret===null||l.pret<=S.pret)
+    &&l.mp>=S.mp
+    &&[...S.feats].every(f=>l.f.includes(f))
+    &&(!S.onlyFav||S.favs.has(l.id)));
+  const s=S.sort, k=l=>l.pret===null?Infinity:l.pret;
+  r.sort((a,b)=>s==='pret-asc'?k(a)-k(b):s==='pret-desc'?k(b)-k(a):s==='mp'?b.mp-a.mp:(b.nou-a.nou));
+  return r;
+}
+
+function specRow(l){
+  if(l.tip==='teren')return '<span class="flex items-center gap-1.5"><span data-i="area" class="w-4 h-4 text-muted"></span>'+fmt(l.mp)+' mp teren</span>';
+  if(l.tip==='industrial')return '<span class="flex items-center gap-1.5"><span data-i="area" class="w-4 h-4 text-muted"></span>'+fmt(l.mp)+' mp</span><span class="flex items-center gap-1.5"><span data-i="layers" class="w-4 h-4 text-muted"></span>'+l.et+'</span>';
+  return '<span class="flex items-center gap-1.5"><span data-i="bed" class="w-4 h-4 text-muted"></span>'+l.cam+' camere</span>'+
+         '<span class="flex items-center gap-1.5"><span data-i="area" class="w-4 h-4 text-muted"></span>'+l.mp+' mp</span>'+
+         (l.tip==='casa'&&l.mpT?'<span class="flex items-center gap-1.5"><span data-i="layers" class="w-4 h-4 text-muted"></span>teren '+fmt(l.mpT)+' mp</span>'
+          :'<span class="flex items-center gap-1.5"><span data-i="layers" class="w-4 h-4 text-muted"></span>et. '+l.et.split(' /')[0]+'</span>');
+}
+
+function tone(id){let h=0;for(let i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))>>>0;return 'f'+(h%6)}
+function card(l){return `
+<article class="card group" data-id="${l.id}" tabindex="0" role="button" aria-label="Vezi detalii pentru ${l.t}">
+  <div class="ph photo ${tone(l.id)} relative" style="aspect-ratio:16/11">
+    <img src="${IMG}${l.ph[0]}" alt="${l.sub}" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.opacity=0">
+    <div class="vig"></div>
+    ${l.c0?'<span class="badge gold">COMISION 0%</span>':(l.nou?'<span class="badge">NOU</span>':'')}
+    <button class="fav" data-fav="${l.id}" aria-pressed="${S.favs.has(l.id)}" aria-label="Salvează ${l.t}"><span data-i="heart" class="w-[17px] h-[17px]"></span></button>
+    <div class="absolute left-4 bottom-4 flex items-center gap-1.5 text-white text-[12.5px] font-medium drop-shadow">
+      <span data-i="pin" class="w-4 h-4"></span> ${l.z}
+      ${l.ph.length>1?'<span class="ml-2 opacity-75">· '+l.ph.length+' foto</span>':''}
+    </div>
+  </div>
+  <div class="cbody p-6">
+    <p class="text-[12.5px] text-muted">${l.sub}</p>
+    <h3 class="display text-[20px] leading-snug mt-2 tracking-[-.01em] group-hover:text-gold transition-colors">${l.t}</h3>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-charcoal/75 mt-4">${specRow(l)}</div>
+    <div class="flex items-end justify-between mt-6 pt-5 border-t border-lineC">
+      <span class="price">${eur(l)}</span>
+      <span class="text-[13.5px] font-medium text-gold flex items-center gap-1.5">Vezi detalii <span data-i="arrow-up-right" class="w-4 h-4"></span></span>
+    </div>
+  </div>
+</article>`}
+
+function render(){
+  const r=results();
+  grid.innerHTML=r.map(card).join('');
+  empty.classList.toggle('hidden',r.length>0);
+  count.innerHTML=r.length+' '+(r.length===1?'proprietate':'proprietăți')+' '+(S.tx==='vanzare'?'de vânzare':'de închiriat')+
+    ' <span class="text-muted/60">· extras din cele 62 de oferte active</span>';
+  renderActive(); renderZones(); paintIcons();
+}
+function renderActive(){
+  const it=[];
+  if(S.zona!=='toate')it.push(['zona',S.zona]);
+  if(S.tip!=='toate')it.push(['tip',TIPL[S.tip]]);
+  if(S.cam)it.push(['cam',S.cam==='4'?'4+ camere':S.cam+' camere']);
+  if(S.pret<MAXP[S.tx])it.push(['pret','sub '+fmt(S.pret)+' €']);
+  if(S.mp>0)it.push(['mp','peste '+S.mp+' mp']);
+  S.feats.forEach(f=>it.push(['feat:'+f,f]));
+  if(S.onlyFav)it.push(['fav','doar salvate']);
+  activeFilters.innerHTML=it.map(([k,v])=>'<button class="chip" aria-pressed="true" data-clear="'+k+'">'+v+' <span data-i="x" class="w-3.5 h-3.5 ml-1 align-middle"></span></button>').join('');
+}
+function renderZones(){
+  const zs=[['Piața Unirii','07113210img_9933.jpg'],['Piața Bălcescu','13133922img_8512.jpg'],['Mehala','06112812img_7113.jpg'],['Ghirodei','08075001img_8160.jpg']];
+  zoneGrid.innerHTML=zs.map(([z,p])=>{
+    const n=L.filter(l=>l.z===z).length,on=S.zona===z;
+    return `<button class="group text-left" data-zone="${z}">
+      <div class="photo ${tone(z)} rounded-2xl ${on?'ring-2 ring-gold ring-offset-4':''}" style="aspect-ratio:4/4.6">
+        <img src="${IMG}${p}" alt="${z}" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.opacity=0"><div class="vig"></div>
+        <div class="absolute inset-x-0 bottom-0 p-5">
+          <p class="display text-[19px] text-white">${z}</p>
+          <p class="text-[12px] text-white/65 mt-1">${n} ${n===1?'proprietate':'proprietăți'}</p>
+        </div>
+      </div></button>`}).join('');
+}
+
+/* ── drawer ── */
+let lastFocus=null;
+function openDrawer(id){
+  const l=L.find(x=>x.id===id); if(!l)return;
+  lastFocus=document.activeElement;
+  const rows=[['Zonă',l.z],['Tip',TIPL[l.tip]],l.cam?['Camere',l.cam]:null,['Suprafață utilă',fmt(l.mp)+' mp'],
+    l.mpC?['Suprafață construită',fmt(l.mpC)+' mp']:null,l.mpT&&l.tip!=='teren'?['Teren',fmt(l.mpT)+' mp']:null,
+    l.et!=='—'?['Regim de înălțime',l.et]:null,l.an?['An construcție',l.an]:null,
+    ['Comision',l.com],['Cod ofertă',l.id]].filter(Boolean);
+  drawerBody.innerHTML=`
+  <div class="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white/92 backdrop-blur border-b border-lineC">
+    <p class="text-[12.5px] text-muted tracking-wide">${l.id} · ${l.z}</p>
+    <button onclick="closeDrawer()" class="w-9 h-9 grid place-items-center rounded-full hover:bg-mist transition" aria-label="Închide"><span data-i="x" class="w-[18px] h-[18px]"></span></button>
+  </div>
+  <div class="photo ${tone(l.id)}" style="aspect-ratio:16/10">
+    <img id="dMain" src="${IMG}${l.ph[0]}" alt="${l.sub}" referrerpolicy="no-referrer" onerror="this.style.opacity=0"><div class="vig"></div>
+    ${l.c0?'<span class="badge gold">COMISION 0%</span>':''}
+  </div>
+  ${l.ph.length>1?'<div class="flex gap-2.5 overflow-x-auto px-6 py-4 border-b border-lineC">'+
+    l.ph.map((p,i)=>`<img class="thumb${i===0?' on':''}" data-src="${IMG}${p}" src="${IMG}${p}" alt="Fotografia ${i+1}" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.visibility='hidden'">`).join('')+'</div>':''}
+  <div class="p-6 sm:p-8">
+    <p class="text-[12.5px] text-muted">${l.sub}</p>
+    <h2 id="dTitle" class="display font-light text-[28px] leading-tight tracking-[-.02em] mt-2">${l.t}</h2>
+    <div class="flex items-baseline gap-4 mt-5 flex-wrap">
+      <span class="price !text-[30px] text-gold">${eur(l)}</span>
+      ${l.neg?'<span class="text-[13px] text-muted">'+l.neg+'</span>':''}
+      ${l.pret&&l.tx==='vanzare'?'<span class="text-[13px] text-muted num">'+fmt(Math.round(l.pret/l.mp))+' €/mp</span>':''}
+    </div>
+    <p class="text-[15px] leading-[1.8] text-muted mt-6">${l.d}</p>
+    <div class="mt-8">
+      <p class="kicker text-muted mb-1">Fișa proprietății</p>
+      ${rows.map(([k,v])=>'<div class="srow"><span class="text-muted">'+k+'</span><span class="num font-medium text-right">'+v+'</span></div>').join('')}
+    </div>
+    <div class="mt-8">
+      <p class="kicker text-muted mb-4">Ce are în plus</p>
+      <ul class="grid sm:grid-cols-2 gap-3">${l.hi.map(h=>'<li class="flex gap-2.5 text-[14px]"><span data-i="check" class="w-4 h-4 text-gold shrink-0 mt-0.5"></span>'+h+'</li>').join('')}</ul>
+    </div>
+    <div class="mt-9 rounded-2xl bg-charcoal text-white p-7">
+      <p class="display text-[21px] font-light">Programează o vizionare</p>
+      <p class="text-[13.5px] text-white/55 mt-2.5 leading-relaxed">Uși deschise cu programare prealabilă. Te sunăm în cel mult o oră, în timpul programului.</p>
+      <form id="vForm" class="mt-6 grid gap-3">
+        <input required class="field !bg-white/10 !border-white/15 !text-white placeholder:text-white/40" placeholder="Numele tău" aria-label="Numele tău">
+        <input required type="tel" class="field !bg-white/10 !border-white/15 !text-white placeholder:text-white/40" placeholder="Telefon" aria-label="Telefon">
+        <input class="field !bg-white/10 !border-white/15 !text-white placeholder:text-white/40" placeholder="Când ți-ar conveni? (opțional)" aria-label="Când ți-ar conveni">
+        <button class="btn-gold py-4 text-[14.5px] mt-1">Cere vizionare</button>
+      </form>
+      <p id="vOK" class="hidden items-center gap-2.5 text-[14.5px] text-goldSoft mt-6"><span data-i="calendar" class="w-5 h-5"></span> Cerere trimisă. Te sunăm în cel mult o oră.</p>
+      <div class="flex items-center gap-2.5 mt-6 pt-6 border-t border-white/10">
+        <span data-i="phone" class="w-4 h-4 text-gold"></span>
+        <a href="tel:+40735444408" class="num text-[15px] text-goldSoft hover:underline">0735.44.44.08</a>
+        <span class="text-[12.5px] text-white/35 ml-auto">Sorin Traian Bratu</span>
+      </div>
+    </div>
+  </div>`;
+  drawer.classList.add('open'); scrim.classList.add('open'); document.body.classList.add('noscroll');
+  drawer.scrollTop=0; drawer.focus(); paintIcons(drawerBody);
+  drawerBody.querySelectorAll('.thumb').forEach(t=>t.onclick=()=>{
+    const dm=document.getElementById('dMain'); dm.style.opacity=1; dm.src=t.dataset.src;
+    drawerBody.querySelectorAll('.thumb').forEach(x=>x.classList.toggle('on',x===t));
+  });
+  document.getElementById('vForm').addEventListener('submit',e=>{
+    e.preventDefault(); e.target.classList.add('hidden');
+    const ok=document.getElementById('vOK'); ok.classList.remove('hidden'); ok.classList.add('flex');
+  });
+}
+function closeDrawer(){drawer.classList.remove('open');scrim.classList.remove('open');document.body.classList.remove('noscroll');lastFocus&&lastFocus.focus()}
+
+/* ── wiring ── */
+[...new Set(L.map(l=>l.z))].sort().forEach(z=>fZona.add(new Option(z,z)));
+featChips.innerHTML=FEATS.map(f=>'<button class="chip" data-feat="'+f+'" aria-pressed="false">'+f+'</button>').join('');
+
+function syncPrice(){
+  fPret.min=MINP[S.tx];fPret.max=MAXP[S.tx];fPret.step=STEP[S.tx];fPret.value=S.pret;
+  pMin.textContent=fmt(MINP[S.tx])+' €';pMax.textContent=fmt(MAXP[S.tx])+' €';
+  pretLbl.textContent=fmt(S.pret)+(S.tx==='vanzare'?' €':' €/lună');
+}
+document.addEventListener('click',e=>{
+  const tx=e.target.closest('[data-tx]');
+  if(tx){S.tx=tx.dataset.tx;S.pret=MAXP[S.tx];S.cam='';fCam.value='';
+    document.querySelectorAll('[data-tx]').forEach(b=>b.setAttribute('aria-selected',b===tx));syncPrice();render();return}
+  const txl=e.target.closest('[data-tx-link]');
+  if(txl){S.tx=txl.dataset.txLink;S.pret=MAXP[S.tx];
+    document.querySelectorAll('[data-tx]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tx===S.tx));syncPrice();render();return}
+  const zn=e.target.closest('[data-zone]');
+  if(zn){S.zona=S.zona===zn.dataset.zone?'toate':zn.dataset.zone;fZona.value=S.zona;
+    const has=L.some(l=>l.z===S.zona&&l.tx===S.tx);
+    if(S.zona!=='toate'&&!has){S.tx=L.find(l=>l.z===S.zona).tx;S.pret=MAXP[S.tx];
+      document.querySelectorAll('[data-tx]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tx===S.tx));syncPrice()}
+    render();document.getElementById('proprietati').scrollIntoView({behavior:'smooth'});return}
+  const ft=e.target.closest('[data-feat]');
+  if(ft){const f=ft.dataset.feat;S.feats.has(f)?S.feats.delete(f):S.feats.add(f);ft.setAttribute('aria-pressed',S.feats.has(f));render();return}
+  const cl=e.target.closest('[data-clear]');
+  if(cl){const k=cl.dataset.clear;
+    if(k==='zona'){S.zona='toate';fZona.value='toate'}
+    if(k==='tip'){S.tip='toate';fTip.value='toate'}
+    if(k==='cam'){S.cam='';fCam.value=''}
+    if(k==='pret'){S.pret=MAXP[S.tx];syncPrice()}
+    if(k==='mp'){S.mp=0;fMp.value=0;mpLbl.textContent='0 mp'}
+    if(k==='fav'){S.onlyFav=false;favBtn.setAttribute('aria-pressed','false')}
+    if(k.indexOf('feat:')===0){const f=k.slice(5);S.feats.delete(f);
+      document.querySelectorAll('[data-feat]').forEach(b=>{if(b.dataset.feat===f)b.setAttribute('aria-pressed','false')})}
+    render();return}
+  const fv=e.target.closest('[data-fav]');
+  if(fv){e.stopPropagation();const id=fv.dataset.fav;
+    S.favs.has(id)?S.favs.delete(id):S.favs.add(id);
+    fv.setAttribute('aria-pressed',S.favs.has(id));
+    favCount.textContent=S.favs.size;favCount.style.opacity=S.favs.size?1:0;
+    if(S.onlyFav)render();return}
+  const c=e.target.closest('.card'); if(c)openDrawer(c.dataset.id);
+});
+grid.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('card')){e.preventDefault();openDrawer(e.target.dataset.id)}});
+
+fZona.onchange=e=>{S.zona=e.target.value;render()};
+fTip.onchange=e=>{S.tip=e.target.value;render()};
+fCam.onchange=e=>{S.cam=e.target.value;render()};
+fSort.onchange=e=>{S.sort=e.target.value;render()};
+fPret.oninput=e=>{S.pret=+e.target.value;pretLbl.textContent=fmt(S.pret)+(S.tx==='vanzare'?' €':' €/lună');render()};
+fMp.oninput=e=>{S.mp=+e.target.value;mpLbl.textContent=S.mp+' mp';render()};
+advBtn.onclick=()=>adv.classList.toggle('hidden');
+btnCauta.onclick=()=>document.getElementById('proprietati').scrollIntoView({behavior:'smooth'});
+reset.onclick=resetAll;
+function resetAll(){
+  S.zona='toate';S.tip='toate';S.cam='';S.mp=0;S.feats.clear();S.onlyFav=false;S.pret=MAXP[S.tx];
+  fZona.value='toate';fTip.value='toate';fCam.value='';fMp.value=0;mpLbl.textContent='0 mp';
+  favBtn.setAttribute('aria-pressed','false');
+  document.querySelectorAll('[data-feat]').forEach(b=>b.setAttribute('aria-pressed','false'));
+  syncPrice();render();
+}
+function filterC0(){
+  S.tx='vanzare';S.pret=MAXP.vanzare;S.zona='toate';S.tip='toate';S.cam='';S.mp=0;
+  fZona.value='toate';fTip.value='toate';fCam.value='';fMp.value=0;mpLbl.textContent='0 mp';
+  S.feats.clear();S.feats.add('Comision 0%');
+  document.querySelectorAll('[data-tx]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tx==='vanzare'));
+  document.querySelectorAll('[data-feat]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.feat==='Comision 0%'));
+  adv.classList.remove('hidden');syncPrice();render();
+  document.getElementById('proprietati').scrollIntoView({behavior:'smooth'});
+}
+favBtn.onclick=()=>{S.onlyFav=!S.onlyFav;favBtn.setAttribute('aria-pressed',S.onlyFav);render();
+  if(S.onlyFav)document.getElementById('proprietati').scrollIntoView({behavior:'smooth'})};
+vGrid.onclick=()=>{document.body.classList.remove('list');vGrid.setAttribute('aria-selected','true');vList.setAttribute('aria-selected','false')};
+vList.onclick=()=>{document.body.classList.add('list');vGrid.setAttribute('aria-selected','false');vList.setAttribute('aria-selected','true')};
+menuBtn.onclick=()=>{const h=mmenu.classList.toggle('hidden');menuBtn.setAttribute('aria-expanded',String(!h))};
+mmenu.querySelectorAll('a').forEach(a=>a.onclick=()=>mmenu.classList.add('hidden'));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+const onScroll=()=>{const s=scrollY>24;nav.classList.toggle('solid',s);navLogo.style.height=s?'2.25rem':'2.75rem';navInner.style.paddingBlock=s?'.6rem':'1rem'};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+const io=new IntersectionObserver(en=>en.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+
+syncPrice();render();paintIcons();
+</script>
+</body>
+</html>

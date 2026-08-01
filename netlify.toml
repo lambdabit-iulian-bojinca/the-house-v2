@@ -1,0 +1,12 @@
+# the-house-2026 — static single-page site, no build step.
+# Deployed from the `the-house-2026` orphan branch of
+# github.com/lambdabit-iulian-bojinca/the-house-v2
+
+[build]
+  publish = "."
+
+# Serve the page at the site root without renaming the source file.
+[[redirects]]
+  from = "/"
+  to = "/the-house-imobiliare-2026.html"
+  status = 200

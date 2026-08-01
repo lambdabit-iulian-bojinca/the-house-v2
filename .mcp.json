@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_MCP_IULIAN_PAT}"
+      }
+    },
+    "netlify": {
+      "command": "/Users/iulian.bojinca/.nvm/versions/node/v22.20.0/bin/npx",
+      "args": ["-y", "@netlify/mcp"]
+    }
+  }
+}
