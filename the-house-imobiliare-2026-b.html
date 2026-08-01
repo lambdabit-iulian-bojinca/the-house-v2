@@ -268,7 +268,20 @@ nav.main{display:none;gap:30px;margin-left:8px}
 /* Sits further onto the photo than a solid card could — that overlap is
    the whole point of the glass, and .glass supplies the surface. */
 .hero-card{position:absolute;left:-24px;bottom:30px;width:250px;
-  border-radius:var(--radius);padding:18px}
+  border-radius:var(--radius);padding:18px;
+  /* Button reset — .glass already supplies border, background and shadow. */
+  font:inherit;color:inherit;text-align:left;cursor:pointer;display:block;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.hero-card:hover{transform:translateY(-3px)}
+.hero-card:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.hero-card .kicker{display:block}
+.hero-card .wk{display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--stone)}
+/* The affordance. Without it the card reads as a caption, not a control. */
+.hero-card .go{margin-top:12px;font:500 12px/1 Inter,sans-serif;color:var(--brand-deep);
+  display:flex;align-items:center;gap:6px}
+.hero-card .go em{font-style:normal;transition:transform .3s var(--ease)}
+.hero-card:hover .go em{transform:translateX(3px)}
 /* On phones the negative offset would hang past the viewport edge, so the
    card tucks inside the gutter instead. */
 @media(max-width:640px){.hero-card{left:0;bottom:20px}}
@@ -298,6 +311,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 /* ── Cards ── */
 .grid{display:grid;gap:26px}
 @media(min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+/* Exactly three offers, so they get their own row rather than a 2+1 orphan. */
+#c0grid{margin-top:34px}
+@media(min-width:1000px){#c0grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1050px){.grid{grid-template-columns:repeat(3,1fr)}}
 .card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--stone);
   border-radius:var(--radius);overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit;
@@ -526,9 +542,11 @@ footer a:hover{color:#fff}
       <div>
         <p class="kicker rule" data-ro="Timișoara · agenție de familie din 2010" data-en="Timișoara · a family agency since 2010">Timișoara · agenție de familie din 2010</p>
         <h1 class="display rise">
-          <!-- U+2011 non-breaking hyphen: "le-am" must not split across lines -->
-          <span data-ro="Case pe care le‑am" data-en="Homes we have">Case pe care le‑am</span>
-          <em data-ro="văzut întâi noi" data-en="seen first">văzut întâi noi</em>
+          <span data-ro="Găsește" data-en="Find">Găsește</span>
+          <!-- The underlined span is the promise; it carries white-space:nowrap,
+               so it must stay short enough to survive a 360px viewport. -->
+          <em data-ro="casa perfectă" data-en="the perfect home">casa perfectă</em>
+          <span data-ro="în Timișoara" data-en="in Timișoara">în Timișoara</span>
         </h1>
         <p class="lede rise" data-ro="Șaizeci și două de proprietăți active în Timișoara și pe o rază de cincisprezece kilometri. Vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale." data-en="Sixty-two active properties in Timișoara and within fifteen kilometres. Villas in Ghiroda and Lunei, apartments in heritage buildings on Piața Unirii and Bălcescu, land and industrial space.">Șaizeci și două de proprietăți active în Timișoara și pe o rază de cincisprezece kilometri. Vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale.</p>
         <div class="hero-cta rise">
@@ -538,23 +556,20 @@ footer a:hover{color:#fff}
         <div class="stats rise">
           <div><b class="num">16</b><span data-ro="ani pe piața locală" data-en="years in this market">ani pe piața locală</span></div>
           <div><b class="num">62</b><span data-ro="oferte active azi" data-en="live listings today">oferte active azi</span></div>
-          <div><b class="num" style="color:var(--brand)">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
+          <div><b class="num" id="c0n" style="color:var(--brand)">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
         </div>
       </div>
       <div class="archframe rise">
         <div class="arch">
-          <img src="https://www.the-house.ro/files/images/08075104img_8167.jpg" alt="Vilă de vânzare în zona Ghirodei, Timișoara" referrerpolicy="no-referrer" fetchpriority="high" width="900" height="1058" onerror="this.style.opacity=0">
+          <!-- Lead shot of the property of the week, and the same photo the
+               drawer opens on. Chosen for its verticals: the arch is a 4/4.7
+               portrait crop, so a wide interior loses its subject to the sides. -->
+          <img src="https://www.the-house.ro/files/images/06075954img_1000.jpg" alt="Vilă de vânzare în zona Ghirodei, Timișoara" referrerpolicy="no-referrer" fetchpriority="high" width="800" height="533" onerror="this.style.opacity=0">
         </div>
-        <div class="hero-card glass">
-          <p class="kicker" data-ro="Proprietatea săptămânii" data-en="Property of the week">Proprietatea săptămânii</p>
-          <p style="font:400 19px/1.3 var(--serif);margin-top:9px">Vilă în zona Ghirodei</p>
-          <p class="muted" style="font-size:12.5px;margin-top:5px">360 mp utili · teren 940 mp</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--stone)">
-            <span class="price">498.000 €</span>
-            <span class="muted" style="font-size:11px">HOUSE935</span>
-          </div>
-          <p class="ppm">1.383 €/mp</p>
-        </div>
+        <!-- Filled from the listing record, not typed twice — see WEEK below.
+             A button, not a div: it was previously a dead card describing a
+             property you had no way to open. -->
+        <button class="hero-card glass" id="weekCard" type="button"></button>
       </div>
     </div>
   </div>
@@ -592,9 +607,9 @@ footer a:hover{color:#fff}
       <div>
         <div style="display:flex;justify-content:space-between;align-items:baseline">
           <span class="lbl" style="margin:0" data-ro="Buget maxim" data-en="Max budget">Buget maxim</span>
-          <span class="num" id="pretLbl" style="font-size:14px;font-weight:500;color:var(--brand)">600.000 €</span>
+          <span class="num" id="pretLbl" style="font-size:14px;font-weight:500;color:var(--brand)">1.000.000 €</span>
         </div>
-        <input id="fPret" type="range" min="50000" max="600000" step="10000" value="600000" aria-label="Buget maxim">
+        <input id="fPret" type="range" min="50000" max="1000000" step="25000" value="1000000" aria-label="Buget maxim">
       </div>
       <button class="btn btn-primary" id="btnCauta" type="button" style="height:48px" data-ro="Caută" data-en="Search">Caută</button>
     </div>
@@ -634,10 +649,16 @@ footer a:hover{color:#fff}
     <div class="head">
       <div>
         <p class="kicker rule">Comision 0%</p>
-        <h2 class="display" style="max-width:22ch" data-ro="Trei proprietăți la care cumpărătorul nu plătește comision." data-en="Three properties where the buyer pays no fee.">Trei proprietăți la care cumpărătorul nu plătește comision.</h2>
+        <!-- Written by JS from the data, both languages. It used to say "trei"
+             while one listing carried the badge; a hand-typed count drifts the
+             moment the portfolio does. -->
+        <h2 class="display" style="max-width:22ch" id="c0head"></h2>
       </div>
-      <a class="btn btn-amber" href="#proprietati" data-ro="Vezi cele trei oferte" data-en="See all three">Vezi cele trei oferte</a>
+      <p class="muted" style="font-size:14px;max-width:34ch" data-ro="Comisionul îl plătește proprietarul. Pentru aceste oferte, dumneavoastră nu plătiți nimic agenției." data-en="The owner pays the fee. On these listings you pay the agency nothing.">Comisionul îl plătește proprietarul. Pentru aceste oferte, dumneavoastră nu plătiți nimic agenției.</p>
     </div>
+    <!-- The offers themselves, rather than a button pointing at a grid that is
+         filtered to one transaction type and may not contain all of them. -->
+    <div class="grid" id="c0grid"></div>
   </div>
 </section>
 
@@ -807,6 +828,13 @@ const IMG='https://www.the-house.ro/files/images/';
 const TIPL={apartament:'Apartament',casa:'Casă / vilă',teren:'Teren',industrial:'Spațiu industrial'};
 
 const L=[
+ /* Proprietatea săptămânii — see WEEK further down. */
+ {id:'HOUSE853',t:'Vilă de vis în zona Ghirodei',z:'Ghirodei',tx:'vanzare',tip:'casa',
+  cam:8,mp:402,mpT:1980,et:'P+1E',an:2017,pret:1000000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,epc:'A',
+  ph:['06075954img_1000.jpg'],
+  d:'Vilă din 2017 pe un teren de 1.980 mp, într-o zonă foarte liniștită. Se vinde complet mobilată și utilată. La parter: zona de zi cu ieșire pe terasă, bucătărie, home cinema, cameră de joacă (convertibilă în birou), cameră tehnică și garaj dublu. La etaj: două dormitoare cu baie proprie, două dressinguri și, cu intrare separată, un dormitor de oaspeți.',
+  hi:['Terasă cu deschidere la lac','3 dormitoare, fiecare cu baie proprie','Home cinema și cameră de joacă','Încălzire prin pardoseală și prin pereți','Carport pentru două mașini, plus garaj dublu','Teren de 1.980 mp, front 33 ml']},
+
  {id:'HOUSE935',t:'Proprietate de excepție — lux, confort și liniște',z:'Ghirodei',tx:'vanzare',tip:'casa',
   cam:6,mp:360,mpT:940,et:'D+P+1E',an:2003,pret:498000,neg:'negociabil',com:'2% din suma tranzacționată',c0:false,nou:true,epc:null,
   ph:['08075104img_8167.jpg','08075001img_8160.jpg','08075021img_8165.jpg','08075038img_8166.jpg','08075135img_8169.jpg'],
@@ -859,7 +887,23 @@ const L=[
   cam:0,mp:4200,mpT:0,et:'P+1',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
   ph:['17094224img_0186.jpg'],
   d:'Hală de producție pe Calea Buziașului, dispusă pe două niveluri, cu 2.355 mp destinați producției la parter.',
-  hi:['4.200 mp în total','2.355 mp de producție la parter','Acces direct din Calea Buziașului']}
+  hi:['4.200 mp în total','2.355 mp de producție la parter','Acces direct din Calea Buziașului']},
+
+ /* The other two zero-commission offers. the-house.ro's own comision-0 category
+    says "Sunt 3 oferte imobiliare active" and lists these alongside HOUSE920 —
+    the page claimed three and showed one until they were carried over. */
+ {id:'HOUSE641',t:'Apartament de lux în regim hotelier',z:'Exterior Nord',tx:'inchiriere',tip:'apartament',
+  cam:2,mp:72,mpT:0,et:'Etaj 3',an:2013,pret:105,per:'zi',neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:false,epc:null,
+  ph:['31131740dsc_2929.jpg'],
+  d:'Apartament de lux închiriat în regim hotelier, într-un imobil din 2013. Zonă de zi, dormitor și baie cu jacuzzi, plus terasă exterioară. În preț sunt incluse toate serviciile hoteliere și micul dejun pentru două persoane.',
+  hi:['Baie cu jacuzzi','Terasă exterioară','Servicii hoteliere și mic dejun incluse','Încălzire prin pardoseală și ventiloconvectoare','Trei locuri de parcare']},
+
+ {id:'HOUSE945',t:'Apartament lângă parcul Bucovina',z:'Torontalului',tx:'inchiriere',tip:'apartament',
+  cam:3,mp:71,mpT:0,et:'Parter înalt',an:0,pret:390,neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:true,epc:'B',
+  /* The source leaves the description field empty ("Nu au fost date detalii"),
+     so this is assembled strictly from its spec table — nothing invented. */
+  d:'Apartament de trei camere la parter înalt, lângă parcul Bucovina. Decomandat, 71 mp utili, două băi, centrală termică proprie și tâmplărie PVC.',
+  hi:['3 camere decomandate, 71 mp utili','Două băi','Centrală termică proprie pe gaz','Parchet masiv și tâmplărie PVC','Garanție: contravaloarea unei luni; contract minim 1 an']}
 ];
 
 
@@ -875,6 +919,7 @@ const L=[
    real data, but a high view count on an unsold property reads as staleness,
    not popularity. ── */
 const SPEC={
+ HOUSE853:{g:[["Caracteristici",[["An construcție","2017"],["Regim de înălțime","P+1E"],["Suprafață teren","1980 mp"],["Suprafață construită","521 mp"],["Suprafață utilă","402 mp"],["Fronturi","1"],["Front stradal","33 ml"],["Camere","8"],["Dormitoare","3"],["Birouri","1"],["Bucătării","1"],["Băi","5"],["Terase","2"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","2"],["Locuri de parcare","5"],["Zidărie","Ytong"],["Izolație","exterior"],["Clasă energetică","A"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","aluminiu"],["Încălzire prin pardoseală",1],["Încălzire prin pereți",1]]],["Finisaje",[["Tâmplărie","aluminiu"],["Pereți","vopsea lavabilă, faianță"],["Podele","gresie, mochetă, parchet triplu stratificat"],["Uși de interior","lemn"],["Uși de exterior","metal"]]],["Spații utile",[["Dependințe",1],["Dressing",1],["Anexe",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Teren de sport",1],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Videointerfon",1],["Alarmă cu senzori",1],["Camere video zi / noapte",1],["Telecomandă garaj / curte",1],["Seif",1]]]],ph:["06075954img_1000.jpg","06075840img_0943.jpg","06080050img_0973.jpg","06075817img_0952.jpg","06075905img_0991.jpg","06075921img_0990.jpg","06080017img_0964.jpg","06080116img_1024.jpg","06080139img_1015.jpg","06080243img_1043.jpg","06080337img_1058.jpg","06080401img_1068.jpg","06080420img_1078.jpg","06080454img_1102.jpg","06080547img_1105.jpg","06080516img_1115.jpg","06080614img_1085.jpg","06080721img_1148.jpg","06080634img_1150.jpg","06080657img_1160.jpg","06075753img_1195.jpg"]},
  HOUSE935:{g:[["Caracteristici",[["An construcție","2003"],["Regim de înălțime","D+P+1E"],["Suprafață teren","940 mp"],["Suprafață construită","480 mp"],["Suprafață utilă","360 mp"],["Fronturi","1"],["Front stradal","20 ml"],["Camere","6"],["Dormitoare","4"],["Birouri","1"],["Bucătării","1"],["Băi","3"],["Terase","1"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Locuri de parcare","2"],["Izolație","nu necesită"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Curent","monofazic"],["Telefon",1],["Internet",1],["Climatizare","ventiloconvectoare"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Demisol",1],["Dressing",1],["Debara",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Scară interioară",1]]],["Securizare",[["Telecomandă garaj / curte",1]]]],ph:["08075104img_8167.jpg","08075001img_8160.jpg","08075021img_8165.jpg","08075038img_8166.jpg","08075135img_8169.jpg","08075204img_8186.jpg","08074940img_8187.jpg","08075235img_8183.jpg","08075306img_8190.jpg","08075352img_8193.jpg","08075417img_8196.jpg","08075329img_8192.jpg","08075440img_8199.jpg","08075509img_8202.jpg","08075529img_8203.jpg","08075548img_8205.jpg","08075617img_8210.jpg","08075639img_8212.jpg"]},
  HOUSE872:{g:[["Caracteristici",[["An construcție","2005, renovată 2017"],["Regim de înălțime","P+M"],["Suprafață teren","705 mp"],["Suprafață utilă","254 mp"],["Fronturi","1"],["Front stradal","14 ml"],["Camere","5"],["Dormitoare","4"],["Bucătării","1"],["Băi","4"],["Terase","2"],["Compartimentare","decomandat"],["Confort","1"],["Garaje","3"],["Locuri de parcare","5"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie, parchet dublu stratificat"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1],["Anexe",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Piscină","exterioară"],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Alarmă cu senzori",1],["Camere video zi / noapte",1],["Telecomandă garaj / curte",1]]]],ph:["03082649img_2861.jpg","03082706img_2864.jpg","03082617img_2871.jpg","03082732img_2876.jpg","03082810img_2881.jpg","03082835img_2892.jpg","03082923img_2900.jpg","03082947img_2902.jpg","03083008img_2891.jpg","03083029img_2882.jpg","03083055img_2903.jpg","03083124img_2932.jpg","03083200img_2938.jpg","03083216img_2917.jpg","03083239img_2922.jpg","05140429plancasa.jpg"]},
  HOUSE920:{g:[["Caracteristici",[["An construcție","2012"],["Regim de înălțime","D+P+3+M"],["Etaj","3+M"],["Suprafață construită","290 mp"],["Suprafață utilă","198 mp"],["Mențiuni suprafață","exactă, înscrisă în RLX"],["Camere","5"],["Dormitoare","3"],["Bucătării","1"],["Băi","4"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","A"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, marmură"],["Podele","parchet din esență rară, marmură"],["Uși de exterior","lemn"]]],["Spații utile",[["Boxă",1],["Demisol",1],["Dressing",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Telecomandă garaj / curte",1]]]],ph:["06112940img_7127.jpg","06112812img_7113.jpg","06112842img_7120.jpg","06112903img_7121.jpg","06112919img_7123.jpg","06112754img_7134.jpg","06113008img_7129.jpg","06113028img_7130.jpg","06113043img_7136.jpg","06113100img_7138.jpg","06113126img_7144.jpg","06113142img_7145.jpg","06113202img_7153.jpg","06113220img_7157.jpg","06113241img_7159.jpg","06113258img_7161.jpg","06113315rlv.jpg","06113325rlvetaj.jpg"]},
@@ -884,9 +929,12 @@ const SPEC={
  HOUSE941:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","D+P+1+M"],["Etaj","parter înalt"],["Suprafață utilă","53 mp"],["Camere","2"],["Dormitoare","1"],["Bucătării","1"],["Băi","1"],["Compartimentare","semidecomandat"],["Confort","1"],["Zidărie","cărămidă"],["Izolație","fără"]]],["Utilități, încălzire, climatizare",[["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Alte dotări",[["Curte",1]]],["Securizare",[["Camere video zi / noapte",1]]]],ph:["13133922img_8512.jpg","13133943img_8518.jpg","13134002img_8521.jpg","13134023img_8527.jpg","13134108img_8528.jpg","13134153img_8530.jpg","13134222img_8534.jpg","13134541img_8533.jpg","13134514img_8538.jpg"]},
  HOUSE841:{g:[["Caracteristici",[["An construcție","2009"],["Regim de înălțime","P+5E+Er"],["Etaj","3"],["Suprafață utilă","99, 42 mp"],["Mențiuni suprafață","exactă, conform RLV"],["Camere","3"],["Dormitoare","2"],["Bucătării","1"],["Băi","2"],["Balcoane","2"],["Compartimentare","decomandat"],["Confort","1"],["Locuri de parcare","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Alarmă cu senzori",1]]]],ph:["06122507img_9889.jpg","06122814img_9892.jpg","06122430img_9915.jpg","06122550img_9887.jpg","06122855img_9901.jpg","06122942img_9910.jpg","06123115img_9916.jpg","06123220img_9908.jpg","06123305img_9911.jpg","06123507img_9921.jpg","06123546img_9926.jpg","06123702img_9930.jpg","06123821img_9938.jpg"]},
  HOUSE636:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Suprafață utilă","4200 mp"],["Băi","4"],["Zidărie","BCA"],["Structură de rezistență","beton"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Centrală termică","a imobilului, pe gaz"]]],["Finisaje",[["Uși de exterior","lemn"]]],["Alte dotări",[["Lift",1]]]],ph:["17094224img_0186.jpg","17094233img_0187.jpg","17094239img_0182.jpg","17094250img_0190.jpg","17094259img_0194.jpg","17094307img_0195.jpg","17094315img_0198.jpg","17094332img_0210.jpg","17094344img_0212.jpg","17094357img_0220.jpg","17094406img_0216.jpg"]},
+ HOUSE641:{g:[["Caracteristici",[["An construcție","2013"],["Regim de înălțime","P+3E"],["Etaj","3"],["Suprafață utilă","72 mp"],["Camere","2"],["Dormitoare","1"],["Băi","1"],["Terase","1"],["Compartimentare","decomandat"],["Confort","lux"],["Locuri de parcare","3"],["Zidărie","cărămidă"],["Izolație","exterior"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","a imobilului, pe gaz"],["Climatizare","ventiloconvectoare"],["Calorifere","aluminiu"],["Încălzire prin pardoseală",1]]],["Finisaje",[["Tâmplărie","aluminiu"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","gresie, mochetă"],["Uși de interior","sticlă"],["Uși de exterior","metal"]]],["Alte dotări",[["Curte",1]]],["Securizare",[["Camere video zi / noapte",1],["Seif",1]]]],ph:["31131740dsc_2929.jpg","31131800img_0244.jpg","31131818img_0246.jpg","31131834img_0253.jpg","31131911img_0260.jpg","31131934img_0265.jpg","31132010img_0272.jpg","31132028img_0275.jpg","31132049img_0280.jpg"]},
+ HOUSE945:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","P+4E"],["Etaj","parter înalt"],["Suprafață utilă","71 mp"],["Camere","3"],["Dormitoare","2"],["Bucătării","1"],["Băi","2"],["Compartimentare","decomandat"],["Confort","1"],["Zidărie","cărămidă"],["Izolație","fără"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]]],ph:["20184641img_9646.jpg","20184703img_9558111.jpg","20184715img_96051111.jpg","20184734img_9582.jpg","20184807img_9592.jpg","20184828img_9574.jpg","20184840img_9599.jpg","20184852img_9602.jpg","20184925img_9628.jpg","20184945img_9630.jpg","20185012img_9644.jpg","20185027img_9647.jpg","20185039img_9652.jpg","20185104img_9637111.jpg","20185119img_9633.jpg"]},
 };
 
 const ZONA={
+ HOUSE853:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
  HOUSE935:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
  HOUSE872:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
  HOUSE920:{z:[["Transport","autobuz"],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
@@ -896,6 +944,8 @@ const ZONA={
  HOUSE941:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil"},
  HOUSE841:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Instituții administrative",1],["Farmacii",1],["Piețe",1],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
  HOUSE636:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+ HOUSE641:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Supermarket","Kaufland Dumbrăvița, Auchan"],["Farmacii",1],["Piețe",1],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere",av:"La cerere"},
+ HOUSE945:{z:[],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
 };
 
 /* The gallery on each card stays the first photo; the drawer gets the lot. */
@@ -905,8 +955,10 @@ const isPlan=f=>/plan|rlv/i.test(f);
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const fmt=n=>n.toLocaleString('ro-RO');
-const S={tx:'vanzare',zona:'toate',tip:'toate',cam:'',pret:600000};
-const MAXP={vanzare:600000,inchiriere:5000},MINP={vanzare:50000,inchiriere:200},STEP={vanzare:10000,inchiriere:50};
+const MAXP={vanzare:1000000,inchiriere:5000},MINP={vanzare:50000,inchiriere:200},STEP={vanzare:25000,inchiriere:50};
+/* Seeded from MAXP so the slider's ceiling and the filter's ceiling cannot
+   disagree — they did, and the top listing silently vanished from the grid. */
+const S={tx:'vanzare',zona:'toate',tip:'toate',cam:'',pret:MAXP.vanzare};
 
 /* Logo travels as a data URI: zero extra requests, and it survives even
    if the-house.ro is unreachable. */
@@ -917,9 +969,12 @@ $('#yr').textContent=new Date().getFullYear();
 /* ── €/m² — computed, not authored. Only meaningful for sales with a
       published price and a usable area. ── */
 const ppm=l=>(l.tx==='vanzare'&&l.pret&&l.mp)?Math.round(l.pret/l.mp):null;
+/* `per` overrides the monthly default — HOUSE641 is let in regim hotelier and
+   is quoted per night, so printing "/lună" would be off by a factor of thirty. */
+const per=l=>l.tx==='inchiriere'?(l.per||'lună'):null;
 const priceHTML=l=>l.pret===null
   ?`<span class="muted" style="font-size:16px">Preț la cerere</span>`
-  :`<span class="price">${fmt(l.pret)} €${l.tx==='inchiriere'?'<span class="muted" style="font-size:13px;font-weight:400">/lună</span>':''}</span>`;
+  :`<span class="price">${fmt(l.pret)} €${per(l)?`<span class="muted" style="font-size:13px;font-weight:400">/${per(l)}</span>`:''}</span>`;
 
 function card(l){
   const p=ppm(l), b=document.createElement('button');
@@ -971,6 +1026,38 @@ $$('.zonechip').forEach(c=>c.addEventListener('click',()=>{
   S.zona=c.dataset.z; $('#fZona').value=c.dataset.z; apply();
   $('#proprietati').scrollIntoView({behavior:'smooth'});
 }));
+
+/* ── Proprietatea săptămânii ──────────────────────────────────────────
+   One id, one place. The hero photo above is the same listing's lead shot,
+   and the card opens the same drawer as any grid card — so the most
+   prominent property on the page is no longer the only one you can't open. */
+const WEEK='HOUSE853';
+const week=L.find(l=>l.id===WEEK);
+if(week){
+  const p=ppm(week);
+  $('#weekCard').innerHTML=`
+    <span class="kicker" data-ro="Proprietatea săptămânii" data-en="Property of the week">Proprietatea săptămânii</span>
+    <span style="display:block;font:400 19px/1.3 var(--serif);margin-top:9px">${week.t}</span>
+    <span class="muted" style="display:block;font-size:12.5px;margin-top:5px">${fmt(week.mp)} mp utili${week.mpT?` · teren ${fmt(week.mpT)} mp`:''}</span>
+    <span class="wk">${priceHTML(week)}<span class="muted" style="font-size:11px">${week.id}</span></span>
+    ${p?`<span class="ppm" style="display:block">${fmt(p)} €/mp</span>`:''}
+    <span class="go"><span data-ro="Vezi detaliile" data-en="See the details">Vezi detaliile</span><em aria-hidden="true">→</em></span>`;
+  $('#weekCard').setAttribute('aria-label',`Proprietatea săptămânii: ${week.t}. Vezi detaliile.`);
+  $('#weekCard').addEventListener('click',()=>openDrawer(week));
+}
+
+/* ── Comision 0% ──────────────────────────────────────────────────────
+   Heading and grid both derived, so the claim and the badges cannot drift
+   apart again. The three offers span both transaction types, which is why
+   they are shown here rather than as a filter over the main grid. */
+const c0=L.filter(l=>l.c0);
+const WORD={ro:['','O','Două','Trei','Patru','Cinci'],en:['','One','Two','Three','Four','Five']};
+const c0h=$('#c0head'), n0=c0.length;
+c0h.dataset.ro=`${WORD.ro[n0]||n0} propriet${n0===1?'ate':'ăți'} la care nu plătiți comision.`;
+c0h.dataset.en=`${WORD.en[n0]||n0} propert${n0===1?'y':'ies'} where you pay no fee.`;
+c0h.textContent=c0h.dataset.ro;
+$('#c0n').textContent=n0;
+$('#c0grid').replaceChildren(...c0.map(card));
 
 $('#fZona').addEventListener('change',e=>{S.zona=e.target.value;apply()});
 $('#fTip').addEventListener('change',e=>{S.tip=e.target.value;apply()});
@@ -1078,7 +1165,7 @@ function openDrawer(l){
       <div class="sgroup">
         <h3>Preț și comision</h3>
         <div class="sgrid">
-          <div class="srow"><span class="muted">Preț</span><b>${l.pret===null?'la cerere':fmt(l.pret)+' €'}</b></div>
+          <div class="srow"><span class="muted">Preț</span><b>${l.pret===null?'la cerere':fmt(l.pret)+' €'+(per(l)?'/'+per(l):'')}</b></div>
           ${l.neg?`<div class="srow"><span class="muted">Negociere</span><b>${l.neg}</b></div>`:''}
           ${p?`<div class="srow"><span class="muted">Preț pe mp</span><b>${fmt(p)} €/mp</b></div>`:''}
           <div class="srow"><span class="muted">Comision</span><b>${l.com}</b></div>
