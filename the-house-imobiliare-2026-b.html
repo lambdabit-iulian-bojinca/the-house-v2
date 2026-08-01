@@ -198,8 +198,9 @@ nav.main{display:none;gap:30px;margin-left:8px}
 /* macOS/iOS "Reduce transparency", and the Windows equivalent. Honouring
    this is what separates glass-as-taste from glass-as-accessibility-bug. */
 @media(prefers-reduced-transparency:reduce){
-  .glass,header{background:var(--paper)!important;
+  .glass,header,.dhead,.galnav{background:var(--paper)!important;
     backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .galnav{border:1px solid var(--stone)}
 }
 /* Secondary greys are demoted *up* to a passing colour inside glass. */
 .glass .muted,.glass .kicker,.glass .ppm{color:var(--brand-deep)}
@@ -422,7 +423,50 @@ footer a:hover{color:#fff}
 .thumbs img{width:78px;height:57px;object-fit:cover;border-radius:7px;cursor:pointer;opacity:.6;flex:0 0 auto;transition:.25s}
 .thumbs img.on,.thumbs img:hover{opacity:1}
 .thumbs img.on{outline:2px solid var(--brand);outline-offset:2px}
+.thumbs button{border:0;background:0;padding:0;position:relative;flex:0 0 auto;cursor:pointer;line-height:0}
+.thumbs .planbadge{position:absolute;left:4px;bottom:4px;background:var(--brand);color:#fff;
+  font:600 9px/1 Inter,sans-serif;letter-spacing:.08em;padding:3px 5px;border-radius:3px}
 .noscroll{overflow:hidden}
+
+/* ── Gallery ── */
+.gal{position:relative}
+/* Photos crop; floor plans must not — a cropped plan is worthless. */
+.gal .stage{position:relative;overflow:hidden;border-radius:var(--radius);
+  aspect-ratio:16/10;background:var(--brand-deep)}
+.gal .stage img{width:100%;height:100%;object-fit:cover}
+.gal .stage img.plan{object-fit:contain;background:var(--paper)}
+.galnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+  border:0;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.86);
+  color:var(--ink);box-shadow:0 6px 18px -8px rgba(23,36,43,.6)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .galnav{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+}
+.galnav:hover{background:#fff}
+.galnav.prev{left:12px} .galnav.next{right:12px}
+/* Counter sits on its own solid chip rather than over the photo, so it has a
+   fixed contrast ratio instead of one that depends on the image behind it. */
+.galcount{position:absolute;right:12px;bottom:12px;background:var(--brand-deep);color:#fff;
+  font:500 12px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;padding:7px 11px;border-radius:999px}
+/* Same reasoning as .galcount — opaque, not a translucent chip over the photo. */
+.phcount{position:absolute;right:10px;bottom:10px;background:var(--brand-deep);color:#fff;
+  font:500 11px/1 Inter,sans-serif;padding:6px 9px;border-radius:999px}
+
+/* ── Spec groups ── */
+.sgroup{margin-top:26px}
+.sgroup h3{font:400 19px/1.3 var(--serif);padding-bottom:10px;border-bottom:2px solid var(--brand)}
+@media(min-width:560px){.sgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}}
+.sgrid .srow{font-size:14px}
+.sgrid .srow b{text-align:right}
+.tick{color:var(--brand);font-weight:600}
+
+/* ── Availability strip ── */
+.avail{display:grid;gap:2px;background:var(--stone);border:1px solid var(--stone);
+  border-radius:var(--radius);overflow:hidden;margin-top:20px}
+@media(min-width:560px){.avail{grid-template-columns:1fr 1fr}}
+.avail div{background:var(--brand-tint);padding:14px 16px}
+.avail span{display:block;font:500 10.5px/1 Inter,sans-serif;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:6px}
+.avail b{font-weight:500;font-size:14.5px}
 
 .rise{opacity:0;transform:translateY(20px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
 .rise.in{opacity:1;transform:none}
@@ -818,6 +862,47 @@ const L=[
   hi:['4.200 mp în total','2.355 mp de producție la parter','Acces direct din Calea Buziașului']}
 ];
 
+
+/* ── Full listing spec, lifted off the-house.ro's detail pages ──────────
+   The source buries all of this behind six tab panels plus a thumbnail
+   slider — 272 rows and 121 photos across the nine listings, none of it
+   visible without clicking, none of it in the initial DOM order that a
+   screen reader or Ctrl+F would follow. We keep the source's own grouping
+   (its vocabulary is domain-accurate) but render every group open. Labels
+   and values are re-set in diacritic-correct Romanian; the source has none.
+
+   Deliberately NOT carried over: the "Numar de afisari" view counter. It is
+   real data, but a high view count on an unsold property reads as staleness,
+   not popularity. ── */
+const SPEC={
+ HOUSE935:{g:[["Caracteristici",[["An construcție","2003"],["Regim de înălțime","D+P+1E"],["Suprafață teren","940 mp"],["Suprafață construită","480 mp"],["Suprafață utilă","360 mp"],["Fronturi","1"],["Front stradal","20 ml"],["Camere","6"],["Dormitoare","4"],["Birouri","1"],["Bucătării","1"],["Băi","3"],["Terase","1"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Locuri de parcare","2"],["Izolație","nu necesită"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Curent","monofazic"],["Telefon",1],["Internet",1],["Climatizare","ventiloconvectoare"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Demisol",1],["Dressing",1],["Debara",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Scară interioară",1]]],["Securizare",[["Telecomandă garaj / curte",1]]]],ph:["08075104img_8167.jpg","08075001img_8160.jpg","08075021img_8165.jpg","08075038img_8166.jpg","08075135img_8169.jpg","08075204img_8186.jpg","08074940img_8187.jpg","08075235img_8183.jpg","08075306img_8190.jpg","08075352img_8193.jpg","08075417img_8196.jpg","08075329img_8192.jpg","08075440img_8199.jpg","08075509img_8202.jpg","08075529img_8203.jpg","08075548img_8205.jpg","08075617img_8210.jpg","08075639img_8212.jpg"]},
+ HOUSE872:{g:[["Caracteristici",[["An construcție","2005, renovată 2017"],["Regim de înălțime","P+M"],["Suprafață teren","705 mp"],["Suprafață utilă","254 mp"],["Fronturi","1"],["Front stradal","14 ml"],["Camere","5"],["Dormitoare","4"],["Bucătării","1"],["Băi","4"],["Terase","2"],["Compartimentare","decomandat"],["Confort","1"],["Garaje","3"],["Locuri de parcare","5"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie, parchet dublu stratificat"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1],["Anexe",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Piscină","exterioară"],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Alarmă cu senzori",1],["Camere video zi / noapte",1],["Telecomandă garaj / curte",1]]]],ph:["03082649img_2861.jpg","03082706img_2864.jpg","03082617img_2871.jpg","03082732img_2876.jpg","03082810img_2881.jpg","03082835img_2892.jpg","03082923img_2900.jpg","03082947img_2902.jpg","03083008img_2891.jpg","03083029img_2882.jpg","03083055img_2903.jpg","03083124img_2932.jpg","03083200img_2938.jpg","03083216img_2917.jpg","03083239img_2922.jpg","05140429plancasa.jpg"]},
+ HOUSE920:{g:[["Caracteristici",[["An construcție","2012"],["Regim de înălțime","D+P+3+M"],["Etaj","3+M"],["Suprafață construită","290 mp"],["Suprafață utilă","198 mp"],["Mențiuni suprafață","exactă, înscrisă în RLX"],["Camere","5"],["Dormitoare","3"],["Bucătării","1"],["Băi","4"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","A"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, marmură"],["Podele","parchet din esență rară, marmură"],["Uși de exterior","lemn"]]],["Spații utile",[["Boxă",1],["Demisol",1],["Dressing",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Telecomandă garaj / curte",1]]]],ph:["06112940img_7127.jpg","06112812img_7113.jpg","06112842img_7120.jpg","06112903img_7121.jpg","06112919img_7123.jpg","06112754img_7134.jpg","06113008img_7129.jpg","06113028img_7130.jpg","06113043img_7136.jpg","06113100img_7138.jpg","06113126img_7144.jpg","06113142img_7145.jpg","06113202img_7153.jpg","06113220img_7157.jpg","06113241img_7159.jpg","06113258img_7161.jpg","06113315rlv.jpg","06113325rlvetaj.jpg"]},
+ HOUSE324:{g:[["Caracteristici",[["An construcție","2007"],["Regim de înălțime","P+1E"],["Suprafață teren","800 mp"],["Suprafață grădină","600 mp"],["Suprafață construită","492 mp"],["Suprafață utilă","410 mp"],["Fronturi","1"],["Front stradal","17 ml"],["Camere","6"],["Dormitoare","3"],["Birouri","1"],["Bucătării","1"],["Băi","3"],["Terase","2"],["Balcoane","1"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Locuri de parcare","2"],["Zidărie","cărămidă"],["Izolație","exterior"],["Structură de rezistență","beton"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","PVC"]]],["Spații utile",[["Dressing",1],["Debara",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Interfon",1],["Alarmă cu senzori",1]]]],ph:["13101211img_6483.jpg","13101242img_6473.jpg","13101312img_6475.jpg","13101330img_0033.jpg","13101345img_0032.jpg","13101423img_6471.jpg","13101520img_6479.jpg","13101541img_6484.jpg","13101609img_6484.jpg","13101647img_6486.jpg","13101720img_0086.jpg","13101739img_0074.jpg","13101801img_0093.jpg","13101824img_0101.jpg","13101846img_0110.jpg","13101909img_0105.jpg","13101932img_0121.jpg"]},
+ HOUSE612:{g:[["Caracteristici",[["Suprafață teren","14300 mp"],["Construcție pe teren","nu"],["Fronturi","1"],["Front stradal","101.72 ml"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Curent","monofazic"]]],["Alte dotări",[["Acces auto",1],["La stradă",1]]]],ph:["25085852terenaeroport14300mp2.jpg","25085903terenaeroport14300mp.jpg","25085910terenaeroport14300mp3.jpg"]},
+ HOUSE948:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","P+2E+M"],["Etaj","mansardă"],["Suprafață utilă","72 mp"],["Camere","3"],["Dormitoare","1"],["Bucătării","1"],["Băi","2"],["Compartimentare","decomandat"]]],["Utilități, încălzire, climatizare",[["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Apă","la rețea"],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, granit"],["Rulouri / obloane","lemn"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Alte dotări",[["Scară interioară",1]]]],ph:["07113210img_9933.jpg","07113156img_9928.jpg","07113222img_9950.jpg","07113234img_9972.jpg","07113257img_9912.jpg","07113313img_9946.jpg","07113345img_9938.jpg","07113358img_9940.jpg","07113411img_9942.jpg","07113446img_9910.jpg","07113506img_9981.jpg","07113520img_9983.jpg","07113538img_9995.jpg","07113601img_9984.jpg","07113824img_9995.jpg","07113838img_9992.jpg"]},
+ HOUSE941:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","D+P+1+M"],["Etaj","parter înalt"],["Suprafață utilă","53 mp"],["Camere","2"],["Dormitoare","1"],["Bucătării","1"],["Băi","1"],["Compartimentare","semidecomandat"],["Confort","1"],["Zidărie","cărămidă"],["Izolație","fără"]]],["Utilități, încălzire, climatizare",[["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Alte dotări",[["Curte",1]]],["Securizare",[["Camere video zi / noapte",1]]]],ph:["13133922img_8512.jpg","13133943img_8518.jpg","13134002img_8521.jpg","13134023img_8527.jpg","13134108img_8528.jpg","13134153img_8530.jpg","13134222img_8534.jpg","13134541img_8533.jpg","13134514img_8538.jpg"]},
+ HOUSE841:{g:[["Caracteristici",[["An construcție","2009"],["Regim de înălțime","P+5E+Er"],["Etaj","3"],["Suprafață utilă","99, 42 mp"],["Mențiuni suprafață","exactă, conform RLV"],["Camere","3"],["Dormitoare","2"],["Bucătării","1"],["Băi","2"],["Balcoane","2"],["Compartimentare","decomandat"],["Confort","1"],["Locuri de parcare","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Alarmă cu senzori",1]]]],ph:["06122507img_9889.jpg","06122814img_9892.jpg","06122430img_9915.jpg","06122550img_9887.jpg","06122855img_9901.jpg","06122942img_9910.jpg","06123115img_9916.jpg","06123220img_9908.jpg","06123305img_9911.jpg","06123507img_9921.jpg","06123546img_9926.jpg","06123702img_9930.jpg","06123821img_9938.jpg"]},
+ HOUSE636:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Suprafață utilă","4200 mp"],["Băi","4"],["Zidărie","BCA"],["Structură de rezistență","beton"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Centrală termică","a imobilului, pe gaz"]]],["Finisaje",[["Uși de exterior","lemn"]]],["Alte dotări",[["Lift",1]]]],ph:["17094224img_0186.jpg","17094233img_0187.jpg","17094239img_0182.jpg","17094250img_0190.jpg","17094259img_0194.jpg","17094307img_0195.jpg","17094315img_0198.jpg","17094332img_0210.jpg","17094344img_0212.jpg","17094357img_0220.jpg","17094406img_0216.jpg"]},
+};
+
+const ZONA={
+ HOUSE935:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+ HOUSE872:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
+ HOUSE920:{z:[["Transport","autobuz"],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
+ HOUSE324:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Nivel de zgomot","mediu"]],ud:"Cu programare prealabilă",av:"La cerere"},
+ HOUSE612:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1]],ud:null,av:"Disponibil imediat"},
+ HOUSE948:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Instituții administrative",1],["Farmacii",1],["Piețe",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
+ HOUSE941:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil"},
+ HOUSE841:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Instituții administrative",1],["Farmacii",1],["Piețe",1],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
+ HOUSE636:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+};
+
+/* The gallery on each card stays the first photo; the drawer gets the lot. */
+L.forEach(l=>{ if(SPEC[l.id]) l.ph=SPEC[l.id].ph; });
+/* Floor plans must never be cropped, so they are detected and shown contained. */
+const isPlan=f=>/plan|rlv/i.test(f);
+
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const fmt=n=>n.toLocaleString('ro-RO');
 const S={tx:'vanzare',zona:'toate',tip:'toate',cam:'',pret:600000};
@@ -845,6 +930,7 @@ function card(l){
       <img src="${IMG}${l.ph[0]}" alt="${l.t}, ${l.z}, Timișoara" loading="lazy" decoding="async"
            referrerpolicy="no-referrer" width="640" height="440" onerror="this.style.opacity=0">
       ${l.c0?`<span class="badge">Comision 0%</span>`:l.nou?`<span class="badge plain">Nou</span>`:''}
+      ${l.ph.length>1?`<span class="phcount">${l.ph.length} foto</span>`:''}
     </div>
     <div class="cbody">
       <p style="font:400 19px/1.35 var(--serif)">${l.t}</p>
@@ -908,38 +994,99 @@ $$('.tabs button').forEach(t=>t.addEventListener('click',()=>{
 
 /* ── Drawer: the split-panel listing pattern — gallery left, sticky
       facts and contact right on wide screens. ── */
-let lastFocus=null;
+let lastFocus=null, cur=null, gi=0;
+
+/* Gallery. The source site paginates 16-18 photos behind a thumbnail slider
+   whose arrows move the *thumbnails*, not the photo — so reaching the last
+   shot takes several clicks with no indication of how many remain. Here the
+   count is stated up front and every thumbnail is one click away. */
+function galleryHTML(l){
+  const n=l.ph.length;
+  return `
+    <div class="gal">
+      <div class="stage">
+        <img id="dMain" src="${IMG}${l.ph[0]}" class="${isPlan(l.ph[0])?'plan':''}"
+             alt="${l.t} — fotografia 1 din ${n}" referrerpolicy="no-referrer">
+      </div>
+      ${n>1?`
+        <button class="galnav prev" type="button" aria-label="Fotografia anterioară">‹</button>
+        <button class="galnav next" type="button" aria-label="Fotografia următoare">›</button>
+        <p class="galcount"><span id="dIdx">1</span> / ${n}</p>`:''}
+    </div>
+    ${n>1?`<div class="thumbs" style="margin-top:12px">${l.ph.map((p,i)=>
+      `<button type="button" data-i="${i}" aria-label="Fotografia ${i+1} din ${n}${isPlan(p)?', plan':''}">
+         <img src="${IMG}${p}" alt="" class="${i?'':'on'}" loading="lazy" referrerpolicy="no-referrer">
+         ${isPlan(p)?'<span class="planbadge">PLAN</span>':''}
+       </button>`).join('')}</div>`:''}
+    <p class="muted" style="font-size:12.5px;margin-top:10px" aria-live="polite" id="dCap"></p>`;
+}
+function showPhoto(i){
+  const ph=cur.ph; gi=(i+ph.length)%ph.length;
+  const m=$('#dMain'), plan=isPlan(ph[gi]);
+  m.src=IMG+ph[gi];
+  m.classList.toggle('plan',plan);
+  m.alt=`${cur.t} — fotografia ${gi+1} din ${ph.length}`;
+  const idx=$('#dIdx'); if(idx)idx.textContent=gi+1;
+  $('#dCap').textContent=plan?'Plan al locuinței':'';
+  const btns=$$('#drawer .thumbs button');
+  btns.forEach((b,j)=>b.querySelector('img').classList.toggle('on',j===gi));
+  if(btns[gi])btns[gi].scrollIntoView({block:'nearest',inline:'nearest'});
+}
+
+/* Spec groups, rendered open. The source hides these behind six tabs; that was
+   a 2010 space constraint, not an editorial decision, and hiding them costs
+   Ctrl+F, screen-reader reading order and the ability to compare two listings
+   without clicking through both. Quantity of *detail* is not the thing the
+   motto is against. */
+const val=v=>v===1?'Da':v;
+function specHTML(id){
+  const s=SPEC[id]; if(!s)return'';
+  return s.g.map(([name,items])=>`
+    <div class="sgroup">
+      <h3>${name}</h3>
+      <div class="sgrid">${items.map(([k,v])=>
+        `<div class="srow"><span class="muted">${k}</span><b>${val(v)}</b></div>`).join('')}</div>
+    </div>`).join('');
+}
+function zonaHTML(id){
+  const z=ZONA[id]; if(!z||!z.z.length)return'';
+  return `<div class="sgroup"><h3>Zona</h3><div class="sgrid">${z.z.map(([k,v])=>
+    `<div class="srow"><span class="muted">${k}</span><b>${val(v)}</b></div>`).join('')}</div></div>`;
+}
+
 function openDrawer(l){
-  lastFocus=document.activeElement;
-  const p=ppm(l);
+  lastFocus=document.activeElement; cur=l; gi=0;
+  const p=ppm(l), z=ZONA[l.id]||{};
   $('#drawer').innerHTML=`
     <div class="dhead">
       <p class="kicker">${l.id}</p>
       <button class="btn btn-ghost btn-sm" id="dClose" type="button">Închide ✕</button>
     </div>
     <div style="padding:24px">
-      <div class="arch" style="aspect-ratio:16/10;border-radius:var(--radius)">
-        <img id="dMain" src="${IMG}${l.ph[0]}" alt="${l.t}" referrerpolicy="no-referrer">
-      </div>
-      ${l.ph.length>1?`<div class="thumbs" style="margin-top:12px">${l.ph.map((p,i)=>
-        `<img src="${IMG}${p}" alt="" class="${i?'':'on'}" data-i="${i}" referrerpolicy="no-referrer">`).join('')}</div>`:''}
+      ${galleryHTML(l)}
       <h2 id="dTitle" class="display" style="font-size:27px;margin-top:22px">${l.t}</h2>
       <p class="muted" style="margin-top:8px">${TIPL[l.tip]} · ${l.z}, Timișoara</p>
       <div style="display:flex;align-items:baseline;gap:14px;margin-top:18px">
         ${priceHTML(l)} ${p?`<span class="ppm">${fmt(p)} €/mp</span>`:''}
       </div>
-      <p style="margin-top:20px;line-height:1.8">${l.d}</p>
-      <div style="margin-top:24px">
-        ${l.cam?`<div class="srow"><span class="muted">Camere</span><b>${l.cam}</b></div>`:''}
-        <div class="srow"><span class="muted">Suprafață utilă</span><b>${fmt(l.mp)} mp</b></div>
-        ${l.mpT?`<div class="srow"><span class="muted">Teren</span><b>${fmt(l.mpT)} mp</b></div>`:''}
-        <div class="srow"><span class="muted">Regim de înălțime</span><b>${l.et}</b></div>
-        ${l.an?`<div class="srow"><span class="muted">An construcție</span><b>${l.an}</b></div>`:''}
-        ${l.epc?`<div class="srow"><span class="muted">Clasă energetică</span><b>${l.epc}</b></div>`:''}
-        <div class="srow"><span class="muted">Comision</span><b>${l.com}</b></div>
+      ${(z.av||z.ud)?`<div class="avail">
+        ${z.av?`<div><span>Disponibilitate</span><b>${z.av}</b></div>`:''}
+        ${z.ud?`<div><span>Vizionare</span><b>${z.ud}</b></div>`:''}
+      </div>`:''}
+      <p style="margin-top:22px;line-height:1.8">${l.d}</p>
+      <ul style="margin-top:20px;padding-left:18px;line-height:2">${l.hi.map(h=>`<li>${h}</li>`).join('')}</ul>
+      <div class="sgroup">
+        <h3>Preț și comision</h3>
+        <div class="sgrid">
+          <div class="srow"><span class="muted">Preț</span><b>${l.pret===null?'la cerere':fmt(l.pret)+' €'}</b></div>
+          ${l.neg?`<div class="srow"><span class="muted">Negociere</span><b>${l.neg}</b></div>`:''}
+          ${p?`<div class="srow"><span class="muted">Preț pe mp</span><b>${fmt(p)} €/mp</b></div>`:''}
+          <div class="srow"><span class="muted">Comision</span><b>${l.com}</b></div>
+        </div>
       </div>
-      <ul style="margin-top:22px;padding-left:18px;line-height:2">${l.hi.map(h=>`<li>${h}</li>`).join('')}</ul>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:26px">
+      ${specHTML(l.id)}
+      ${zonaHTML(l.id)}
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
         <a class="btn btn-primary" href="tel:+40735444408">Sună consultantul</a>
         <a class="wa" href="https://wa.me/40735444408?text=${encodeURIComponent('Bună ziua, sunt interesat de '+l.id+' — '+l.t)}" rel="noopener">
           WhatsApp despre ${l.id}</a>
@@ -948,12 +1095,14 @@ function openDrawer(l){
   const d=$('#drawer');
   d.classList.add('open'); d.setAttribute('aria-hidden','false');
   $('#scrim').classList.add('open'); document.body.classList.add('noscroll');
+  d.scrollTop=0;
   $('#dClose').focus();
   $('#dClose').addEventListener('click',closeDrawer);
-  $$('#drawer .thumbs img').forEach(t=>t.addEventListener('click',()=>{
-    $('#dMain').src=t.src;
-    $$('#drawer .thumbs img').forEach(x=>x.classList.toggle('on',x===t));
-  }));
+  const prev=d.querySelector('.galnav.prev'), next=d.querySelector('.galnav.next');
+  if(prev)prev.addEventListener('click',()=>showPhoto(gi-1));
+  if(next)next.addEventListener('click',()=>showPhoto(gi+1));
+  $$('#drawer .thumbs button').forEach(b=>
+    b.addEventListener('click',()=>showPhoto(+b.dataset.i)));
 }
 function closeDrawer(){
   const d=$('#drawer');
@@ -962,7 +1111,15 @@ function closeDrawer(){
   if(lastFocus)lastFocus.focus();
 }
 $('#scrim').addEventListener('click',closeDrawer);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#drawer').classList.contains('open'))closeDrawer()});
+document.addEventListener('keydown',e=>{
+  if(!$('#drawer').classList.contains('open'))return;
+  if(e.key==='Escape'){closeDrawer();return}
+  /* Arrows page the gallery, but not while the user is inside a form field. */
+  if(cur&&cur.ph.length>1&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){
+    if(e.key==='ArrowLeft'){e.preventDefault();showPhoto(gi-1)}
+    if(e.key==='ArrowRight'){e.preventDefault();showPhoto(gi+1)}
+  }
+});
 
 /* ── RO / EN layer. The research flags expat and investor buyers as an
       untapped segment; this is the shell for it. Listing prose stays
