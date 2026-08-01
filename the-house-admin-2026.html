@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panou de administrare — THE HOUSE Imobiliare</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Machetă de prezentare: panoul de administrare THE HOUSE, refăcut în identitatea vizuală 2026.">
+
+<!--
+  ══════════════════════════════════════════════════════════════════════
+  PANOU DE ADMINISTRARE — machetă de prezentare
+  ══════════════════════════════════════════════════════════════════════
+
+  Redesenarea ecranului „Imobiliare - inchirieri/vanzari" din CMS-ul actual
+  (the-house.ro/comand/main.php?cmd=realestate&subcmd=properties), în aceeași
+  identitate ca site-ul public: același teal #0F4C5A și chihlimbar #F9A51A,
+  aceleași fonturi, aceleași neutre calde.
+
+  Datele sunt REALE, citite din CMS-ul propriu în 02.08.2026: 48 de oferte
+  active, cu numărul lor de vizualizări, datele de publicare/actualizare,
+  numărul de fotografii și fotografia de copertă a fiecăreia. Nimic nu este
+  inventat — dacă macheta susține că portofoliul are probleme, problemele
+  trebuie să fie ale portofoliului, nu ale unei demonstrații aranjate.
+
+  Este o MACHETĂ: nu are back-end, nu salvează și nu șterge nimic. Butoanele
+  de acțiune sunt inerte; singurele linkuri reale sunt cele către paginile
+  publice ale ofertelor.
+
+  Ce s-a păstrat 1:1 din CMS-ul actual, ca să nu se piardă nimic din flux:
+  cele trei secțiuni (Imobiliare / Imagine start / Statistici mail-uri), cele
+  cinci sub-secțiuni, adăugarea pe categorii, filtrele, indicatorul „ofertă
+  specială" (prima pagină, fixată sau nefixată) și contorul de vizite.
+
+  Ce s-a schimbat, și de ce:
+  · fotografie de copertă în listă — CMS-ul actual afișează 48 de rânduri de
+    text de 11px fără nicio imagine; identificarea unei oferte cere citirea
+    codului;
+  · un panou „necesită atenție" calculat din date, nu bifat manual;
+  · sortare pe orice coloană și căutare instant, în loc de reîncărcarea
+    paginii;
+  · diacritice în toată interfața;
+  · pe telefon lista devine carduri — actualul tabel de 14 coloane nu poate
+    fi folosit de pe teren.
+
+  Filtrul „Categorie proprietate" din CMS-ul actual lipsește aici pentru că
+  ecranul-listă nu expune categoria fiecărei oferte; nu se putea reproduce
+  fără să fie inventată.
+  ══════════════════════════════════════════════════════════════════════
+-->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A363F'/%3E%3Cpath d='M10 25V15a6 6 0 0 1 12 0v10' fill='none' stroke='%23F9A51A' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* Identice cu site-ul public — un panou de administrare face parte din brand. */
+  --brand:#0F4C5A; --brand-deep:#0A363F; --brand-tint:#E8F0F2;
+  --amber:#F9A51A; --amber-ink:#8B5804;
+  --ink:#17242B; --ink-soft:#5C6B72;
+  --paper:#FFFFFF; --plaster:#F7F4EF; --stone:#E7E0D6;
+  /* Două culori de stare pe care vitrina nu le are nevoie, dar un panou de
+     lucru da. Ambele verificate pe alb: 5.6:1 și 5.5:1, deci AA la text normal. */
+  --ok:#1F6B4A;   --ok-tint:#E7F1EC;
+  --flag:#B4441F; --flag-tint:#FBEDE9;
+  --radius:14px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --serif:Fraunces,Georgia,'Times New Roman',serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;-webkit-font-smoothing:antialiased}
+body{background:var(--plaster);color:var(--ink);
+  font:400 15px/1.55 Inter,system-ui,-apple-system,sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+::selection{background:var(--brand);color:#fff}
+:focus-visible{outline:3px solid var(--amber-ink);outline-offset:2px;border-radius:3px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-soft)}
+.wrap{max-width:1540px;margin-inline:auto;padding-inline:22px}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--brand);
+  color:#fff;padding:14px 22px;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+/* ── Bara de identitate ─────────────────────────────────────────────────
+   Închisă la culoare, spre deosebire de site-ul public: panoul este „în
+   spate", iar cine îl deschide trebuie să vadă din prima că nu e vitrina. */
+.topbar{background:var(--brand-deep);color:#fff}
+.topbar .wrap{display:flex;align-items:center;gap:20px;
+  min-height:64px;flex-wrap:wrap;padding-block:10px}
+.topbar img{width:56px;height:auto;filter:brightness(0) invert(1);opacity:.94}
+.topbar .tag{font:500 10.5px/1 Inter,sans-serif;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber);padding-left:20px;
+  border-left:1px solid rgba(255,255,255,.2)}
+.topbar .sp{flex:1}
+.topbar .who{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.topbar .who img{width:30px;height:30px;border-radius:50%;object-fit:cover;filter:none;opacity:1}
+.topbar .who b{font-weight:500}
+.topbar .lnk{font-size:13px;color:rgba(255,255,255,.72);white-space:nowrap}
+.topbar .lnk:hover{color:#fff}
+.topbar .sep{color:rgba(255,255,255,.28)}
+
+/* Motiv Secession, ca pe site-ul public — 5px care leagă panoul de vitrină. */
+.band{height:5px;background:
+  repeating-linear-gradient(90deg,var(--brand) 0 14px,transparent 14px 22px),
+  linear-gradient(var(--amber),var(--amber));
+  background-size:100% 2px,100% 5px;background-repeat:no-repeat;background-position:0 0,0 3px}
+
+/* ── Navigație: exact secțiunile CMS-ului actual ── */
+.tabs{background:var(--brand)}
+.tabs .wrap{display:flex;gap:2px;overflow-x:auto}
+.tabs a{padding:13px 20px;font:500 13.5px/1 Inter,sans-serif;color:rgba(255,255,255,.74);
+  white-space:nowrap;border-bottom:3px solid transparent}
+.tabs a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tabs a[aria-current]{color:#fff;background:var(--plaster);color:var(--brand-deep);
+  border-radius:8px 8px 0 0;border-bottom-color:var(--amber)}
+.subtabs{background:var(--paper);border-bottom:1px solid var(--stone)}
+.subtabs .wrap{display:flex;gap:26px;overflow-x:auto}
+.subtabs a{padding:14px 0;font-size:13.5px;color:var(--ink-soft);white-space:nowrap;
+  border-bottom:2px solid transparent;margin-bottom:-1px}
+.subtabs a:hover{color:var(--ink)}
+.subtabs a[aria-current]{color:var(--brand);font-weight:500;border-bottom-color:var(--brand)}
+
+/* ── Bandă de machetă ──
+   Pagina folosește datele reale ale agenției; trebuie să fie imposibil de
+   confundat cu panoul viu. */
+.mock{background:#FFF6E2;border-bottom:1px solid #F0DCB0;color:#5A4409;
+  font-size:12.5px}
+.mock .wrap{display:flex;gap:12px;align-items:baseline;padding-block:9px;flex-wrap:wrap}
+.mock b{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px}
+
+main{padding-block:30px 60px}
+
+/* ── Titlul paginii ── */
+.phead{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+.phead h1{font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.4vw,40px);
+  line-height:1.1;letter-spacing:-.012em}
+.phead p{font-size:14px;color:var(--ink-soft);margin-top:6px}
+.phead .sp{flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;
+  border-radius:999px;padding:11px 20px;font:500 13.5px/1 Inter,sans-serif;
+  cursor:pointer;white-space:nowrap;transition:.2s var(--ease)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-deep)}
+.btn-ghost{background:var(--paper);border-color:var(--stone);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btn-sm{padding:8px 14px;font-size:12.5px}
+
+/* Adăugarea pornește tot de la categorie, ca în CMS-ul actual. */
+.add{position:relative}
+.add-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:250px;
+  background:var(--paper);border:1px solid var(--stone);border-radius:12px;
+  box-shadow:0 22px 48px -20px rgba(23,36,43,.36);padding:7px;display:none}
+.add-menu.open{display:block}
+.add-menu p{font:500 10.5px/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-soft);padding:9px 11px 7px}
+.add-menu button{display:block;width:100%;text-align:left;background:0;border:0;
+  padding:8px 11px;border-radius:8px;font-size:13.5px;cursor:pointer}
+.add-menu button:hover{background:var(--brand-tint);color:var(--brand)}
+
+/* ── Indicatori ── */
+.kpis{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:14px}
+.kpi{background:var(--paper);border:1px solid var(--stone);border-radius:var(--radius);padding:17px 19px}
+.kpi span{display:block;font:500 10.5px/1 Inter,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.kpi b{display:block;font:300 34px/1 var(--serif);margin-top:11px;letter-spacing:-.01em}
+.kpi em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-soft);margin-top:7px}
+.kpi.warn{border-color:#EBC9BC;background:var(--flag-tint)}
+.kpi.warn span,.kpi.warn em{color:#7C3316}
+.kpi.warn b{color:var(--flag)}
+
+/* ── Necesită atenție ──
+   Fiecare rând este un filtru, nu un afiș: se dă clic și lista de dedesubt
+   arată exact ofertele numărate. Altfel cifra rămâne o acuzație nedovedită. */
+.attn{background:var(--paper);border:1px solid var(--stone);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:22px}
+.attn h2{font:400 19px/1.2 var(--serif);display:flex;align-items:center;gap:10px}
+.attn h2 svg{color:var(--flag);flex:0 0 auto}
+.attn > p{font-size:13px;color:var(--ink-soft);margin-top:5px}
+.attn .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--plaster);
+  border:1px solid var(--stone);border-radius:999px;padding:8px 15px;
+  font-size:13px;cursor:pointer;transition:.2s var(--ease)}
+.chip:hover{border-color:var(--flag);color:var(--flag)}
+.chip[aria-pressed="true"]{background:var(--flag);border-color:var(--flag);color:#fff}
+.chip b{font-weight:600;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"] b{color:#fff}
+
+/* ── Bara de unelte ── */
+.tools{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.search{position:relative;flex:1 1 290px;min-width:210px}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-soft)}
+.search input{width:100%;background:var(--paper);border:1px solid var(--stone);
+  border-radius:999px;padding:11px 16px 11px 42px;font-size:14px}
+.search input:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-tint)}
+.sel{position:relative}
+.sel select{appearance:none;background:var(--paper);border:1px solid var(--stone);
+  border-radius:999px;padding:11px 38px 11px 16px;font-size:13.5px;cursor:pointer}
+.sel select:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-tint)}
+.sel svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink-soft)}
+.tools .sp{flex:1}
+#count{font-size:13.5px;color:var(--ink-soft);white-space:nowrap}
+#count b{color:var(--ink);font-weight:600}
+
+/* ── Tabelul ── */
+.tablecard{background:var(--paper);border:1px solid var(--stone);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{position:sticky;top:0;z-index:5;background:var(--brand-tint);
+  font:500 10.5px/1.3 Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--brand);text-align:left;padding:13px 14px;white-space:nowrap;
+  border-bottom:1px solid var(--stone)}
+thead th.s{cursor:pointer;user-select:none}
+thead th.s:hover{color:var(--brand-deep);background:#DCE8EB}
+thead th .ar{opacity:.32;margin-left:5px;font-size:9px}
+thead th[aria-sort] .ar{opacity:1}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--stone);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--plaster)}
+tbody tr.flagged td:first-child{box-shadow:inset 3px 0 0 var(--flag)}
+
+.thumb{width:74px;height:52px;border-radius:8px;object-fit:cover;background:var(--brand-tint);flex:0 0 auto}
+.nophoto{width:74px;height:52px;border-radius:8px;background:var(--flag-tint);
+  border:1px dashed #E0B6A6;display:grid;place-items:center;color:var(--flag);
+  font:600 9px/1 Inter,sans-serif;letter-spacing:.08em;flex:0 0 auto}
+.pname{font:400 15.5px/1.3 var(--serif);max-width:36ch}
+.pcode{font:500 11px/1 Inter,sans-serif;letter-spacing:.09em;color:var(--brand);
+  margin-top:5px;font-variant-numeric:tabular-nums}
+.pflags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.pflag{font:500 10.5px/1 Inter,sans-serif;background:var(--flag-tint);color:var(--flag);
+  border-radius:4px;padding:4px 6px;white-space:nowrap}
+
+.badge{display:inline-block;font:500 11px/1 Inter,sans-serif;border-radius:999px;
+  padding:5px 10px;white-space:nowrap}
+.b-v{background:var(--brand-tint);color:var(--brand)}
+.b-i{background:#FBF0DC;color:var(--amber-ink)}
+.b-h{background:#EFE7F2;color:#5B3A6B}
+.b-tip{background:var(--plaster);color:var(--ink-soft);border:1px solid var(--stone);margin-top:5px}
+.state{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ok)}
+.state i{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:0 0 auto}
+
+.price{font:500 14.5px/1.25 Inter,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.price small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-soft);margin-top:3px}
+.dates{font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dates b{display:block;color:var(--ink);font-weight:500}
+.dates .old{display:block;color:var(--flag)}
+
+/* Comutator „ofertă specială": Nu / Da / Da, fixată — cele trei stări reale. */
+.fp{display:inline-flex;align-items:center;gap:7px;background:var(--plaster);
+  border:1px solid var(--stone);border-radius:999px;padding:6px 12px;
+  font:500 11.5px/1 Inter,sans-serif;color:var(--ink-soft);cursor:pointer}
+.fp:hover{border-color:var(--brand)}
+.fp.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.fp.pin{background:var(--amber);border-color:var(--amber);color:#3A2703}
+.fp svg{flex:0 0 auto}
+
+.views{min-width:96px}
+.views b{font:600 14px/1 Inter,sans-serif;font-variant-numeric:tabular-nums}
+.views .bar{height:4px;border-radius:2px;background:var(--stone);margin-top:7px;overflow:hidden}
+.views .bar i{display:block;height:100%;background:var(--brand);border-radius:2px}
+.views small{display:block;font-size:11px;color:var(--ink-soft);margin-top:5px}
+
+.acts{display:flex;gap:7px;justify-content:flex-end;white-space:nowrap}
+
+#empty{display:none;padding:56px 20px;text-align:center;color:var(--ink-soft)}
+#empty p{font:400 20px/1.3 var(--serif);color:var(--ink)}
+#empty button{margin-top:16px}
+
+.note{margin-top:22px;font-size:12.5px;color:var(--ink-soft);max-width:78ch}
+.note a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+
+/* ── Sub 1080px lista devine carduri ──
+   Tabelul actual are 14 coloane la 11px; pe telefon nu se poate folosi, iar
+   ofertele se actualizează cel mai des exact când consultantul nu e la birou. */
+@media(max-width:1080px){
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  .tablecard{background:0;border:0;border-radius:0;overflow:visible}
+  /* Flex, nu grid: fotografia are lățime fixă, denumirea crește, iar restul
+     câmpurilor se așază câte două pe rând. Cu un câmp pe rând, un card ajungea
+     la 570px — nouă ecrane pentru primele cinci oferte. */
+  tbody tr{background:var(--paper);border:1px solid var(--stone);border-radius:var(--radius);
+    margin-bottom:12px;padding:15px;display:flex;flex-wrap:wrap;gap:14px 18px;align-items:flex-start}
+  tbody tr:hover{background:var(--paper)}
+  tbody tr.flagged{border-left:3px solid var(--flag)}
+  tbody td{border:0;padding:0}
+  tbody tr td:nth-child(1){flex:0 0 74px}
+  tbody tr td:nth-child(2){flex:1 1 190px}
+  tbody tr td:nth-child(n+3){flex:1 1 38%}
+  tbody tr td:last-child{flex:1 1 100%}
+  tbody tr.flagged td:first-child{box-shadow:none}
+  td[data-l]::before{content:attr(data-l);display:block;font:500 10px/1 Inter,sans-serif;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+  .meta{display:flex;gap:22px;flex-wrap:wrap}
+  .acts{justify-content:flex-start}
+  .pname{max-width:none}
+}
+/* Pe telefon antetul se plia pe trei rânduri și cei patru indicatori ocupau
+   un ecran întreg înainte de prima ofertă — pe un panou de lucru, drumul
+   până la listă contează mai mult decât mărimea cifrelor. */
+@media(max-width:700px){
+  .topbar .wrap{gap:12px;row-gap:8px}
+  .topbar .sep{display:none}
+  .topbar .who .hi{display:none}
+  .topbar .tag{padding-left:14px}
+}
+@media(max-width:620px){
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:14px 15px}
+  .kpi b{font-size:27px;margin-top:8px}
+  .kpi em{font-size:11.5px;margin-top:5px}
+}
+@media(max-width:520px){
+  .phead{align-items:stretch}
+  .add,.add .btn{width:100%;justify-content:center}
+  .add-menu{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#lista">Sari la listă</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <img src="logo-the-house.png" alt="THE HOUSE Imobiliare" width="56" height="41">
+    <span class="tag">Panou de administrare</span>
+    <span class="sp"></span>
+    <span class="who">
+      <img src="avatar-sorin-bratu.jpg" alt="" width="30" height="30">
+      <span><span class="hi">Bine ai venit, </span><b>Sorin Traian Bratu</b></span>
+    </span>
+    <span class="sep">|</span>
+    <a class="lnk" href="#">Setări personale</a>
+    <span class="sep">|</span>
+    <a class="lnk" href="#">Ieșire din cont</a>
+  </div>
+</header>
+<div class="band"></div>
+
+<nav class="tabs" aria-label="Secțiuni">
+  <div class="wrap">
+    <a href="#" aria-current="page">Imobiliare</a>
+    <a href="#">Imagine start</a>
+    <a href="#">Statistici mail-uri</a>
+  </div>
+</nav>
+<nav class="subtabs" aria-label="Imobiliare">
+  <div class="wrap">
+    <a href="#" aria-current="page">Închirieri / vânzări</a>
+    <a href="#">Categorii imobiliare</a>
+    <a href="#">Orașe</a>
+    <a href="#">Zone orașe</a>
+    <a href="#">Setări câmpuri</a>
+  </div>
+</nav>
+
+<div class="mock">
+  <div class="wrap">
+    <b>Machetă</b>
+    <span>Date reale citite din CMS-ul actual în 02.08.2026. Pagina nu are back-end:
+      nu salvează, nu publică și nu șterge nimic.</span>
+  </div>
+</div>
+
+<main class="wrap" id="lista">
+  <div class="phead">
+    <div>
+      <h1>Oferte imobiliare</h1>
+      <p>Adăugarea, modificarea și publicarea ofertelor de închiriere și vânzare.</p>
+    </div>
+    <span class="sp"></span>
+    <div class="add">
+      <button class="btn btn-primary" id="addBtn" type="button" aria-expanded="false" aria-haspopup="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Adaugă proprietate
+      </button>
+      <div class="add-menu" id="addMenu" role="menu" aria-label="Categorie proprietate"></div>
+    </div>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Sumar portofoliu"></section>
+
+  <section class="attn" aria-labelledby="attnH">
+    <h2 id="attnH">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+      Necesită atenție
+    </h2>
+    <p>Calculat din oferte, nu bifat manual. Alege un criteriu ca să vezi exact ofertele numărate.</p>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <div class="tools">
+    <label class="search">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="Caută după denumire, cod sau zonă…" aria-label="Caută proprietate">
+    </label>
+    <div class="sel">
+      <select id="fTip" aria-label="Tip proprietate"><option value="">Tip proprietate — toate</option></select>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="sel">
+      <select id="fScop" aria-label="Tip tranzacție"><option value="">Tranzacție — toate</option></select>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="sel">
+      <select id="fOras" aria-label="Oraș"><option value="">Oraș — toate</option></select>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="sel">
+      <select id="fFp" aria-label="Prima pagină">
+        <option value="">Prima pagină — toate</option>
+        <option value="1">Doar cele de pe prima pagină</option>
+        <option value="2">Doar cele fixate</option>
+        <option value="0">Doar cele nepublicate pe prima pagină</option>
+      </select>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="reset" type="button">Resetează</button>
+    <span class="sp"></span>
+    <span id="count"></span>
+  </div>
+
+  <div class="tablecard">
+    <table>
+      <caption class="skip">Oferte imobiliare active</caption>
+      <thead>
+        <tr>
+          <th scope="col"><span class="skip">Fotografie</span></th>
+          <th scope="col" class="s" data-k="t">Proprietate <span class="ar">▲▼</span></th>
+          <th scope="col">Tip și tranzacție</th>
+          <th scope="col">Locație</th>
+          <th scope="col" class="s" data-k="pv">Preț <span class="ar">▲▼</span></th>
+          <th scope="col" class="s" data-k="upd">Publicat / actualizat <span class="ar">▲▼</span></th>
+          <th scope="col">Stare</th>
+          <th scope="col">Prima pagină</th>
+          <th scope="col" class="s" data-k="v">Vizite <span class="ar">▲▼</span></th>
+          <th scope="col"><span class="skip">Acțiuni</span></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty">
+      <p>Niciun rezultat</p>
+      <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('reset').click()">Resetează filtrele</button>
+    </div>
+  </div>
+
+  <p class="note">
+    Cele 48 de oferte, contorul de vizite, datele de publicare și de actualizare și
+    fotografiile provin din CMS-ul agenției, citite în 02.08.2026. Linkul „Vezi” de pe
+    fiecare rând deschide pagina publică reală a ofertei pe
+    <a href="https://www.the-house.ro" rel="noopener">the-house.ro</a>.
+    Macheta însoțește propunerea de site 2026 —
+    <a href="/b">vezi vitrina</a>.
+  </p>
+</main>
+
+<script>
+/* ── Datele ───────────────────────────────────────────────────────────────
+   Un rând pe ofertă, exact cum apare în CMS-ul actual:
+     c cod · t denumire · tip · scop · o oraș · z zonă · p preț (text brut)
+     pub publicat · upd ultima actualizare · fp ofertă specială (0/1/2)
+     v vizite · n fotografii · img copertă · id id-ul intern al CMS-ului
+   Prețul rămâne textul brut al CMS-ului („265000 EURO NEG", „35 EURO / mp NEG"),
+   pentru că unitatea diferă de la ofertă la ofertă și rescrierea lui ar
+   ascunde tocmai neregularitatea. */
+const L=[
+{c:"HOUSE177",t:"Vila cu un design unicat.Totul la superlativ.Luxul,la el acasa",tip:"Rezidential",scop:"Vanzare",o:"Dumbravita",z:"",p:"265000 EURO NEG",pub:"2010-09-21",upd:"2013-08-10",fp:0,v:14774,n:19,img:"21071443img_0003.jpg",id:430},
+{c:"HOUSE872",t:"casa spatioasa cu piscina.",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Lunei",p:"439000 EURO",pub:"2017-07-03",upd:"2017-07-05",fp:1,v:13496,n:16,img:"03082649img_2861.jpg",id:1128},
+{c:"HOUSE494",t:"proprietate unica",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"",p:"2500 EURO / luna",pub:"2012-11-17",upd:"2015-10-09",fp:0,v:10890,n:18,img:"17093831img_0258.jpg",id:749},
+{c:"HOUSE213",t:"Vila comfortabila in Ghiroda-INCHIRIATA",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Ghirodei",p:"800 EURO / luna",pub:"2011-01-28",upd:"2020-02-23",fp:0,v:9903,n:16,img:"25094225img_0051.jpg",id:466},
+{c:"HOUSE724",t:"vila Dumbravita.Totul la superlativ.VANDUTA",tip:"Rezidential",scop:"Vanzare",o:"Dumbravita",z:"",p:"279000 EURO NEG",pub:"2014-11-28",upd:"2016-03-17",fp:0,v:9821,n:15,img:"28084252img_1528.jpg",id:980},
+{c:"HOUSE823",t:"vila moderna,spatioasa si confortabila",tip:"Rezidential",scop:"Vanzare",o:"Sacalaz",z:"",p:"239000 EURO NEG",pub:"2016-05-19",upd:"2016-05-19",fp:0,v:9206,n:14,img:"19074648img_8473.jpg",id:1079},
+{c:"HOUSE808",t:"PROPRIETATE UNICA.",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Central",p:"0 EURO / luna",pub:"2016-02-11",upd:"2016-05-23",fp:0,v:8398,n:18,img:"11080511img_6353.jpg",id:1064},
+{c:"HOUSE853",t:"vila de vis",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Ghirodei",p:"1000000 EURO",pub:"2017-03-06",upd:"2021-11-05",fp:0,v:7837,n:21,img:"06080050img_0973.jpg",id:1109},
+{c:"HOUSE698",t:"Casa in zona Cluj",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Olimpia-Stadion",p:"495000 EURO",pub:"2014-08-06",upd:"2018-09-19",fp:0,v:7797,n:19,img:"06105002img_0101.jpg",id:954},
+{c:"HOUSE636",t:"hala productie pe doua niveluri",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Buziasului",p:"11760 EURO / luna NEG",pub:"2014-01-17",upd:"2014-01-17",fp:0,v:7659,n:11,img:"17094224img_0186.jpg",id:892},
+{c:"HOUSE324",t:"proprietate de exceptie in Ghiroda.",tip:"Rezidential",scop:"Vanzare",o:"Ghiroda",z:"",p:"419000 EURO",pub:"2011-10-26",upd:"2019-05-15",fp:0,v:7047,n:17,img:"13101211img_6483.jpg",id:579},
+{c:"HOUSE612",t:"teren in zona Aeroport International",tip:"Comercial",scop:"Vanzare",o:"Timisoara",z:"Aeroport",p:"35 EURO / mp NEG",pub:"2013-11-25",upd:"2017-03-19",fp:0,v:7027,n:3,img:"25085852terenaeroport14300mp2.jpg",id:868},
+{c:"HOUSE611",t:"teren industrial/comercial in zona parc industrial CJT",tip:"Productie",scop:"Vanzare",o:"Timisoara",z:"Torontalului",p:"1137000 EURO NEG",pub:"2013-11-25",upd:"2013-11-25",fp:0,v:7012,n:3,img:"25081259torontalului3.jpg",id:867},
+{c:"HOUSE769",t:"teren pe bdul.L.Rebreanu",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"",p:"220 EURO / mp NEG",pub:"2015-09-02",upd:"2015-09-02",fp:0,v:6942,n:2,img:"02124329goo.jpg",id:1025},
+{c:"HOUSE867",t:"apartament de vis",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Braytim",p:"175000 EURO NEG",pub:"2017-05-26",upd:"2017-11-22",fp:0,v:6914,n:15,img:"26083046img_2034.jpg",id:1123},
+{c:"HOUSE778",t:"teren calea Sagului zona Arabesque",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Sagului",p:"97 EURO / mp NEG",pub:"2015-09-23",upd:"2015-09-23",fp:0,v:6883,n:5,img:"230808055.jpg",id:1034},
+{c:"HOUSE856",t:"proprietate spatioasa in zona foarte selecta",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Lipovei",p:"365000 EURO NEG",pub:"2017-03-31",upd:"2017-03-31",fp:0,v:6882,n:0,img:null,id:1112},
+{c:"HOUSE779",t:"teren calea Sagului zona Marele volan",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Sagului",p:"34 EURO / mp NEG",pub:"2015-09-23",upd:"2015-09-23",fp:0,v:6712,n:5,img:"23082909cs_aprox-page-001.jpg",id:1035},
+{c:"HOUSE735",t:"apartament cu 3 camere in zona Kaufland",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"Kaufland",p:"500 EURO / luna",pub:"2015-03-04",upd:"2020-02-03",fp:0,v:6683,n:13,img:"04143118img_2469.jpg",id:991},
+{c:"HOUSE841",t:"apartament spatios in zona centrala",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Central",p:"950 EURO / luna",pub:"2016-10-06",upd:"2021-08-27",fp:1,v:6226,n:13,img:"06122507img_9889.jpg",id:1097},
+{c:"HOUSE925",t:"Casa / Vila",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Lugojului",p:"500 EURO / luna",pub:"2019-05-24",upd:"2023-12-08",fp:2,v:6137,n:17,img:"24085654img_7457.jpg",id:1181},
+{c:"HOUSE889",t:"casa in executie in zona Freidorf",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Freidorf",p:"215000 EURO NEG",pub:"2018-04-23",upd:"2018-04-23",fp:0,v:6097,n:8,img:"23075713img_4753.jpg",id:1145},
+{c:"HOUSE939",t:"apartamente unice in Timisoara",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Balcescu",p:"430 EURO / luna",pub:"2020-01-13",upd:"2020-08-20",fp:2,v:6073,n:9,img:"13083637img_8499.jpg",id:1195},
+{c:"HOUSE907",t:"jumatate de duplex superb.Cochet si foarte primitor.",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"",p:"850 EURO / luna",pub:"2018-12-01",upd:"2022-01-14",fp:0,v:5867,n:14,img:"14084149img_6125.jpg",id:1163},
+{c:"HOUSE894",t:"vila solida in Ghiroda,260 mp utili",tip:"Rezidential",scop:"Vanzare",o:"Ghiroda",z:"",p:"207000 EURO NEG",pub:"2018-08-07",upd:"2019-04-13",fp:0,v:5825,n:12,img:"07084928img_5325.jpg",id:1150},
+{c:"HOUSE895",t:"apartament foarte spatios pe Calea Lipovei.VANDUT",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Lipovei",p:"187000 EURO",pub:"2018-08-20",upd:"2023-05-31",fp:0,v:5818,n:15,img:"20074559img_5568.jpg",id:1151},
+{c:"HOUSE773",t:"apartament 2 camere mobilat/utilat.Zona Kaufland",tip:"Rezidential",scop:"Vanzare",o:"Dumbravita",z:"",p:"85000 EURO (TVA inclus)",pub:"2015-09-05",upd:"2018-10-20",fp:0,v:5775,n:10,img:"05155642img_4428.jpg",id:1029},
+{c:"HOUSE941",t:"apartamente de vis...piata Balcescu",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Balcescu",p:"430 EURO / luna",pub:"2020-01-13",upd:"2020-08-20",fp:2,v:5565,n:9,img:"13133922img_8512.jpg",id:1197},
+{c:"HOUSE903",t:"spatiu de birouri ultracentral",tip:"Birou",scop:"Inchiriere",o:"Timisoara",z:"Ultracentral",p:"1500 EURO / luna",pub:"2018-11-07",upd:"2018-11-07",fp:0,v:5215,n:13,img:"07071541img_5989.jpg",id:1159},
+{c:"HOUSE484",t:"apartament cu 4 camere mobilat si utilat+garaj.VANDUT",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"",p:"86500 EURO",pub:"2012-10-17",upd:"2019-11-06",fp:1,v:5210,n:17,img:"17092451img_0079.jpg",id:739},
+{c:"HOUSE922",t:"apartament superb in piata Plevnei.155 mp utili,6 camere",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Ultracentral",p:"1300 EURO / luna NEG",pub:"2019-05-10",upd:"2019-05-10",fp:0,v:5177,n:17,img:"10091441img_7323.jpg",id:1178},
+{c:"HOUSE909",t:"apartament deosebit la intrarea in Dumbravita,zona Kaufland",tip:"Rezidential",scop:"Vanzare",o:"Dumbravita",z:"",p:"76500 EURO NEG",pub:"2018-12-12",upd:"2018-12-12",fp:0,v:5163,n:12,img:"12143841img_6397.jpg",id:1165},
+{c:"HOUSE935",t:"proprietate de exceptie in Timisoara.Lux,confort si liniste intr-un singur loc",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Ghirodei",p:"498000 EURO NEG",pub:"2019-10-08",upd:"2020-01-27",fp:1,v:5015,n:18,img:"08075104img_8167.jpg",id:1191},
+{c:"HOUSE910",t:"apartament spatios in zona Braytim.VANDUT",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Braytim",p:"139000 EURO NEG",pub:"2018-12-14",upd:"2019-01-29",fp:0,v:4786,n:14,img:"14142351img_6410.jpg",id:1166},
+{c:"HOUSE919",t:"apartament deosebit pentru cei cu pretentii maxime.VANDUT",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Simion Barnutiu",p:"0 EURO NEG",pub:"2019-04-13",upd:"2019-10-29",fp:0,v:4329,n:17,img:"13112059img_7037.jpg",id:1175},
+{c:"HOUSE684",t:"casa la intrarea in Dumbravita,zona foarte linistita",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"Fropin",p:"1000 EURO / luna",pub:"2014-05-19",upd:"2020-03-07",fp:0,v:4296,n:16,img:"19100857img_0152.jpg",id:940},
+{c:"HOUSE921",t:"proprietate deosebita in Dumbravita.VANDUTA",tip:"Rezidential",scop:"Vanzare",o:"Dumbravita",z:"",p:"249000 EURO",pub:"2019-05-08",upd:"2019-07-15",fp:0,v:4201,n:19,img:"08134710img_7308.jpg",id:1177},
+{c:"HOUSE913",t:"apartament foarte spatios in zona Consulatelor",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Ultracentral",p:"165000 EURO NEG",pub:"2019-03-17",upd:"2019-05-22",fp:0,v:4198,n:15,img:"17111835img_6708.jpg",id:1169},
+{c:"HOUSE435",t:"apartament cu o camera Dumbravita,zona Kaufland",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"",p:"300 EURO / luna (TVA inclus)",pub:"2012-08-08",upd:"2019-12-03",fp:0,v:4131,n:9,img:"26094342img_0041.jpg",id:690},
+{c:"HOUSE641",t:"apartament de lux in regim hotelier",tip:"Rezidential",scop:"Regim hotelier",o:"Timisoara",z:"Exterior Nord",p:"105 EURO / zi",pub:"2014-01-31",upd:"2014-02-04",fp:0,v:3889,n:9,img:"31131740dsc_2929.jpg",id:897},
+{c:"HOUSE948",t:"apartament superb,tip duplex in piata Unirii",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"P-ta Unirii",p:"650 EURO / luna NEG",pub:"2021-02-07",upd:"2023-03-22",fp:2,v:3705,n:16,img:"07113210img_9933.jpg",id:1204},
+{c:"HOUSE924",t:"vila la intrarea in Dumbravita.Prima inchiriere-INCHIRIATA",tip:"Rezidential",scop:"Inchiriere",o:"Dumbravita",z:"Lidl",p:"750 EURO / luna",pub:"2019-05-12",upd:"2019-05-29",fp:0,v:3672,n:16,img:"12075911img_7362.jpg",id:1180},
+{c:"HOUSE897",t:"birou in pta.Unirii-INCHIRIAT",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"P-ta Unirii",p:"420 EURO / luna",pub:"2018-09-03",upd:"2020-02-24",fp:0,v:3650,n:11,img:"03073422img_2999.jpg",id:1153},
+{c:"HOUSE930",t:"spatiu birouri in Piata Unirii",tip:"Birou",scop:"Inchiriere",o:"Timisoara",z:"P-ta Unirii",p:"750 EURO / luna NEG",pub:"2019-09-11",upd:"2019-09-11",fp:0,v:3380,n:13,img:"11073331img_7719.jpg",id:1186},
+{c:"HOUSE481",t:"apartament cochet in piata Unirii.INCHIRIAT",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"P-ta Unirii",p:"330 EURO / luna",pub:"2012-10-10",upd:"2019-07-13",fp:0,v:3162,n:10,img:"26112154img_0139.jpg",id:736},
+{c:"HOUSE947",t:"apartament superb in cladire istorica,zona Consulatului Serbiei",tip:"Rezidential",scop:"Inchiriere",o:"Timisoara",z:"Ultracentral",p:"750 EURO / luna NEG",pub:"2020-09-23",upd:"2020-09-23",fp:0,v:2391,n:21,img:"23085225img_9775.jpg",id:1203},
+{c:"HOUSE920",t:"apartament de exceptie in Timisoara",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Mehala",p:"295000 EURO NEG",pub:"2019-05-06",upd:"2019-09-07",fp:0,v:2213,n:18,img:"06112940img_7127.jpg",id:1176},
+{c:"HOUSE944",t:"aoartament deosebit in zona Simion Barnutiu",tip:"Rezidential",scop:"Vanzare",o:"Timisoara",z:"Simion Barnutiu",p:"173500 EURO NEG",pub:"2020-09-18",upd:"2020-09-18",fp:0,v:1761,n:20,img:"18192007img_9458.jpg",id:1200},
+];
+
+const IMG='https://www.the-house.ro/files/images/';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>n.toLocaleString('ro-RO');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ── Semnalele ────────────────────────────────────────────────────────────
+   Fiecare este o regulă verificabilă pe date, nu o impresie. „Vândut în titlu"
+   este cel important: CMS-ul are un câmp Stare cu valoarea „închisă", dar
+   fluxul de lucru scrie starea în denumire și lasă oferta activă — așa că
+   proprietăți vândute rămân publicate pe site. */
+const AZI=new Date('2026-08-02');
+const ani=d=>(AZI-new Date(d))/31557600000;
+const RULES=[
+  {k:'vandut', lbl:'Marcate „vândut/închiriat" în denumire, dar încă active',
+   short:'„Vândut/închiriat" în denumire', crit:true,
+   f:l=>/VANDUT|VANDUTA|INCHIRIAT|INCHIRIATA/.test(l.t)},
+  {k:'foto',   lbl:'Fără nicio fotografie', short:'Fără fotografii', crit:true,
+   f:l=>l.n===0},
+  {k:'pret',   lbl:'Cu prețul 0, publicat ca atare', short:'Preț 0', crit:true,
+   f:l=>/^0\s/.test(l.p)},
+  {k:'zona',   lbl:'Fără zonă completată', short:'Fără zonă', crit:false,
+   f:l=>!l.z},
+  {k:'vechi',  lbl:'Neactualizate de peste cinci ani', short:'Neactualizate de 5+ ani', crit:false,
+   f:l=>ani(l.upd)>5}
+];
+const flagsOf=l=>RULES.filter(r=>r.f(l));
+L.forEach(l=>{ l.fl=flagsOf(l).map(r=>r.k); l.crit=flagsOf(l).some(r=>r.crit);
+  /* Numeric doar pentru sortare; vezi nota de la câmpul `p`. */
+  l.pv=parseInt(l.p.replace(/\D/g,''),10)||0; });
+
+const MAXV=Math.max(...L.map(l=>l.v));
+const TOTV=L.reduce((a,l)=>a+l.v,0);
+
+/* ── Indicatori ── */
+const nCrit=L.filter(l=>l.crit).length;
+$('#kpis').innerHTML=[
+  ['Oferte active',fmt(L.length),'Toate publicate pe site în acest moment',''],
+  ['Vizualizări totale',fmt(TOTV),`Media ${fmt(Math.round(TOTV/L.length))} pe ofertă`,''],
+  ['Pe prima pagină',fmt(L.filter(l=>l.fp).length),
+   `Din care ${L.filter(l=>l.fp===2).length} fixate`,''],
+  ['Necesită atenție',fmt(nCrit),'Oferte cu cel puțin un semnal important','warn']
+].map(([s,b,e,c])=>`<div class="kpi ${c}"><span>${s}</span><b class="num">${b}</b><em>${e}</em></div>`).join('');
+
+/* ── Filtre ── */
+const S={q:'',tip:'',scop:'',oras:'',fp:'',flag:'',k:'v',dir:-1};
+const uniq=k=>[...new Set(L.map(l=>l[k]))].filter(Boolean).sort();
+const fill=(sel,vals)=>vals.forEach(v=>sel.add(new Option(v,v)));
+fill($('#fTip'),uniq('tip')); fill($('#fScop'),uniq('scop')); fill($('#fOras'),uniq('o'));
+
+$('#chips').innerHTML=RULES.map(r=>{
+  const n=L.filter(r.f).length;
+  return `<button class="chip" type="button" data-f="${r.k}" aria-pressed="false"
+            title="${esc(r.lbl)}"><b class="num">${n}</b> ${esc(r.short)}</button>`;
+}).join('');
+
+function matches(l){
+  if(S.tip&&l.tip!==S.tip)return false;
+  if(S.scop&&l.scop!==S.scop)return false;
+  if(S.oras&&l.o!==S.oras)return false;
+  if(S.fp==='0'&&l.fp!==0)return false;
+  if(S.fp==='1'&&!l.fp)return false;
+  if(S.fp==='2'&&l.fp!==2)return false;
+  if(S.flag&&!l.fl.includes(S.flag))return false;
+  if(S.q){
+    const h=(l.t+' '+l.c+' '+l.z+' '+l.o).toLowerCase();
+    if(!S.q.toLowerCase().split(/\s+/).every(w=>h.includes(w)))return false;
+  }
+  return true;
+}
+
+const SCOP={Vanzare:['Vânzare','b-v'],Inchiriere:['Închiriere','b-i'],
+            'Regim hotelier':['Regim hotelier','b-h'],'Best Buy':['Best Buy','b-v']};
+const TIP={Rezidential:'Rezidențial',Comercial:'Comercial',Birou:'Birou',
+           Productie:'Producție',Altul:'Altul','De vacanta':'De vacanță'};
+const PIN=`<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 2h6l-1 6 4 4v2h-5v6l-1 2-1-2v-6H6v-2l4-4z"/></svg>`;
+const fpLabel=f=>f===2?['pin',PIN+' Fixată']:f===1?['on','Da']:['','Nu'];
+
+/* Prețul se afișează despărțit: cifra, apoi unitatea și mențiunea „negociabil",
+   care în CMS-ul actual sunt lipite într-un singur șir. */
+function priceHTML(l){
+  const m=l.p.match(/^([\d.,]+)\s*EURO\s*(.*)$/i);
+  if(!m)return `<span class="price">${esc(l.p)}</span>`;
+  const val=fmt(parseInt(m[1].replace(/\D/g,''),10));
+  let rest=m[2].replace(/^\/\s*/,'').trim();
+  const neg=/NEG$/i.test(rest); if(neg)rest=rest.replace(/NEG$/i,'').trim();
+  const unit=rest.replace(/^\/\s*/,'').replace(/luna/i,'lună').trim();
+  const sub=[unit?'/ '+unit:'',neg?'negociabil':''].filter(Boolean).join(' · ');
+  return `<span class="price">${val} €${sub?`<small>${esc(sub)}</small>`:''}</span>`;
+}
+
+function render(){
+  const rows=L.filter(matches).sort((a,b)=>{
+    const k=S.k, x=a[k], y=b[k];
+    const c=typeof x==='string'?x.localeCompare(y,'ro'):x-y;
+    return c*S.dir;
+  });
+  $('#rows').innerHTML=rows.map(l=>{
+    const [scop,cls]=SCOP[l.scop]||[l.scop,'b-v'];
+    const [fpc,fpl]=fpLabel(l.fp);
+    /* Sub denumire apar doar semnalele importante. „Fără zonă" și vechimea au
+       deja coloana lor, iar eticheta de vechime ar fi apărut pe 42 din 48 de
+       rânduri — o etichetă pe care o poartă aproape toată lista nu mai distinge
+       nimic, doar colorează pagina. */
+    const crit=RULES.filter(r=>r.crit&&l.fl.includes(r.k));
+    const varsta=Math.floor(ani(l.upd));
+    return `<tr class="${l.crit?'flagged':''}">
+      <td>${l.img
+        ?`<img class="thumb" src="${IMG}${l.img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'nophoto',textContent:'0 FOTO'}))">`
+        :`<div class="nophoto">0 FOTO</div>`}</td>
+      <td>
+        <div class="pname">${esc(l.t)}</div>
+        <div class="pcode">${l.c} · ${l.n} foto</div>
+        ${crit.length?`<div class="pflags">${crit.map(r=>
+          `<span class="pflag">${esc(r.short)}</span>`).join('')}</div>`:''}
+      </td>
+      <td data-l="Tip"><span class="badge ${cls}">${scop}</span>
+        <span class="badge b-tip">${TIP[l.tip]||l.tip}</span></td>
+      <td data-l="Locație">${esc(l.o)}${l.z?`<br><span class="muted" style="font-size:12.5px">${esc(l.z)}</span>`
+        :`<br><span class="pflag" style="display:inline-block;margin-top:4px">fără zonă</span>`}</td>
+      <td data-l="Preț">${priceHTML(l)}</td>
+      ${/* Vârsta, nu doar data: „acum 13 ani" spune ceva, „2013-08-10" cere
+            scădere mentală pe 48 de rânduri. */''}
+      <td data-l="Publicat / actualizat"><span class="dates">
+        <b>${l.upd}</b>${varsta>5?`<span class="old">actualizată acum ${varsta} ani</span>`
+          :`publicată ${l.pub}`}</span></td>
+      <td data-l="Stare"><span class="state"><i></i>Activă</span></td>
+      <td data-l="Prima pagină"><button class="fp ${fpc}" type="button"
+        aria-label="Ofertă specială: ${fpl.replace(/<[^>]*>/g,'').trim()}">${fpl}</button></td>
+      <td data-l="Vizite"><div class="views"><b class="num">${fmt(l.v)}</b>
+        <span class="bar"><i style="width:${Math.round(l.v/MAXV*100)}%"></i></span>
+        <small>de la ${l.pub.slice(0,4)}</small></div></td>
+      <td><span class="acts">
+        <button class="btn btn-ghost btn-sm" type="button">Modifică</button>
+        <a class="btn btn-ghost btn-sm" href="https://www.the-house.ro/single.php?cod=${l.c}"
+           target="_blank" rel="noopener">Vezi</a>
+      </span></td>
+    </tr>`;
+  }).join('');
+  $('#empty').style.display=rows.length?'none':'block';
+  $('#count').innerHTML=rows.length===L.length
+    ?`<b>${L.length}</b> oferte`
+    :`<b>${rows.length}</b> din ${L.length} oferte`;
+  $$('thead th.s').forEach(th=>{
+    const on=th.dataset.k===S.k;
+    if(on)th.setAttribute('aria-sort',S.dir>0?'ascending':'descending');
+    else th.removeAttribute('aria-sort');
+    th.querySelector('.ar').textContent=on?(S.dir>0?'▲':'▼'):'▲▼';
+  });
+}
+
+/* ── Evenimente ── */
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim();render();});
+$('#fTip').addEventListener('change',e=>{S.tip=e.target.value;render();});
+$('#fScop').addEventListener('change',e=>{S.scop=e.target.value;render();});
+$('#fOras').addEventListener('change',e=>{S.oras=e.target.value;render();});
+$('#fFp').addEventListener('change',e=>{S.fp=e.target.value;render();});
+$('#chips').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b)return;
+  S.flag=S.flag===b.dataset.f?'':b.dataset.f;
+  $$('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.f===S.flag)));
+  render();
+});
+$$('thead th.s').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k;
+  /* Textul urcă alfabetic la prima apăsare, cifrele coboară: nimeni nu caută
+     oferta cu cele mai puține vizite. */
+  if(S.k===k)S.dir*=-1; else{S.k=k; S.dir=(k==='t')?1:-1;}
+  render();
+}));
+$('#reset').addEventListener('click',()=>{
+  Object.assign(S,{q:'',tip:'',scop:'',oras:'',fp:'',flag:''});
+  $('#q').value=''; $('#fTip').value=''; $('#fScop').value='';
+  $('#fOras').value=''; $('#fFp').value='';
+  $$('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+  render();
+});
+
+/* Categoriile de adăugare, exact cele 15 din CMS-ul actual (cu diacritice —
+   în CMS scrie „Teren pentru contructii"). */
+const CATS=['Apartament cu o cameră','Apartament cu 2 camere','Apartament cu 3 camere',
+  'Apartament cu 4 camere','Apartament cu peste 4 camere','Casă / Vilă','Hotel / Pensiune',
+  'Spațiu pentru birouri','Spațiu comercial','Penthouse','Spațiu industrial',
+  'Teren pentru construcții','Proprietate specială','Teren extravilan','Teren agricol'];
+$('#addMenu').innerHTML='<p>Categorie proprietate</p>'+
+  CATS.map(c=>`<button type="button" role="menuitem">${c}</button>`).join('');
+$('#addBtn').addEventListener('click',e=>{
+  e.stopPropagation();
+  const m=$('#addMenu'), open=m.classList.toggle('open');
+  $('#addBtn').setAttribute('aria-expanded',String(open));
+});
+document.addEventListener('click',()=>{
+  $('#addMenu').classList.remove('open');
+  $('#addBtn').setAttribute('aria-expanded','false');
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#addMenu').classList.remove('open');});
+
+render();
+</script>
+</body>
+</html>

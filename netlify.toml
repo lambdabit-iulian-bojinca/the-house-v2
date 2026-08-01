@@ -18,6 +18,18 @@
   to = "/the-house-imobiliare-2026-b.html"
   status = 200
 
+# Redesign of the CMS listings screen, for the pitch. Real data, no back-end.
+[[redirects]]
+  from = "/admin"
+  to = "/the-house-admin-2026.html"
+  status = 200
+
+# A pitch mock has no business in a search index.
+[[headers]]
+  for = "/the-house-admin-2026.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 # Editor config lives in the repo but has no business being on the public site.
 # (Dotfiles and netlify.toml are excluded by Netlify already; this one isn't.)
 [[redirects]]
