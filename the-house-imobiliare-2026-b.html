@@ -37,7 +37,7 @@
   }],
   "employee": [
     { "@type": "RealEstateAgent", "name": "Sorin Traian Bratu", "telephone": "+40735444408", "email": "sorin.bratu@the-house.ro" },
-    { "@type": "RealEstateAgent", "name": "Mirela Bratu", "telephone": "+40735444407" },
+    { "@type": "RealEstateAgent", "name": "Mirela Bratu", "telephone": "+40735444407", "email": "mirela.bratu@the-house.ro" },
     { "@type": "RealEstateAgent", "name": "Alexandru Bratu", "telephone": "+40735444406" }
   ]
 }
@@ -484,6 +484,39 @@ footer a:hover{color:#fff}
   text-transform:uppercase;color:var(--brand);margin-bottom:6px}
 .avail b{font-weight:500;font-size:14.5px}
 
+/* ── Consultantul ofertei ──
+   The source pins "Informatii de contact" to the top of its right rail, so on
+   every listing page you know who to call before you have read a word. This
+   drawer is one column, so the equivalent position is directly under the price:
+   above the description and the fifty spec rows, not below them. The CTA
+   buttons stay at the foot, dialling the same person. */
+.dagent{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-top:20px;
+  padding:15px 17px;border:1px solid var(--stone);border-left:3px solid var(--brand);
+  border-radius:var(--radius)}
+.dagent img{width:58px;height:58px;border-radius:50%;object-fit:cover;
+  flex:0 0 auto;background:var(--brand-tint)}
+/* Grows to eat the row, but collapses under the photo before the number wraps. */
+.dagent .da-id{flex:1 1 190px;min-width:0}
+.dagent .da-name{font:400 20px/1.25 var(--serif);margin-top:6px}
+.dagent .da-role{font-size:12.5px;color:var(--ink-soft);margin-top:4px;overflow-wrap:anywhere}
+.dagent .da-role a{color:inherit;text-underline-offset:2px}
+.dagent .da-role a:hover{color:var(--brand)}
+/* The number is the point of the block, so it is a target and not a line of
+   text — solid teal, 9.54:1 against its white label. */
+.dagent .tel{background:var(--brand);color:#fff;padding:13px 17px;border-radius:999px;
+  font-size:15.5px;transition:background .25s var(--ease)}
+.dagent .tel:hover{background:var(--brand-deep)}
+.dagent .tel:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+/* Once it has wrapped off the name's row it is no longer a chip beside a photo,
+   it is the card's action — so it takes the full width and becomes thumb-sized. */
+@media(max-width:520px){
+  .dagent .tel{flex:1 1 100%;text-align:center;padding:15px}
+  /* The address is too long to share a line here, and an inline separator that
+     survives the wrap leaves a "·" dangling at the end of the role. */
+  .dagent .da-role .sep{display:none}
+  .dagent .da-role a{display:block;margin-top:2px}
+}
+
 .rise{opacity:0;transform:translateY(20px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
 .rise.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
@@ -829,61 +862,61 @@ const TIPL={apartament:'Apartament',casa:'Casă / vilă',teren:'Teren',industria
 
 const L=[
  /* Proprietatea săptămânii — see WEEK further down. */
- {id:'HOUSE853',t:'Vilă de vis în zona Ghirodei',z:'Ghirodei',tx:'vanzare',tip:'casa',
+ {id:'HOUSE853',t:'Vilă de vis în zona Ghirodei',z:'Ghirodei',tx:'vanzare',tip:'casa',ag:'sorin',
   cam:8,mp:402,mpT:1980,et:'P+1E',an:2017,pret:1000000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,epc:'A',
   ph:['06075954img_1000.jpg'],
   d:'Vilă din 2017 pe un teren de 1.980 mp, într-o zonă foarte liniștită. Se vinde complet mobilată și utilată. La parter: zona de zi cu ieșire pe terasă, bucătărie, home cinema, cameră de joacă (convertibilă în birou), cameră tehnică și garaj dublu. La etaj: două dormitoare cu baie proprie, două dressinguri și, cu intrare separată, un dormitor de oaspeți.',
   hi:['Terasă cu deschidere la lac','3 dormitoare, fiecare cu baie proprie','Home cinema și cameră de joacă','Încălzire prin pardoseală și prin pereți','Carport pentru două mașini, plus garaj dublu','Teren de 1.980 mp, front 33 ml']},
 
- {id:'HOUSE935',t:'Proprietate de excepție — lux, confort și liniște',z:'Ghirodei',tx:'vanzare',tip:'casa',
+ {id:'HOUSE935',t:'Proprietate de excepție — lux, confort și liniște',z:'Ghirodei',tx:'vanzare',tip:'casa',ag:'sorin',
   cam:6,mp:360,mpT:940,et:'D+P+1E',an:2003,pret:498000,neg:'negociabil',com:'2% din suma tranzacționată',c0:false,nou:true,epc:null,
   ph:['08075104img_8167.jpg','08075001img_8160.jpg','08075021img_8165.jpg','08075038img_8166.jpg','08075135img_8169.jpg'],
   d:'Vilă construită în 2003, aproape de baza sportivă Tivoli, pe o stradă foarte liniștită. Zidărie de cărămidă de 44 cm, ferestre cu tâmplărie de stejar stratificat, pardoseli din lemn de salcâm aburit.',
   hi:['4 dormitoare, fiecare cu dressing încorporat','3 băi + baie de serviciu','Garaj și 2 locuri de parcare','Grădină cu irigare automatizată','Teren de 940 mp, front 20 ml']},
 
- {id:'HOUSE872',t:'Casă spațioasă cu piscină',z:'Lunei',tx:'vanzare',tip:'casa',
+ {id:'HOUSE872',t:'Casă spațioasă cu piscină',z:'Lunei',tx:'vanzare',tip:'casa',ag:'sorin',
   cam:5,mp:254,mpT:705,et:'P+M',an:2005,pret:439000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,epc:'B',
   ph:['03082649img_2861.jpg','03082706img_2864.jpg','03082617img_2871.jpg','03082732img_2876.jpg','03082810img_2881.jpg'],
   d:'Edificată în 2005 și renovată impecabil în 2017, retrasă de la stradă. Se vinde mobilată și utilată. Ferestre cu trei rânduri de sticlă, parchet masiv la parter, șemineu.',
   hi:['Piscină exterioară de 10 × 4 m','4 dormitoare și 4 băi','Carport pentru 3 autoturisme','Două terase acoperite','Grădină irigată automatizat, cu foraj']},
 
- {id:'HOUSE920',t:'Apartament duplex de excepție, Toscana Residence',z:'Mehala',tx:'vanzare',tip:'apartament',
+ {id:'HOUSE920',t:'Apartament duplex de excepție, Toscana Residence',z:'Mehala',tx:'vanzare',tip:'apartament',ag:'sorin',
   cam:5,mp:198,mpT:0,et:'3+M',an:2012,pret:295000,neg:'negociabil',com:'NU SE PERCEPE COMISION',c0:true,nou:true,epc:'A',
   ph:['06112940img_7127.jpg','06112812img_7113.jpg','06112842img_7120.jpg','06112903img_7121.jpg','06112919img_7123.jpg'],
   d:'Duplex pe două niveluri în ansamblul Toscana Residence. Finisaje de excepție: parchet exotic de 2 cm, pardoseli de marmură Carrara, băi placate integral cu marmură.',
   hi:['Terasă de 64 mp','3 dormitoare, fiecare cu dressing și baie','Garaj închis la demisol','Scară placată cu marmură de Carrara','Centrală Viessmann în condensație']},
 
- {id:'HOUSE324',t:'Proprietate premium în Ghiroda',z:'Ghiroda',tx:'vanzare',tip:'casa',
+ {id:'HOUSE324',t:'Proprietate premium în Ghiroda',z:'Ghiroda',tx:'vanzare',tip:'casa',ag:'sorin',
   cam:6,mp:410,mpT:0,et:'P+1E',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
   ph:['13101211img_6483.jpg'],
   d:'Proprietate premium în Ghiroda, cu birou, sufragerie, zonă de zi și bucătărie la parter, plus baie de serviciu. Confort lux, 410 mp utili.',
   hi:['6 camere, 410 mp utili','Regim de înălțime P+1E','Confort lux']},
 
- {id:'HOUSE612',t:'Teren la stradă, zona Aeroportului Internațional',z:'Aeroport',tx:'vanzare',tip:'teren',
+ {id:'HOUSE612',t:'Teren la stradă, zona Aeroportului Internațional',z:'Aeroport',tx:'vanzare',tip:'teren',ag:'sorin',
   cam:0,mp:14300,mpT:14300,et:'—',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
   ph:['25085852terenaeroport14300mp2.jpg'],
   d:'Teren situat în zona aeroportului internațional Timișoara, la stradă, pe sensul Timișoara–aeroport.',
   hi:['14.300 mp','Front stradal de 101,72 m','Un singur front, acces direct la stradă']},
 
- {id:'HOUSE948',t:'Apartament superb, tip duplex, în Piața Unirii',z:'Piața Unirii',tx:'inchiriere',tip:'apartament',
+ {id:'HOUSE948',t:'Apartament superb, tip duplex, în Piața Unirii',z:'Piața Unirii',tx:'inchiriere',tip:'apartament',ag:'sorin',
   cam:3,mp:72,mpT:0,et:'Mansardă',an:0,pret:650,neg:'negociabil',com:'80% din chiria unei luni',c0:false,nou:true,epc:null,
   ph:['07113210img_9933.jpg','07113156img_9928.jpg','07113222img_9950.jpg','07113234img_9972.jpg'],
   d:'Duplex renovat recent, într-un imobil din Piața Unirii. Primul nivel: salon de oaspeți, zonă de dining, bucătărie și baie. Etaj: living, dormitor și baie.',
   hi:['Scară interioară proprie','Două băi','Centrală termică proprie pe gaz','Aer condiționat','Bucătărie mobilată și dotată']},
 
- {id:'HOUSE941',t:'ReHabitat 56 — apartamente într-o clădire din 1900',z:'Piața Bălcescu',tx:'inchiriere',tip:'apartament',
+ {id:'HOUSE941',t:'ReHabitat 56 — apartamente într-o clădire din 1900',z:'Piața Bălcescu',tx:'inchiriere',tip:'apartament',ag:'sorin',
   cam:2,mp:53,mpT:0,et:'Parter înalt',an:1900,pret:430,neg:'preț final',com:'80% din chiria primei luni',c0:false,nou:true,epc:null,
   ph:['13133922img_8512.jpg','13133943img_8518.jpg','13134002img_8521.jpg','13134023img_8527.jpg'],
   d:'Clădire istorică din 1900, renovată exemplar de designerul Ciprian Șipoș după principii de economie circulară: pardoseli recuperate, detalii recondiționate, bolți salvate.',
   hi:['Pardoseli și materiale recuperate','Parter înalt, cu curte','Centrală termică proprie','Parchet masiv','Zidărie de cărămidă']},
 
- {id:'HOUSE841',t:'Apartament spațios în zona centrală',z:'Central',tx:'inchiriere',tip:'apartament',
+ {id:'HOUSE841',t:'Apartament spațios în zona centrală',z:'Central',tx:'inchiriere',tip:'apartament',ag:'sorin',
   cam:3,mp:99,mpT:0,et:'Etaj 3',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
   ph:['06122507img_9889.jpg'],
   d:'Apartament situat într-un imobil nou, foarte aproape de centru. Hol de acces prevăzut cu dulapuri de depozitare, confort 1.',
   hi:['99,42 mp utili','Etaj 3, imobil nou','Confort 1']},
 
- {id:'HOUSE636',t:'Hală de producție pe două niveluri',z:'Buziașului',tx:'inchiriere',tip:'industrial',
+ {id:'HOUSE636',t:'Hală de producție pe două niveluri',z:'Buziașului',tx:'inchiriere',tip:'industrial',ag:'sorin',
   cam:0,mp:4200,mpT:0,et:'P+1',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
   ph:['17094224img_0186.jpg'],
   d:'Hală de producție pe Calea Buziașului, dispusă pe două niveluri, cu 2.355 mp destinați producției la parter.',
@@ -892,19 +925,40 @@ const L=[
  /* The other two zero-commission offers. the-house.ro's own comision-0 category
     says "Sunt 3 oferte imobiliare active" and lists these alongside HOUSE920 —
     the page claimed three and showed one until they were carried over. */
- {id:'HOUSE641',t:'Apartament de lux în regim hotelier',z:'Exterior Nord',tx:'inchiriere',tip:'apartament',
+ {id:'HOUSE641',t:'Apartament de lux în regim hotelier',z:'Exterior Nord',tx:'inchiriere',tip:'apartament',ag:'sorin',
   cam:2,mp:72,mpT:0,et:'Etaj 3',an:2013,pret:105,per:'zi',neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:false,epc:null,
   ph:['31131740dsc_2929.jpg'],
   d:'Apartament de lux închiriat în regim hotelier, într-un imobil din 2013. Zonă de zi, dormitor și baie cu jacuzzi, plus terasă exterioară. În preț sunt incluse toate serviciile hoteliere și micul dejun pentru două persoane.',
   hi:['Baie cu jacuzzi','Terasă exterioară','Servicii hoteliere și mic dejun incluse','Încălzire prin pardoseală și ventiloconvectoare','Trei locuri de parcare']},
 
- {id:'HOUSE945',t:'Apartament lângă parcul Bucovina',z:'Torontalului',tx:'inchiriere',tip:'apartament',
+ {id:'HOUSE945',t:'Apartament lângă parcul Bucovina',z:'Torontalului',tx:'inchiriere',tip:'apartament',ag:'mirela',
   cam:3,mp:71,mpT:0,et:'Parter înalt',an:0,pret:390,neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:true,epc:'B',
   /* The source leaves the description field empty ("Nu au fost date detalii"),
      so this is assembled strictly from its spec table — nothing invented. */
   d:'Apartament de trei camere la parter înalt, lângă parcul Bucovina. Decomandat, 71 mp utili, două băi, centrală termică proprie și tâmplărie PVC.',
   hi:['3 camere decomandate, 71 mp utili','Două băi','Centrală termică proprie pe gaz','Parchet masiv și tâmplărie PVC','Garanție: contravaloarea unei luni; contract minim 1 an']}
 ];
+
+/* ── Consultanți ──────────────────────────────────────────────────────────
+   Who handles which offer, read off each listing's own detail page: eleven are
+   Sorin's, HOUSE945 is Mirela's. That is why `ag` is a per-listing field and
+   not one office number printed twelve times — the drawer's phone button has
+   to ring the person named above it.
+
+   Alexandru is on the roster but currently holds none of these twelve, and his
+   address is published nowhere on the source site, so `mail` is simply absent
+   rather than guessed; the drawer omits the line when it is. */
+const AG={
+  sorin:{n:'Sorin Traian Bratu',tel:'+40735444408',dial:'0735.44.44.08',
+         mail:'sorin.bratu@the-house.ro',img:'avatar-sorin-bratu.jpg'},
+  mirela:{n:'Mirela Bratu',tel:'+40735444407',dial:'0735.44.44.07',
+          mail:'mirela.bratu@the-house.ro',img:'avatar-mirela-bratu.jpg'},
+  alex:{n:'Alexandru Bratu',tel:'+40735444406',dial:'0735.44.44.06',
+        img:'avatar-alexandru-bratu.jpg'}
+};
+/* The fallback exists only so a listing added without `ag` still has a dialable
+   number; every record above carries one. */
+const agent=l=>AG[l.ag]||AG.sorin;
 
 
 /* ── Full listing spec, lifted off the-house.ro's detail pages ──────────
@@ -1141,9 +1195,29 @@ function zonaHTML(id){
     `<div class="srow"><span class="muted">${k}</span><b>${val(v)}</b></div>`).join('')}</div></div>`;
 }
 
+/* The named consultant. Decorative alt on the photo — the name is right beside
+   it — and no "sună-l / sună-o" anywhere, because the roster is mixed. */
+function agentHTML(l){
+  const a=agent(l);
+  return `
+    <div class="dagent">
+      <!-- No loading="lazy": the node only exists once the drawer is open, so
+           it is already deferred, and 2 KB should not arrive after the name. -->
+      <img src="${a.img}" alt="" width="58" height="58">
+      <div class="da-id">
+        <p class="kicker">Consultantul ofertei</p>
+        <p class="da-name">${a.n}</p>
+        <p class="da-role">Consultant imobiliar${a.mail
+          ?`<span class="sep"> · </span><a href="mailto:${a.mail}?subject=${encodeURIComponent(l.id+' — '+l.t)}">${a.mail}</a>`
+          :''}</p>
+      </div>
+      <a class="tel" href="tel:${a.tel}">${a.dial}</a>
+    </div>`;
+}
+
 function openDrawer(l){
   lastFocus=document.activeElement; cur=l; gi=0;
-  const p=ppm(l), z=ZONA[l.id]||{};
+  const p=ppm(l), z=ZONA[l.id]||{}, a=agent(l);
   $('#drawer').innerHTML=`
     <div class="dhead">
       <p class="kicker">${l.id}</p>
@@ -1156,6 +1230,7 @@ function openDrawer(l){
       <div style="display:flex;align-items:baseline;gap:14px;margin-top:18px">
         ${priceHTML(l)} ${p?`<span class="ppm">${fmt(p)} €/mp</span>`:''}
       </div>
+      ${agentHTML(l)}
       ${(z.av||z.ud)?`<div class="avail">
         ${z.av?`<div><span>Disponibilitate</span><b>${z.av}</b></div>`:''}
         ${z.ud?`<div><span>Vizionare</span><b>${z.ud}</b></div>`:''}
@@ -1174,8 +1249,8 @@ function openDrawer(l){
       ${specHTML(l.id)}
       ${zonaHTML(l.id)}
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
-        <a class="btn btn-primary" href="tel:+40735444408">Sună consultantul</a>
-        <a class="wa" href="https://wa.me/40735444408?text=${encodeURIComponent('Bună ziua, sunt interesat de '+l.id+' — '+l.t)}" rel="noopener">
+        <a class="btn btn-primary" href="tel:${a.tel}">Sună ${a.dial}</a>
+        <a class="wa" href="https://wa.me/${a.tel.slice(1)}?text=${encodeURIComponent('Bună ziua, sunt interesat de '+l.id+' — '+l.t)}" rel="noopener">
           WhatsApp despre ${l.id}</a>
       </div>
     </div>`;
