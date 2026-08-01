@@ -17,3 +17,4 @@
   from = "/the-house-2026.code-workspace"
   to = "/the-house-imobiliare-2026.html"
   status = 404
+  force = true
