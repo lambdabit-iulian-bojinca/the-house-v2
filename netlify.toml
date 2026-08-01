@@ -11,6 +11,13 @@
   to = "/the-house-imobiliare-2026.html"
   status = 200
 
+# Design "b" — brand-true rebuild. Served at /b so the two can be
+# compared side by side without either claiming the root.
+[[redirects]]
+  from = "/b"
+  to = "/the-house-imobiliare-2026-b.html"
+  status = 200
+
 # Editor config lives in the repo but has no business being on the public site.
 # (Dotfiles and netlify.toml are excluded by Netlify already; this one isn't.)
 [[redirects]]
