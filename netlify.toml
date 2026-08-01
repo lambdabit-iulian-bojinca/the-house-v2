@@ -24,7 +24,14 @@
   to = "/the-house-admin-2026.html"
   status = 200
 
-# A pitch mock has no business in a search index.
+# A pitch mock has no business in a search index. Headers match the REQUEST
+# path, not the rewritten one, so /admin needs its own rule — the file path
+# alone silently covered nothing.
+[[headers]]
+  for = "/admin"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/the-house-admin-2026.html"
   [headers.values]
