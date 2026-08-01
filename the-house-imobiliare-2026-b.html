@@ -45,7 +45,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Fraunces (display) + Inter (everything else). Jost is gone, so this is two
+     families instead of three despite the bigger typographic range: Fraunces is
+     a single variable file and Inter already has the tabular figures the prices
+     need. No &subset= parameter — CSS2 ships latin-ext via unicode-range, and
+     latin-ext is where Romanian actually lives: ș/ț are U+0218-021B (comma
+     below, NOT the Turkish cedilla) and ă is U+0102-0103. A display face
+     without that subset silently falls back mid-word on this site. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 /* ══════════════════════════════════════════════════════════════════
@@ -78,6 +85,9 @@
   --arch:50% 50% 12px 12px / 34% 34% 12px 12px;
   --ease:cubic-bezier(.16,1,.3,1);
   --wrap:1240px;
+  --serif:Fraunces,Georgia,'Times New Roman',serif;
+  /* Glass tint alpha. 0.62 is not a taste call — see the .glass comment. */
+  --glass:rgba(255,255,255,.62);
 }
 /* #F9A51A is 2.01:1 on white — it FAILS as text on light backgrounds.
    It is used only (a) on --brand/--brand-deep, (b) as a fill behind
@@ -95,8 +105,12 @@ a{color:inherit}
 
 .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:20px}
 @media(min-width:1024px){.wrap{padding-inline:32px}}
-.display{font-family:Jost,system-ui,sans-serif;font-weight:300;letter-spacing:-.02em;line-height:1.08}
-.num{font-family:Jost,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+/* Display face. line-height stays at 1.08 rather than the 1.0 a big serif
+   invites: Ă/Â/Î carry accents above and Ș/Ț commas below, so Romanian needs
+   more vertical room per line than the English mock-up would suggest. */
+.display{font-family:var(--serif);font-optical-sizing:auto;
+  font-weight:300;letter-spacing:-.012em;line-height:1.08}
+.num{font-variant-numeric:tabular-nums}
 .kicker{font:500 11px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--brand)}
 .muted{color:var(--ink-soft)}
 h1{font-size:clamp(2.6rem,6.2vw,4.9rem)}
@@ -113,7 +127,12 @@ section{padding-block:clamp(64px,8vw,104px)}
   linear-gradient(var(--amber),var(--amber));
   background-size:100% 2px,100% 5px;background-repeat:no-repeat;background-position:0 0,0 3px}
 
-/* ── Header ── */
+/* ── Header ──
+   Also glass, and it can pass over the dark bands further down the page.
+   Worst case (this tint over pure black) is grey #D1D1D1, where the --ink
+   nav links still measure 10.4:1. The lang toggle and burger keep solid
+   --paper backgrounds for the same reason the cards do: --ink-soft is
+   3.61:1 there and would fail. */
 header{position:fixed;inset-inline:0;top:0;z-index:100;background:rgba(255,255,255,.82);
   backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);
   border-bottom:1px solid transparent;transition:border-color .4s,box-shadow .4s}
@@ -149,8 +168,64 @@ nav.main{display:none;gap:30px;margin-left:8px}
 #mmenu.open{display:block}
 #mmenu a{display:block;padding:15px 0;border-bottom:1px solid var(--stone);text-decoration:none;font-size:15.5px}
 
+/* ── Glass ───────────────────────────────────────────────────────────
+   Glassmorphism is not an accessibility problem in itself. *Muted text on
+   glass* is. A translucent panel has no fixed background colour, so the
+   only honest contrast check is the two extremes — the panel composited
+   over pure black and over pure white — because every real photo pixel
+   falls between them. Measured on white at .62 alpha:
+
+     --ink        #17242B   5.92:1 worst case   ok
+     --brand-deep #0A363F   4.86:1 worst case   ok
+     --ink-soft   #5C6B72   2.06:1              never on glass
+     --brand      #0F4C5A   3.56:1              never on glass
+     --amber-ink  #8B5804   2.24:1              never on glass
+
+   Below .55 alpha even --ink fails. And note that DARK glass is the worse
+   choice, not the safer one: teal at .62 with white text is 3.46:1,
+   because over a bright photo the panel lightens toward its own text.
+   Hence the rule this file follows — light glass, full-strength ink. */
+.glass{background:var(--glass);border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 24px 54px -30px rgba(23,36,43,.55),inset 0 1px 0 rgba(255,255,255,.6)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
+}
+/* Without backdrop-filter the tint still measures 5.92:1, but an unblurred
+   photo showing through reads as a bug, so go fully opaque instead. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass{background:var(--paper)}
+}
+/* macOS/iOS "Reduce transparency", and the Windows equivalent. Honouring
+   this is what separates glass-as-taste from glass-as-accessibility-bug. */
+@media(prefers-reduced-transparency:reduce){
+  .glass,header{background:var(--paper)!important;
+    backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+/* Secondary greys are demoted *up* to a passing colour inside glass. */
+.glass .muted,.glass .kicker,.glass .ppm{color:var(--brand-deep)}
+
+/* ── Parallax ────────────────────────────────────────────────────────
+   Scroll-driven CSS, not a scroll listener: animation-timeline is handled
+   on the compositor, so it costs nothing on the main thread and can't
+   damage INP the way a JS scroll handler does. @supports means browsers
+   without it get a still image rather than a broken one. The
+   prefers-reduced-motion gate is the part that is actually required —
+   parallax is a documented vestibular trigger; the rest is taste. */
+@supports (animation-timeline:view()){
+  @media(prefers-reduced-motion:no-preference){
+    .arch img{animation:para linear both;animation-timeline:view();
+      animation-range:cover 0% cover 100%;will-change:transform}
+    .motto::before{animation:paraslow linear both;animation-timeline:view();
+      animation-range:cover 0% cover 100%}
+  }
+}
+/* scale() exceeds the travel on purpose: ±5% translate inside a 1.14 box
+   means the image can never uncover its own edge. */
+@keyframes para{from{transform:translateY(-5%) scale(1.14)}to{transform:translateY(5%) scale(1.14)}}
+@keyframes paraslow{from{transform:translateY(10%)}to{transform:translateY(-10%)}}
+
 /* ── Hero ── */
-.hero{padding-top:132px;position:relative;overflow:hidden;background:
+.hero{padding-top:132px;position:relative;overflow:hidden;overflow:clip;background:
   linear-gradient(180deg,#fff 0%,var(--plaster) 70%)}
 .hero-grid{display:grid;gap:52px;align-items:center}
 @media(min-width:1024px){.hero{padding-top:158px}.hero-grid{grid-template-columns:1.04fr .96fr;gap:60px}}
@@ -167,14 +242,19 @@ nav.main{display:none;gap:30px;margin-left:8px}
 .stats>div{padding-inline:22px}
 .stats>div:first-child{padding-left:0}
 .stats>div+div{border-left:1px solid var(--stone)}
-.stats b{display:block;font:300 30px/1 Jost,sans-serif;font-variant-numeric:tabular-nums}
+.stats b{display:block;font:300 34px/1.05 var(--serif);font-variant-numeric:tabular-nums}
 .stats span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:7px;line-height:1.35}
 
 /* Segmental arch — the Secession/Habsburg window profile, the single
    most transferable idea from the benchmark set: local architectural
    vernacular as brand, not another generic luxury template. */
 .archframe{position:relative}
-.arch{position:relative;overflow:hidden;border-radius:var(--arch);background:var(--brand-deep);aspect-ratio:4/4.7}
+/* overflow:clip, not hidden — see the parallax note above: `hidden` makes
+   this box a scroll container, and view() would then bind to it and freeze.
+   The `hidden` line before it is the Safari <16 fallback: those browsers drop
+   the `clip` declaration and keep `hidden`, which is exactly right, because
+   they have no view() to freeze in the first place. Same pair on .hero/.motto. */
+.arch{position:relative;overflow:hidden;overflow:clip;border-radius:var(--arch);background:var(--brand-deep);aspect-ratio:4/4.7}
 .arch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
 .arch:hover img{transform:scale(1.04)}
 .arch::after{content:'';position:absolute;inset:0;border-radius:var(--arch);
@@ -184,8 +264,13 @@ nav.main{display:none;gap:30px;margin-left:8px}
 .archframe::before{content:'';position:absolute;inset:-14px;border:1px solid var(--brand);
   border-radius:var(--arch);opacity:.3;pointer-events:none}
 @media(max-width:640px){.archframe::before{display:none}}
-.hero-card{position:absolute;left:-14px;bottom:26px;width:232px;background:var(--paper);
-  border:1px solid var(--stone);border-radius:var(--radius);padding:18px;box-shadow:0 24px 54px -30px rgba(23,36,43,.5)}
+/* Sits further onto the photo than a solid card could — that overlap is
+   the whole point of the glass, and .glass supplies the surface. */
+.hero-card{position:absolute;left:-24px;bottom:30px;width:250px;
+  border-radius:var(--radius);padding:18px}
+/* On phones the negative offset would hang past the viewport edge, so the
+   card tucks inside the gutter instead. */
+@media(max-width:640px){.hero-card{left:0;bottom:20px}}
 
 /* ── Search console ── */
 .console{background:var(--paper);border:1px solid var(--stone);border-radius:18px;
@@ -225,7 +310,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   background:var(--amber);color:var(--ink);font:600 11px/1 Inter,sans-serif;letter-spacing:.05em;
   padding:7px 11px;border-radius:999px}
 .badge.plain{background:rgba(255,255,255,.94);color:var(--ink)}
-.price{font:500 21px/1 Jost,sans-serif;font-variant-numeric:tabular-nums}
+.price{font:600 20px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 /* €/m² — a baseline expectation on Storia/Imobiliare.ro, absent from design "a" */
 .ppm{font:500 12px/1 Inter,sans-serif;color:var(--amber-ink);margin-top:5px}
 .specs{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
@@ -247,6 +332,27 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .dark .muted{color:rgba(255,255,255,.72)}
 .dark .rule::before{background:var(--amber)}
 
+/* ── Motto ───────────────────────────────────────────────────────────
+   The agency's own line, set as the largest type on the page. It sits
+   directly after the grid because that is where a visitor thinks "only
+   sixty-two?" — the motto is the answer, so it belongs there and not in
+   a footer where mottos go to die. */
+.motto{background:var(--brand-deep);color:#fff;position:relative;overflow:hidden;overflow:clip}
+.motto .kicker{color:var(--amber)}
+.motto .rule::before{background:var(--amber)}
+/* Arch outline echoing the hero, drifting on the scroll timeline. Purely
+   decorative, so it carries no text and no contrast obligation. */
+/* Anchored to the bottom so the crown always lands inside the band and it
+   reads as an arched window rising out of it; only the sill is clipped.
+   Anchoring to the top instead pushed the curve off-screen and left a bare
+   vertical line, which looked like a stray border. */
+.motto::before{content:'';position:absolute;right:7%;bottom:-20%;width:min(30vw,330px);
+  aspect-ratio:4/5.6;border:1px solid rgba(249,165,26,.34);border-radius:var(--arch);pointer-events:none}
+@media(max-width:900px){.motto::before{opacity:.45;right:-14%}}
+.mottoq{margin-top:24px;max-width:19ch;font-size:clamp(2.1rem,4.8vw,3.6rem);font-weight:300}
+.mottoq em{font-style:normal;color:var(--amber)}   /* 6.47:1 on this ground */
+.mottosub{margin-top:28px;max-width:54ch;color:#BFD0D4;font-size:16.5px;line-height:1.72}
+
 .zonelist{display:flex;flex-wrap:wrap;gap:10px}
 .zonechip{border:1px solid var(--stone);background:var(--paper);border-radius:999px;padding:11px 20px;
   font-size:14px;cursor:pointer;transition:.22s}
@@ -256,7 +362,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 @media(min-width:768px){.svc{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1100px){.svc{grid-template-columns:repeat(4,1fr)}}
 .svc>div{padding-top:22px;border-top:2px solid var(--amber)}
-.svc h3{font:500 18px/1.3 Jost,sans-serif;margin-bottom:10px}
+.svc h3{font:400 20px/1.3 var(--serif);margin-bottom:10px}
 
 /* ── Team ── */
 .team{display:grid;gap:52px;align-items:center}
@@ -267,9 +373,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .who{display:flex;align-items:center;gap:15px;min-width:0}
 .who img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:0 0 auto;
   border:1px solid var(--stone)}
-.who p{font:400 18px/1.25 Jost,sans-serif}
+.who p{font:400 19px/1.25 var(--serif)}
 .who span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px}
-.tel{font:500 16px/1 Jost,sans-serif;font-variant-numeric:tabular-nums;text-decoration:none;white-space:nowrap}
+.tel{font:500 16px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;text-decoration:none;white-space:nowrap}
 .tel:hover{color:var(--brand)}
 .wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#0B2E17;
   font:600 13.5px/1 Inter,sans-serif;padding:11px 17px;border-radius:9px;text-decoration:none}
@@ -395,9 +501,9 @@ footer a:hover{color:#fff}
         <div class="arch">
           <img src="https://www.the-house.ro/files/images/08075104img_8167.jpg" alt="Vilă de vânzare în zona Ghirodei, Timișoara" referrerpolicy="no-referrer" fetchpriority="high" width="900" height="1058" onerror="this.style.opacity=0">
         </div>
-        <div class="hero-card">
+        <div class="hero-card glass">
           <p class="kicker" data-ro="Proprietatea săptămânii" data-en="Property of the week">Proprietatea săptămânii</p>
-          <p style="font:400 18px/1.3 Jost,sans-serif;margin-top:9px">Vilă în zona Ghirodei</p>
+          <p style="font:400 19px/1.3 var(--serif);margin-top:9px">Vilă în zona Ghirodei</p>
           <p class="muted" style="font-size:12.5px;margin-top:5px">360 mp utili · teren 940 mp</p>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--stone)">
             <span class="price">498.000 €</span>
@@ -463,6 +569,18 @@ footer a:hover{color:#fff}
     </div>
     <div class="grid" id="grid"></div>
     <p id="empty" class="muted" style="display:none;text-align:center;padding:52px 0" data-ro="Nicio proprietate nu corespunde filtrelor. Încearcă un buget mai mare sau altă zonă." data-en="No property matches these filters. Try a wider budget or another area.">Nicio proprietate nu corespunde filtrelor.</p>
+  </div>
+</section>
+
+<!-- ══ MOTTO ══ -->
+<section class="motto">
+  <div class="wrap">
+    <p class="kicker rule" data-ro="Principiul casei" data-en="The house principle">Principiul casei</p>
+    <p class="mottoq display rise">
+      <span data-ro="Pentru noi calitatea este mai importantă decât" data-en="For us, quality matters more than">Pentru noi calitatea este mai importantă decât</span>
+      <em data-ro="cantitatea" data-en="quantity">cantitatea</em>
+    </p>
+    <p class="mottosub rise" data-ro="Șaizeci și două de oferte, nu șase sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba." data-en="Sixty-two listings, not six hundred. Every property is seen by one of us before it goes online — which is why the list grows slowly, and why we never send you to a viewing for nothing.">Șaizeci și două de oferte, nu șase sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba.</p>
   </div>
 </section>
 
@@ -729,7 +847,7 @@ function card(l){
       ${l.c0?`<span class="badge">Comision 0%</span>`:l.nou?`<span class="badge plain">Nou</span>`:''}
     </div>
     <div class="cbody">
-      <p style="font:400 17px/1.35 Jost,sans-serif">${l.t}</p>
+      <p style="font:400 19px/1.35 var(--serif)">${l.t}</p>
       <p class="muted" style="font-size:13px;margin-top:6px">${TIPL[l.tip]} · ${l.z}</p>
       <div class="specs">
         ${l.cam?`<span class="spec">${l.cam} camere</span>`:''}
