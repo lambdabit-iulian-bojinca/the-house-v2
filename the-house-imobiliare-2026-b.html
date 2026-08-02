@@ -581,14 +581,24 @@ footer a:hover{color:#fff}
           <em data-ro="casa perfectă" data-en="the perfect home">casa perfectă</em>
           <span data-ro="în Timișoara" data-en="in Timișoara">în Timișoara</span>
         </h1>
-        <p class="lede rise" data-ro="Șaizeci și două de proprietăți active în Timișoara și pe o rază de cincisprezece kilometri. Vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale." data-en="Sixty-two active properties in Timișoara and within fifteen kilometres. Villas in Ghiroda and Lunei, apartments in heritage buildings on Piața Unirii and Bălcescu, land and industrial space.">Șaizeci și două de proprietăți active în Timișoara și pe o rază de cincisprezece kilometri. Vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale.</p>
+        <!-- Fără număr de oferte: portofoliul se mișcă, textul nu. Geografia și
+             tipurile de proprietăți spun același lucru și rămân adevărate. -->
+        <p class="lede rise" data-ro="Proprietăți în Timișoara și pe o rază de cincisprezece kilometri: vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale." data-en="Properties in Timișoara and within fifteen kilometres: villas in Ghiroda and Lunei, apartments in heritage buildings on Piața Unirii and Bălcescu, land and industrial space.">Proprietăți în Timișoara și pe o rază de cincisprezece kilometri: vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale.</p>
         <div class="hero-cta rise">
           <a class="btn btn-primary" href="#proprietati" data-ro="Vezi proprietățile" data-en="Browse properties">Vezi proprietățile</a>
           <a class="btn btn-ghost" href="#echipa" data-ro="Vorbește cu un consultant" data-en="Talk to a consultant">Vorbește cu un consultant</a>
         </div>
         <div class="stats rise">
           <div><b class="num">16</b><span data-ro="ani pe piața locală" data-en="years in this market">ani pe piața locală</span></div>
-          <div><b class="num">62</b><span data-ro="oferte active azi" data-en="live listings today">oferte active azi</span></div>
+          <!-- Aici a stat „62 — oferte active azi": o cifră scrisă de mână care
+               pretindea că este de azi. Numărul de oferte se schimbă săptămânal;
+               echipa nu s-a schimbat în șaisprezece ani. Se scrie din AG, ca să
+               nu poată ajunge să contrazică lista de consultanți. -->
+          <!-- Eticheta rămâne o sintagmă scurtă, ca celelalte două: coloana are
+               72px pe telefon, iar „nu un call-center" se rupea în trei rânduri,
+               cu cratimă la capăt de rând. Argumentul stă oricum în secțiunea
+               Echipa, unde are loc să respire. -->
+          <div><b class="num" id="agN">3</b><span data-ro="consultanți în echipă" data-en="consultants on the team">consultanți în echipă</span></div>
           <div><b class="num" id="c0n" style="color:var(--brand)">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
         </div>
       </div>
@@ -672,7 +682,10 @@ footer a:hover{color:#fff}
       <span data-ro="Pentru noi calitatea este mai importantă decât" data-en="For us, quality matters more than">Pentru noi calitatea este mai importantă decât</span>
       <em data-ro="cantitatea" data-en="quantity">cantitatea</em>
     </p>
-    <p class="mottosub rise" data-ro="Șaizeci și două de oferte, nu șase sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba." data-en="Sixty-two listings, not six hundred. Every property is seen by one of us before it goes online — which is why the list grows slowly, and why we never send you to a viewing for nothing.">Șaizeci și două de oferte, nu șase sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba.</p>
+    <!-- „Zeci … nu sute" păstrează contrastul, dar rămâne adevărat de la
+         patruzeci de oferte la nouăzeci. Cifra exactă era scrisă de mână în
+         patru șiruri, în două limbi, și derivase deja. -->
+    <p class="mottosub rise" data-ro="Zeci de oferte, nu sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba." data-en="Dozens of listings, not hundreds. Every property is seen by one of us before it goes online — which is why the list grows slowly, and why we never send you to a viewing for nothing.">Zeci de oferte, nu sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba.</p>
   </div>
 </section>
 
@@ -1112,6 +1125,9 @@ c0h.dataset.en=`${WORD.en[n0]||n0} propert${n0===1?'y':'ies'} where you pay no f
 c0h.textContent=c0h.dataset.ro;
 $('#c0n').textContent=n0;
 $('#c0grid').replaceChildren(...c0.map(card));
+
+/* Statul din hero, scris din rosterul de consultanți — vezi AG. */
+$('#agN').textContent=Object.keys(AG).length;
 
 $('#fZona').addEventListener('change',e=>{S.zona=e.target.value;apply()});
 $('#fTip').addEventListener('change',e=>{S.tip=e.target.value;apply()});
