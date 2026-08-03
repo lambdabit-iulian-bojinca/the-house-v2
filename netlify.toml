@@ -18,6 +18,14 @@
   to = "/the-house-imobiliare-2026-b.html"
   status = 200
 
+# Design "c" — design "b" with a photographic header. Same rule as /b: it gets
+# its own path rather than replacing anything, so the three can be shown in
+# sequence during the pitch.
+[[redirects]]
+  from = "/c"
+  to = "/the-house-imobiliare-2026-c.html"
+  status = 200
+
 # Redesign of the CMS listings screen, for the pitch. Real data, no back-end.
 [[redirects]]
   from = "/admin"

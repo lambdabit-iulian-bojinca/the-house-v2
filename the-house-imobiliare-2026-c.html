@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE HOUSE Imobiliare — Proprietăți în Timișoara din 2010</title>
+<meta name="description" content="Agenție de familie din Timișoara. Proprietăți văzute de noi înainte să ajungă pe site: vile, apartamente în clădiri de patrimoniu, terenuri și spații industriale.">
+<link rel="canonical" href="https://the-house-2026.netlify.app/c">
+
+<!-- The hero photograph is the largest thing above the fold, so it is the LCP
+     candidate and must not wait for the CSS to be parsed before it is asked
+     for. The two media queries are the exact complement of the <picture>
+     sources below — a preload that does not match a source is a wasted
+     download, not a speed-up. Browsers that cannot decode AVIF skip both
+     because of `type`, and fall back to the JPEG the normal way. -->
+<link rel="preload" as="image" href="hero-piata-unirii-1200.avif" type="image/avif" media="(max-width:900px)">
+<link rel="preload" as="image" href="hero-piata-unirii-2400.avif" type="image/avif" media="(min-width:901px)">
+<!-- Inline SVG favicon: the segmental arch in brand teal/amber. Kills the
+     automatic /favicon.ico 404 without adding a request. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F4C5A'/%3E%3Cpath d='M10 25V15a6 6 0 0 1 12 0v10' fill='none' stroke='%23F9A51A' stroke-width='3'/%3E%3C/svg%3E">
+
+<!-- Structured data: required for rich results and for inclusion in AI answers. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "THE HOUSE Imobiliare",
+  "legalName": "SC BRATU THE HOUSE SRL",
+  "url": "https://www.the-house.ro/",
+  "telephone": "+40735444408",
+  "email": "office@the-house.ro",
+  "foundingDate": "2010",
+  "areaServed": { "@type": "City", "name": "Timișoara" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bd. Revoluției din 1989, nr. 8, cam. 111",
+    "addressLocality": "Timișoara",
+    "addressRegion": "Timiș",
+    "addressCountry": "RO"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 45.764656, "longitude": 21.246999 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "09:00", "closes": "17:00"
+  }],
+  "employee": [
+    { "@type": "RealEstateAgent", "name": "Sorin Traian Bratu", "telephone": "+40735444408", "email": "sorin.bratu@the-house.ro" },
+    { "@type": "RealEstateAgent", "name": "Mirela Bratu", "telephone": "+40735444407", "email": "mirela.bratu@the-house.ro" },
+    { "@type": "RealEstateAgent", "name": "Alexandru Bratu", "telephone": "+40735444406" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fraunces (display) + Inter (everything else). Jost is gone, so this is two
+     families instead of three despite the bigger typographic range: Fraunces is
+     a single variable file and Inter already has the tabular figures the prices
+     need. No &subset= parameter — CSS2 ships latin-ext via unicode-range, and
+     latin-ext is where Romanian actually lives: ș/ț are U+0218-021B (comma
+     below, NOT the Turkish cedilla) and ă is U+0102-0103. A display face
+     without that subset silently falls back mid-word on this site. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   THE HOUSE — design system "b"
+
+   Palette is NOT invented: #0F4C5A and #F9A51A were decoded straight
+   out of the agency logo PNG (5,445 opaque pixels; the teal is 95% of
+   them). Every pair below is checked against WCAG 2.1 AA — the ratios
+   in the comments are measured, not estimated.
+
+   Neutrals are warm (plaster/stone) rather than the cool slate greys
+   of design "a": Timișoara's Secession facades are lime-plaster and
+   sandstone, and warm neutrals sit under the teal without going
+   corporate-tech.
+   ══════════════════════════════════════════════════════════════════ */
+:root{
+  --brand:#0F4C5A;        /* logo teal   — 9.54:1 on paper (AAA)  */
+  --brand-deep:#0A363F;   /* hovers, footer                       */
+  --brand-tint:#E8F0F2;   /* pale wash                            */
+  --amber:#F9A51A;        /* logo amber  — accent ONLY, see below  */
+  --amber-ink:#8B5804;    /* darkened amber — 6.01:1 on paper (AA) */
+  --ink:#17242B;          /* 15.87:1 on paper (AAA)                */
+  --ink-soft:#5C6B72;     /* 5.52:1 on paper (AA)                  */
+  --paper:#FFFFFF;
+  --plaster:#F7F4EF;      /* warm section wash                     */
+  --stone:#E7E0D6;        /* warm hairline                         */
+  --radius:14px;
+  /* Percentages so the arch keeps its curve at any width — fixed px
+     radii flatten into a rounded rectangle as the element grows. */
+  --arch:50% 50% 12px 12px / 34% 34% 12px 12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:1240px;
+  --serif:Fraunces,Georgia,'Times New Roman',serif;
+  /* Glass tint alpha. 0.62 is not a taste call — see the .glass comment. */
+  --glass:rgba(255,255,255,.62);
+}
+/* #F9A51A is 2.01:1 on white — it FAILS as text on light backgrounds.
+   It is used only (a) on --brand/--brand-deep, (b) as a fill behind
+   --ink text, (c) as a non-informational rule. --amber-ink is the
+   text-safe substitute. */
+
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.6 Inter,system-ui,-apple-system,sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--brand);color:#fff}
+:focus-visible{outline:3px solid var(--amber-ink);outline-offset:3px;border-radius:3px}
+
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:20px}
+@media(min-width:1024px){.wrap{padding-inline:32px}}
+/* Display face. line-height stays at 1.08 rather than the 1.0 a big serif
+   invites: Ă/Â/Î carry accents above and Ș/Ț commas below, so Romanian needs
+   more vertical room per line than the English mock-up would suggest. */
+.display{font-family:var(--serif);font-optical-sizing:auto;
+  font-weight:300;letter-spacing:-.012em;line-height:1.08}
+.num{font-variant-numeric:tabular-nums}
+.kicker{font:500 11px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--brand)}
+.muted{color:var(--ink-soft)}
+h1{font-size:clamp(2.6rem,6.2vw,4.9rem)}
+h2{font-size:clamp(1.95rem,3.9vw,2.8rem)}
+section{padding-block:clamp(64px,8vw,104px)}
+
+/* Skip link — first tab stop, per WCAG 2.4.1 */
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--brand);color:#fff;padding:14px 22px;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+/* ── Secession banding: a period motif used as a structural rule ── */
+.band{height:5px;background:
+  repeating-linear-gradient(90deg,var(--brand) 0 14px,transparent 14px 22px),
+  linear-gradient(var(--amber),var(--amber));
+  background-size:100% 2px,100% 5px;background-repeat:no-repeat;background-position:0 0,0 3px}
+
+/* ── Header ──
+   Also glass, and it can pass over the dark bands further down the page.
+   Worst case (this tint over pure black) is grey #D1D1D1, where the --ink
+   nav links still measure 10.4:1. The lang toggle and burger keep solid
+   --paper backgrounds for the same reason the cards do: --ink-soft is
+   3.61:1 there and would fail. */
+header{position:fixed;inset-inline:0;top:0;z-index:100;background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);
+  border-bottom:1px solid transparent;transition:border-color .4s,box-shadow .4s}
+header.solid{border-bottom-color:var(--stone);box-shadow:0 1px 26px -14px rgba(23,36,43,.3)}
+.hrow{display:flex;align-items:center;gap:28px;padding-block:14px}
+.hrow img{height:42px;width:auto}
+nav.main{display:none;gap:30px;margin-left:8px}
+@media(min-width:1080px){nav.main{display:flex}}
+.navlink{position:relative;font-size:14.5px;text-decoration:none;padding-block:5px}
+.navlink::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--amber);transition:width .35s var(--ease)}
+.navlink:hover::after,.navlink:focus-visible::after{width:100%}
+.hactions{display:flex;align-items:center;gap:10px;margin-left:auto}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;cursor:pointer;
+  font:500 14.5px/1 Inter,sans-serif;padding:14px 24px;border-radius:10px;text-decoration:none;transition:.25s var(--ease)}
+.btn-primary{background:var(--brand);color:#fff}              /* 9.54:1 AAA */
+.btn-primary:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.btn-amber{background:var(--amber);color:var(--ink)}          /* 7.88:1 AAA */
+.btn-amber:hover{filter:brightness(.94);transform:translateY(-1px)}
+.btn-ghost{background:var(--paper);color:var(--ink);border:1px solid var(--stone)}
+.btn-ghost:hover{border-color:var(--brand)}
+.btn-sm{padding:10px 16px;font-size:13.5px}
+
+.langtog{display:flex;border:1px solid var(--stone);border-radius:8px;overflow:hidden}
+.langtog button{border:0;background:var(--paper);color:var(--ink-soft);font:500 12.5px/1 Inter,sans-serif;
+  padding:9px 11px;cursor:pointer;transition:.2s}
+.langtog button[aria-pressed="true"]{background:var(--brand);color:#fff}
+
+.burger{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--stone);
+  border-radius:9px;background:var(--paper);cursor:pointer}
+@media(min-width:1080px){.burger{display:none}}
+#mmenu{display:none;border-top:1px solid var(--stone);background:var(--paper)}
+#mmenu.open{display:block}
+#mmenu a{display:block;padding:15px 0;border-bottom:1px solid var(--stone);text-decoration:none;font-size:15.5px}
+
+/* ── Glass ───────────────────────────────────────────────────────────
+   Glassmorphism is not an accessibility problem in itself. *Muted text on
+   glass* is. A translucent panel has no fixed background colour, so the
+   only honest contrast check is the two extremes — the panel composited
+   over pure black and over pure white — because every real photo pixel
+   falls between them. Measured on white at .62 alpha:
+
+     --ink        #17242B   5.92:1 worst case   ok
+     --brand-deep #0A363F   4.86:1 worst case   ok
+     --ink-soft   #5C6B72   2.06:1              never on glass
+     --brand      #0F4C5A   3.56:1              never on glass
+     --amber-ink  #8B5804   2.24:1              never on glass
+
+   Below .55 alpha even --ink fails. And note that DARK glass is the worse
+   choice, not the safer one: teal at .62 with white text is 3.46:1,
+   because over a bright photo the panel lightens toward its own text.
+   Hence the rule this file follows — light glass, full-strength ink. */
+.glass{background:var(--glass);border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 24px 54px -30px rgba(23,36,43,.55),inset 0 1px 0 rgba(255,255,255,.6)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass{backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
+}
+/* Without backdrop-filter the tint still measures 5.92:1, but an unblurred
+   photo showing through reads as a bug, so go fully opaque instead. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass{background:var(--paper)}
+}
+/* macOS/iOS "Reduce transparency", and the Windows equivalent. Honouring
+   this is what separates glass-as-taste from glass-as-accessibility-bug. */
+@media(prefers-reduced-transparency:reduce){
+  .glass,header,.dhead,.galnav{background:var(--paper)!important;
+    backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .galnav{border:1px solid var(--stone)}
+}
+/* Secondary greys are demoted *up* to a passing colour inside glass. */
+.glass .muted,.glass .kicker,.glass .ppm{color:var(--brand-deep)}
+
+/* ── Parallax ────────────────────────────────────────────────────────
+   Scroll-driven CSS, not a scroll listener: animation-timeline is handled
+   on the compositor, so it costs nothing on the main thread and can't
+   damage INP the way a JS scroll handler does. @supports means browsers
+   without it get a still image rather than a broken one. The
+   prefers-reduced-motion gate is the part that is actually required —
+   parallax is a documented vestibular trigger; the rest is taste. */
+@supports (animation-timeline:view()){
+  @media(prefers-reduced-motion:no-preference){
+    .arch img{animation:para linear both;animation-timeline:view();
+      animation-range:cover 0% cover 100%;will-change:transform}
+    .motto::before{animation:paraslow linear both;animation-timeline:view();
+      animation-range:cover 0% cover 100%}
+  }
+}
+/* scale() exceeds the travel on purpose: ±5% translate inside a 1.14 box
+   means the image can never uncover its own edge. */
+@keyframes para{from{transform:translateY(-5%) scale(1.14)}to{transform:translateY(5%) scale(1.14)}}
+@keyframes paraslow{from{transform:translateY(10%)}to{transform:translateY(-10%)}}
+
+/* Fotografia din hero se mișcă pe scroll(), nu pe view(), pentru că este
+   deja pe ecran la încărcare: un view() timeline ar începe animația din
+   mijlocul ei, iar primul cadru pe care îl vede vizitatorul ar fi decalat.
+   scroll() pornește de la zero, adică exact de unde pornește și pagina.
+   Aceleași două porți ca mai sus — @supports pentru browserele fără
+   scroll-driven animations, prefers-reduced-motion pentru că paralaxa
+   este un declanșator vestibular documentat. */
+@supports (animation-timeline:scroll()){
+  @media(prefers-reduced-motion:no-preference){
+    .herobg img{animation:herodrift linear both;animation-timeline:scroll();
+      animation-range:0 100vh;will-change:transform}
+  }
+}
+/* Aceeași aritmetică ca la `para`: ±3% în interiorul unei cutii de 1.12
+   înseamnă că imaginea nu-și poate descoperi propria margine. */
+@keyframes herodrift{from{transform:translateY(-3%) scale(1.12)}to{transform:translateY(3%) scale(1.12)}}
+
+/* ── Hero ── */
+/* The gradient stays as the base layer, not as decoration: it is what the
+   section looks like if the photograph 404s, fails to decode, or is still
+   in flight. Nothing below assumes the image arrived. */
+.hero{padding-top:132px;position:relative;overflow:hidden;overflow:clip;background:
+  linear-gradient(180deg,#fff 0%,var(--plaster) 70%)}
+.hero-grid{display:grid;gap:52px;align-items:center}
+@media(min-width:1024px){.hero{padding-top:158px}.hero-grid{grid-template-columns:1.04fr .96fr;gap:60px}}
+
+/* ── Fotografia din hero ─────────────────────────────────────────────
+   Piața Unirii — exact clădirile pe care le numește lede-ul de deasupra.
+   Fotografie liberă (CC BY 4.0), găzduită local, creditată în subsol.
+
+   De ce bandă jos și nu fundal pe toată secțiunea. Sursa este o panoramă
+   de 2400×1097, raport 2,19. Hero-ul, pe un laptop, este aproximativ
+   1440×1100, adică raport 1,31. Un `cover` peste toată secțiunea ar tăia
+   aproape jumătate din lățimea panoramei și ar mări restul până când
+   fațadele devin pastă — se pierde exact lucrul pentru care a fost aleasă
+   fotografia, șirul de fronturi. Iar dedesubt ar trebui apoi un văl atât
+   de dens încât textul să reziste, și atunci imaginea nu se mai vede
+   deloc: plătești 167 KB pentru o fantomă.
+
+   Banda de jos rezolvă ambele. Este lată și joasă, ca panorama, deci
+   imaginea intră aproape nemodificată; și ocupă fâșia în care hero-ul nu
+   are oricum niciun cuvânt, așa că nu există text peste care să se pună
+   un văl. Consola de căutare urcă peste ea cu -58px și o taie exact cum
+   taie o carte de vizită o fotografie. */
+.herobg{position:absolute;inset:auto 0 0 0;height:var(--band);display:block;
+  pointer-events:none;overflow:hidden;
+  /* Culoarea de sub imagine cât timp se descarcă: fără ea, primul cadru
+     este alb și fotografia „sare" în pagină când sosește. */
+  background:var(--plaster)}
+.herobg img{width:100%;height:100%;object-fit:cover;object-position:50% 42%;
+  /* Desaturată pentru că fațadele sunt galben, roșu și verde-mentă — la
+     saturație plină se bat cap în cap cu ambra din logo și cu fotografiile
+     proprietăților. Aici trebuie să fie fundal, nu subiect. */
+  filter:saturate(.62) contrast(1.02)}
+/* Muchia de sus a benzii nu are voie să se vadă ca o dungă: pornește din
+   exact culoarea în care se termină gradientul secțiunii și se stinge în
+   circa o treime din înălțime. Restul rămâne aproape neatins — acolo se
+   uită omul. Jos revine un pic de alb, ca fotografia să nu concureze cu
+   consola care stă peste ea. */
+/* Ambele muchii ale benzii trebuie să dispară, nu să se termine.
+   Sus: pornește exact din culoarea în care se stinge gradientul secțiunii
+   (--plaster la 70%), deci nu există prag.
+   Jos: consola urcă 58px peste bandă și îi acoperă mijlocul, dar are numai
+   1240px lățime — pe un ecran lat rămân două culoare în care fotografia se
+   termina tăiat, cu clădirile retezate în linie dreaptă. Ultimii 14% se
+   sting în --paper, adică exact fundalul paginii de dedesubt. */
+.herobg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,
+  var(--plaster) 0%,rgba(247,244,239,.86) 10%,rgba(250,248,244,.42) 26%,
+  rgba(255,255,255,.12) 52%,rgba(255,255,255,.22) 78%,
+  rgba(255,255,255,.62) 92%,var(--paper) 100%)}
+/* Conținutul trece peste bandă. Fără asta .wrap este static, iar stratul
+   absolut ar acoperi partea de jos a statisticilor. */
+.hero>.wrap{position:relative;z-index:1}
+
+/* Spațiul în care trăiește banda, și singura regulă care ține contrastul.
+   Prima versiune avea padding-ul scris de mână, iar pe două coloane banda
+   urca 71–85px peste rândul de statistici: „consultanți în echipă" ajungea
+   la 2,61:1 pe o fereastră din fotografie, adică sub AA. Nu se vedea cu
+   ochiul — de aceea este măsurat, nu apreciat.
+
+   Legarea padding-ului de --band face garanția structurală: banda începe
+   întotdeauna sub ultimul rând de text, oricât ar fi de înaltă și
+   indiferent ce fotografie stă în ea. Dacă cineva mărește banda mâine,
+   spațiul crește cu ea; nu există combinație în care textul să ajungă
+   deasupra fotografiei. Alternativa — un văl mai opac sus — ar fi legat
+   lizibilitatea de ce pixeli se nimeresc acolo, ceea ce nu este o
+   garanție, este un noroc. */
+.hero{--band:300px;padding-bottom:calc(var(--band) + 22px)}
+@media(min-width:1024px){.hero{--band:340px}}
+/* Pusă de onerror-ul imaginii — vezi nota din markup. */
+.hero.nobg{--band:0px}
+.hero.nobg .herobg{display:none}
+.hero h1{margin-top:24px}
+/* Underline as a background on the inline box: it paints behind the
+   glyphs with no stacking-context games. The previous ::after used
+   z-index:-1, which dropped it behind the hero background entirely. */
+.hero h1 em{font-style:normal;white-space:nowrap;
+  background-image:linear-gradient(var(--amber),var(--amber));
+  background-repeat:no-repeat;background-size:100% 6px;background-position:0 92%}
+.lede{margin-top:26px;font-size:17px;line-height:1.75;max-width:52ch;color:var(--ink-soft)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);max-width:520px;margin-top:44px}
+.stats>div{padding-inline:22px}
+.stats>div:first-child{padding-left:0}
+.stats>div+div{border-left:1px solid var(--stone)}
+.stats b{display:block;font:300 34px/1.05 var(--serif);font-variant-numeric:tabular-nums}
+.stats span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:7px;line-height:1.35}
+
+/* Segmental arch — the Secession/Habsburg window profile, the single
+   most transferable idea from the benchmark set: local architectural
+   vernacular as brand, not another generic luxury template. */
+.archframe{position:relative}
+/* overflow:clip, not hidden — see the parallax note above: `hidden` makes
+   this box a scroll container, and view() would then bind to it and freeze.
+   The `hidden` line before it is the Safari <16 fallback: those browsers drop
+   the `clip` declaration and keep `hidden`, which is exactly right, because
+   they have no view() to freeze in the first place. Same pair on .hero/.motto. */
+.arch{position:relative;overflow:hidden;overflow:clip;border-radius:var(--arch);background:var(--brand-deep);aspect-ratio:4/4.7}
+.arch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.arch:hover img{transform:scale(1.04)}
+.arch::after{content:'';position:absolute;inset:0;border-radius:var(--arch);
+  background:linear-gradient(to top,rgba(10,54,63,.55),transparent 55%);pointer-events:none}
+/* Offset outline echoing the arch; percentages resolve against this
+   box, so it tracks the shape automatically. */
+.archframe::before{content:'';position:absolute;inset:-14px;border:1px solid var(--brand);
+  border-radius:var(--arch);opacity:.3;pointer-events:none}
+@media(max-width:640px){.archframe::before{display:none}}
+/* Sits further onto the photo than a solid card could — that overlap is
+   the whole point of the glass, and .glass supplies the surface. */
+.hero-card{position:absolute;left:-24px;bottom:30px;width:250px;
+  border-radius:var(--radius);padding:18px;
+  /* Button reset — .glass already supplies border, background and shadow. */
+  font:inherit;color:inherit;text-align:left;cursor:pointer;display:block;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.hero-card:hover{transform:translateY(-3px)}
+.hero-card:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.hero-card .kicker{display:block}
+.hero-card .wk{display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--stone)}
+/* The affordance. Without it the card reads as a caption, not a control. */
+.hero-card .go{margin-top:12px;font:500 12px/1 Inter,sans-serif;color:var(--brand-deep);
+  display:flex;align-items:center;gap:6px}
+.hero-card .go em{font-style:normal;transition:transform .3s var(--ease)}
+.hero-card:hover .go em{transform:translateX(3px)}
+/* On phones the negative offset would hang past the viewport edge, so the
+   card tucks inside the gutter instead. */
+@media(max-width:640px){.hero-card{left:0;bottom:20px}}
+
+/* ── Search console ── */
+.console{background:var(--paper);border:1px solid var(--stone);border-radius:18px;
+  box-shadow:0 36px 84px -54px rgba(23,36,43,.6);margin-top:-58px;position:relative;z-index:20}
+.console-top{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;padding:22px 24px 0}
+.tabs{display:inline-flex;gap:3px;background:var(--plaster);border:1px solid var(--stone);border-radius:11px;padding:4px}
+.tabs button{border:0;background:transparent;color:var(--ink-soft);font:500 14px/1 Inter,sans-serif;
+  padding:11px 24px;border-radius:8px;cursor:pointer;transition:.25s}
+.tabs button[aria-selected="true"]{background:var(--brand);color:#fff}
+.console-body{display:grid;gap:18px;padding:22px 24px}
+@media(min-width:1024px){.console-body{grid-template-columns:1.1fr 1fr 1fr 1.2fr auto;align-items:end}}
+label.lbl{display:block;font:500 11px/1 Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px}
+.field{appearance:none;width:100%;background:var(--paper);border:1px solid var(--stone);border-radius:10px;
+  padding:13px 36px 13px 14px;font:400 14.5px/1.2 Inter,sans-serif;color:var(--ink);transition:.2s}
+.field:hover{border-color:#CFC5B6}
+.field:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(15,76,90,.16)}
+.fw{position:relative}
+.fw svg{position:absolute;right:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-soft);pointer-events:none}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:3px;background:var(--stone);margin-top:14px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:#fff;border:2px solid var(--brand);box-shadow:0 2px 7px rgba(23,36,43,.25);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--brand);cursor:pointer}
+
+/* ── Cards ── */
+.grid{display:grid;gap:26px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+/* Exactly three offers, so they get their own row rather than a 2+1 orphan. */
+#c0grid{margin-top:34px}
+@media(min-width:1000px){#c0grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1050px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--stone);
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit;
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.card:hover{transform:translateY(-5px);box-shadow:0 30px 58px -34px rgba(23,36,43,.45)}
+.card .ph{position:relative;aspect-ratio:16/11;overflow:hidden;background:var(--brand-deep)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.card:hover .ph img{transform:scale(1.05)}
+.cbody{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+.badge{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:6px;
+  background:var(--amber);color:var(--ink);font:600 11px/1 Inter,sans-serif;letter-spacing:.05em;
+  padding:7px 11px;border-radius:999px}
+.badge.plain{background:rgba(255,255,255,.94);color:var(--ink)}
+.price{font:600 20px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+/* €/m² — a baseline expectation on Storia/Imobiliare.ro, absent from design "a" */
+.ppm{font:500 12px/1 Inter,sans-serif;color:var(--amber-ink);margin-top:5px}
+.specs{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.spec{font:400 12px/1 Inter,sans-serif;color:var(--ink-soft);border:1px solid var(--stone);
+  border-radius:999px;padding:6px 11px}
+.epc{display:inline-flex;align-items:center;gap:5px;font:600 11px/1 Inter,sans-serif;
+  color:#fff;background:#2E7D32;border-radius:4px;padding:5px 8px}
+.epc.b{background:#558B2F}
+
+/* ── Sections ── */
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:22px;margin-bottom:34px}
+.head h2{margin-top:14px}
+.rule{display:flex;align-items:center;gap:12px}
+.rule::before{content:'';height:2px;width:34px;background:var(--amber)}
+.tint{background:var(--brand-tint)}
+.plaster{background:var(--plaster)}
+.dark{background:var(--brand-deep);color:#fff}
+.dark .kicker{color:var(--amber)}
+.dark .muted{color:rgba(255,255,255,.72)}
+.dark .rule::before{background:var(--amber)}
+
+/* ── Motto ───────────────────────────────────────────────────────────
+   The agency's own line, set as the largest type on the page. It sits
+   directly after the grid because that is where a visitor thinks "only
+   sixty-two?" — the motto is the answer, so it belongs there and not in
+   a footer where mottos go to die. */
+.motto{background:var(--brand-deep);color:#fff;position:relative;overflow:hidden;overflow:clip}
+.motto .kicker{color:var(--amber)}
+.motto .rule::before{background:var(--amber)}
+/* Arch outline echoing the hero, drifting on the scroll timeline. Purely
+   decorative, so it carries no text and no contrast obligation. */
+/* Anchored to the bottom so the crown always lands inside the band and it
+   reads as an arched window rising out of it; only the sill is clipped.
+   Anchoring to the top instead pushed the curve off-screen and left a bare
+   vertical line, which looked like a stray border. */
+.motto::before{content:'';position:absolute;right:7%;bottom:-20%;width:min(30vw,330px);
+  aspect-ratio:4/5.6;border:1px solid rgba(249,165,26,.34);border-radius:var(--arch);pointer-events:none}
+@media(max-width:900px){.motto::before{opacity:.45;right:-14%}}
+.mottoq{margin-top:24px;max-width:19ch;font-size:clamp(2.1rem,4.8vw,3.6rem);font-weight:300}
+.mottoq em{font-style:normal;color:var(--amber)}   /* 6.47:1 on this ground */
+.mottosub{margin-top:28px;max-width:54ch;color:#BFD0D4;font-size:16.5px;line-height:1.72}
+
+.zonelist{display:flex;flex-wrap:wrap;gap:10px}
+.zonechip{border:1px solid var(--stone);background:var(--paper);border-radius:999px;padding:11px 20px;
+  font-size:14px;cursor:pointer;transition:.22s}
+.zonechip:hover{border-color:var(--brand);color:var(--brand)}
+
+.svc{display:grid;gap:30px}
+@media(min-width:768px){.svc{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.svc{grid-template-columns:repeat(4,1fr)}}
+.svc>div{padding-top:22px;border-top:2px solid var(--amber)}
+.svc h3{font:400 20px/1.3 var(--serif);margin-bottom:10px}
+
+/* ── Team ── */
+.team{display:grid;gap:52px;align-items:center}
+@media(min-width:1024px){.team{grid-template-columns:.82fr 1fr;gap:70px}}
+.roster{border-block:1px solid var(--stone);margin-top:36px}
+.rrow{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:19px 0}
+.rrow+.rrow{border-top:1px solid var(--stone)}
+.who{display:flex;align-items:center;gap:15px;min-width:0}
+.who img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:0 0 auto;
+  border:1px solid var(--stone)}
+.who p{font:400 19px/1.25 var(--serif)}
+.who span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px}
+.tel{font:500 16px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;text-decoration:none;white-space:nowrap}
+.tel:hover{color:var(--brand)}
+.wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#0B2E17;
+  font:600 13.5px/1 Inter,sans-serif;padding:11px 17px;border-radius:9px;text-decoration:none}
+.wa:hover{filter:brightness(.95)}
+
+/* ── Capture blocks ── */
+.capture{background:var(--brand);color:#fff;border-radius:20px;padding:clamp(30px,5vw,54px);
+  display:grid;gap:34px}
+@media(min-width:900px){.capture{grid-template-columns:1.15fr 1fr;align-items:center}}
+.capture .kicker{color:var(--amber)}
+.capture .muted{color:rgba(255,255,255,.75)}
+.capform{display:flex;flex-direction:column;gap:11px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:22px}
+.capform input{width:100%;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.96);
+  color:var(--ink);border-radius:9px;padding:13px 14px;font:400 14.5px/1 Inter,sans-serif}
+.capform input:focus{outline:none;box-shadow:0 0 0 3px rgba(249,165,26,.5)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.8)}
+.consent input{width:17px;height:17px;flex:0 0 auto;margin-top:1px;accent-color:var(--amber)}
+.consent a{color:#fff}
+
+/* ── Footer ── */
+footer{background:var(--brand-deep);color:#fff;padding-block:70px 34px}
+footer a{text-decoration:none;color:rgba(255,255,255,.72)}
+footer a:hover{color:#fff}
+.fgrid{display:grid;gap:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.14)}
+@media(min-width:768px){.fgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.fgrid{grid-template-columns:1.6fr 1fr 1fr 1fr}}
+.fgrid h4{font:500 11px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+.fgrid li{list-style:none;margin-bottom:11px;font-size:14px}
+.fbot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;padding-top:26px;
+  font-size:12.5px;color:rgba(255,255,255,.55)}
+/* Rând propriu: creditul este mai lung decât celelalte două note și, pus pe
+   aceeași linie, le-ar fi împins într-o coloană îngustă pe laptop. */
+.credit{flex:1 1 100%;line-height:1.75}
+.credit a{color:rgba(255,255,255,.75);text-decoration:underline;text-underline-offset:2px}
+.credit a:hover{color:#fff}
+/* Pe telefon fraza se rupe oricum pe două rânduri; separatorul ar rămâne
+   atârnat la capătul primului. */
+@media(max-width:560px){.credit .sep{display:none}.credit span[data-ro]{display:block}}
+
+/* ── Drawer ── */
+#scrim{position:fixed;inset:0;background:rgba(10,54,63,.5);opacity:0;pointer-events:none;
+  transition:opacity .4s;z-index:110}
+#scrim.open{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(680px,100%);background:var(--paper);z-index:120;
+  overflow-y:auto;transform:translateX(100%);transition:transform .5s var(--ease)}
+#drawer.open{transform:none}
+.dhead{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--stone);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.srow{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--stone);font-size:14.5px}
+.thumbs{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px}
+.thumbs img{width:78px;height:57px;object-fit:cover;border-radius:7px;cursor:pointer;opacity:.6;flex:0 0 auto;transition:.25s}
+.thumbs img.on,.thumbs img:hover{opacity:1}
+.thumbs img.on{outline:2px solid var(--brand);outline-offset:2px}
+.thumbs button{border:0;background:0;padding:0;position:relative;flex:0 0 auto;cursor:pointer;line-height:0}
+.thumbs .planbadge{position:absolute;left:4px;bottom:4px;background:var(--brand);color:#fff;
+  font:600 9px/1 Inter,sans-serif;letter-spacing:.08em;padding:3px 5px;border-radius:3px}
+.noscroll{overflow:hidden}
+
+/* ── Gallery ── */
+.gal{position:relative}
+/* Photos crop; floor plans must not — a cropped plan is worthless. */
+.gal .stage{position:relative;overflow:hidden;border-radius:var(--radius);
+  aspect-ratio:16/10;background:var(--brand-deep)}
+.gal .stage img{width:100%;height:100%;object-fit:cover}
+.gal .stage img.plan{object-fit:contain;background:var(--paper)}
+.galnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+  border:0;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.86);
+  color:var(--ink);box-shadow:0 6px 18px -8px rgba(23,36,43,.6)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .galnav{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+}
+.galnav:hover{background:#fff}
+.galnav.prev{left:12px} .galnav.next{right:12px}
+/* Counter sits on its own solid chip rather than over the photo, so it has a
+   fixed contrast ratio instead of one that depends on the image behind it. */
+.galcount{position:absolute;right:12px;bottom:12px;background:var(--brand-deep);color:#fff;
+  font:500 12px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;padding:7px 11px;border-radius:999px}
+/* Same reasoning as .galcount — opaque, not a translucent chip over the photo. */
+.phcount{position:absolute;right:10px;bottom:10px;background:var(--brand-deep);color:#fff;
+  font:500 11px/1 Inter,sans-serif;padding:6px 9px;border-radius:999px}
+
+/* ── Spec groups ── */
+.sgroup{margin-top:26px}
+.sgroup h3{font:400 19px/1.3 var(--serif);padding-bottom:10px;border-bottom:2px solid var(--brand)}
+@media(min-width:560px){.sgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}}
+.sgrid .srow{font-size:14px}
+.sgrid .srow b{text-align:right}
+.tick{color:var(--brand);font-weight:600}
+
+/* ── Availability strip ── */
+.avail{display:grid;gap:2px;background:var(--stone);border:1px solid var(--stone);
+  border-radius:var(--radius);overflow:hidden;margin-top:20px}
+@media(min-width:560px){.avail{grid-template-columns:1fr 1fr}}
+.avail div{background:var(--brand-tint);padding:14px 16px}
+.avail span{display:block;font:500 10.5px/1 Inter,sans-serif;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:6px}
+.avail b{font-weight:500;font-size:14.5px}
+
+/* ── Consultantul ofertei ──
+   The source pins "Informatii de contact" to the top of its right rail, so on
+   every listing page you know who to call before you have read a word. This
+   drawer is one column, so the equivalent position is directly under the price:
+   above the description and the fifty spec rows, not below them. The CTA
+   buttons stay at the foot, dialling the same person. */
+.dagent{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-top:20px;
+  padding:15px 17px;border:1px solid var(--stone);border-left:3px solid var(--brand);
+  border-radius:var(--radius)}
+.dagent img{width:58px;height:58px;border-radius:50%;object-fit:cover;
+  flex:0 0 auto;background:var(--brand-tint)}
+/* Grows to eat the row, but collapses under the photo before the number wraps. */
+.dagent .da-id{flex:1 1 190px;min-width:0}
+.dagent .da-name{font:400 20px/1.25 var(--serif);margin-top:6px}
+.dagent .da-role{font-size:12.5px;color:var(--ink-soft);margin-top:4px;overflow-wrap:anywhere}
+.dagent .da-role a{color:inherit;text-underline-offset:2px}
+.dagent .da-role a:hover{color:var(--brand)}
+/* The number is the point of the block, so it is a target and not a line of
+   text — solid teal, 9.54:1 against its white label. */
+.dagent .tel{background:var(--brand);color:#fff;padding:13px 17px;border-radius:999px;
+  font-size:15.5px;transition:background .25s var(--ease)}
+.dagent .tel:hover{background:var(--brand-deep)}
+.dagent .tel:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+/* Once it has wrapped off the name's row it is no longer a chip beside a photo,
+   it is the card's action — so it takes the full width and becomes thumb-sized. */
+@media(max-width:520px){
+  .dagent .tel{flex:1 1 100%;text-align:center;padding:15px}
+  /* The address is too long to share a line here, and an inline separator that
+     survives the wrap leaves a "·" dangling at the end of the role. */
+  .dagent .da-role .sep{display:none}
+  .dagent .da-role a{display:block;margin-top:2px}
+}
+
+.rise{opacity:0;transform:translateY(20px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.rise.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}
+  html{scroll-behavior:auto}.rise{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-ro="Sari la conținut" data-en="Skip to content">Sari la conținut</a>
+
+<header id="hdr">
+  <div class="wrap">
+    <div class="hrow">
+      <a href="#top" aria-label="THE HOUSE Imobiliare — prima pagină">
+        <img id="logo" alt="THE HOUSE Imobiliare">
+      </a>
+      <nav class="main" aria-label="Principal">
+        <a class="navlink" href="#proprietati" data-ro="Vânzare" data-en="For sale">Vânzare</a>
+        <a class="navlink" href="#proprietati" data-ro="Închiriere" data-en="To rent">Închiriere</a>
+        <a class="navlink" href="#comision" data-ro="Comision 0%" data-en="0% fee">Comision 0%</a>
+        <a class="navlink" href="#servicii" data-ro="Servicii" data-en="Services">Servicii</a>
+        <a class="navlink" href="#echipa" data-ro="Echipa" data-en="Team">Echipa</a>
+      </nav>
+      <div class="hactions">
+        <div class="langtog" role="group" aria-label="Limbă / Language">
+          <button type="button" data-lang="ro" aria-pressed="true">RO</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="tel:+40735444408" style="display:none" id="telBtn">0735.44.44.08</a>
+        <a class="btn btn-primary btn-sm" href="#cauta" data-ro="Caută" data-en="Search">Caută</a>
+        <button class="burger" id="burger" aria-label="Meniu" aria-expanded="false" aria-controls="mmenu">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="mmenu">
+    <div class="wrap">
+      <a href="#proprietati" data-ro="Vânzare" data-en="For sale">Vânzare</a>
+      <a href="#proprietati" data-ro="Închiriere" data-en="To rent">Închiriere</a>
+      <a href="#comision" data-ro="Comision 0%" data-en="0% fee">Comision 0%</a>
+      <a href="#servicii" data-ro="Servicii" data-en="Services">Servicii</a>
+      <a href="#echipa" data-ro="Echipa" data-en="Team">Echipa</a>
+      <a href="tel:+40735444408" style="color:var(--brand);font-weight:600">0735.44.44.08</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <!-- Piața Unirii, aprilie 2023, foto Chainwit., CC BY 4.0 — creditul complet
+       este în subsol, unde licența cere să fie și unde poate fi citit.
+       alt="" pentru că este decor: numele pieței apare deja în lede, iar un
+       cititor de ecran nu câștigă nimic dacă i se descrie tapetul.
+       width/height sunt dimensiunile reale ale fișierului AVIF de 2400.
+
+       Toate cele trei fișiere au înălțime PARĂ, și nu din întâmplare: sips
+       scrie AVIF-uri cu înălțime impară pe care Chrome le raportează încărcate
+       și decodate, apoi le desenează complet transparente. Prima versiune avea
+       2400×1097 și banda era pur și simplu goală, fără nicio eroare în consolă
+       și cu 200 pe rețea. De aceea imaginile se verifică desenându-le și
+       citind pixelii înapoi, nu uitându-te la codul de răspuns. -->
+  <picture class="herobg">
+    <source media="(max-width:900px)" srcset="hero-piata-unirii-1200.avif" type="image/avif">
+    <source srcset="hero-piata-unirii-2400.avif" type="image/avif">
+    <!-- Dacă imaginea nu ajunge deloc, banda nu trebuie doar ascunsă: fâșia
+         rezervată ei ar rămâne un gol de 340px sub statistici. Clasa duce
+         --band la zero, deci dispar odată și înălțimea benzii, și padding-ul
+         care o găzduiește — hero-ul se întoarce exact la varianta b. -->
+    <img src="hero-piata-unirii-1600.jpg" alt="" width="2400" height="1096"
+         fetchpriority="high" decoding="async"
+         onerror="this.closest('.hero').classList.add('nobg')">
+  </picture>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker rule" data-ro="Timișoara · agenție de familie din 2010" data-en="Timișoara · a family agency since 2010">Timișoara · agenție de familie din 2010</p>
+        <h1 class="display rise">
+          <span data-ro="Găsește" data-en="Find">Găsește</span>
+          <!-- The underlined span is the promise; it carries white-space:nowrap,
+               so it must stay short enough to survive a 360px viewport. -->
+          <em data-ro="casa perfectă" data-en="the perfect home">casa perfectă</em>
+          <span data-ro="în Timișoara" data-en="in Timișoara">în Timișoara</span>
+        </h1>
+        <!-- Fără număr de oferte: portofoliul se mișcă, textul nu. Geografia și
+             tipurile de proprietăți spun același lucru și rămân adevărate. -->
+        <p class="lede rise" data-ro="Proprietăți în Timișoara și pe o rază de cincisprezece kilometri: vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale." data-en="Properties in Timișoara and within fifteen kilometres: villas in Ghiroda and Lunei, apartments in heritage buildings on Piața Unirii and Bălcescu, land and industrial space.">Proprietăți în Timișoara și pe o rază de cincisprezece kilometri: vile în Ghiroda și Lunei, apartamente în clădiri de patrimoniu din Piața Unirii și Bălcescu, terenuri și spații industriale.</p>
+        <div class="hero-cta rise">
+          <a class="btn btn-primary" href="#proprietati" data-ro="Vezi proprietățile" data-en="Browse properties">Vezi proprietățile</a>
+          <a class="btn btn-ghost" href="#echipa" data-ro="Vorbește cu un consultant" data-en="Talk to a consultant">Vorbește cu un consultant</a>
+        </div>
+        <div class="stats rise">
+          <div><b class="num">16</b><span data-ro="ani pe piața locală" data-en="years in this market">ani pe piața locală</span></div>
+          <!-- Aici a stat „62 — oferte active azi": o cifră scrisă de mână care
+               pretindea că este de azi. Numărul de oferte se schimbă săptămânal;
+               echipa nu s-a schimbat în șaisprezece ani. Se scrie din AG, ca să
+               nu poată ajunge să contrazică lista de consultanți. -->
+          <!-- Eticheta rămâne o sintagmă scurtă, ca celelalte două: coloana are
+               72px pe telefon, iar „nu un call-center" se rupea în trei rânduri,
+               cu cratimă la capăt de rând. Argumentul stă oricum în secțiunea
+               Echipa, unde are loc să respire. -->
+          <div><b class="num" id="agN">3</b><span data-ro="consultanți în echipă" data-en="consultants on the team">consultanți în echipă</span></div>
+          <div><b class="num" id="c0n" style="color:var(--brand)">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
+        </div>
+      </div>
+      <div class="archframe rise">
+        <div class="arch">
+          <!-- Lead shot of the property of the week, and the same photo the
+               drawer opens on. Chosen for its verticals: the arch is a 4/4.7
+               portrait crop, so a wide interior loses its subject to the sides. -->
+          <img src="https://www.the-house.ro/files/images/06075954img_1000.jpg" alt="Vilă de vânzare în zona Ghirodei, Timișoara" referrerpolicy="no-referrer" fetchpriority="high" width="800" height="533" onerror="this.style.opacity=0">
+        </div>
+        <!-- Filled from the listing record, not typed twice — see WEEK below.
+             A button, not a div: it was previously a dead card describing a
+             property you had no way to open. -->
+        <button class="hero-card glass" id="weekCard" type="button"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEARCH ══ -->
+<div class="wrap" id="cauta">
+  <div class="console">
+    <div class="console-top">
+      <div class="tabs" role="tablist" aria-label="Tip de tranzacție">
+        <button role="tab" type="button" data-tx="vanzare" aria-selected="true" data-ro="Cumpăr" data-en="Buying">Cumpăr</button>
+        <button role="tab" type="button" data-tx="inchiriere" aria-selected="false" data-ro="Închiriez" data-en="Renting">Închiriez</button>
+      </div>
+      <p class="muted" style="font-size:13px" id="hitLbl"></p>
+    </div>
+    <div class="console-body">
+      <div>
+        <label class="lbl" for="fZona" data-ro="Locație" data-en="Location">Locație</label>
+        <div class="fw"><select id="fZona" class="field"></select>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div>
+        <label class="lbl" for="fTip" data-ro="Tip proprietate" data-en="Property type">Tip proprietate</label>
+        <div class="fw"><select id="fTip" class="field">
+          <option value="toate">Toate tipurile</option><option value="apartament">Apartament</option>
+          <option value="casa">Casă / vilă</option><option value="teren">Teren</option><option value="industrial">Spațiu industrial</option>
+        </select><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div>
+        <label class="lbl" for="fCam" data-ro="Camere" data-en="Rooms">Camere</label>
+        <div class="fw"><select id="fCam" class="field">
+          <option value="">Oricâte</option><option value="2">2 camere</option><option value="3">3 camere</option><option value="4">4+ camere</option>
+        </select><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span class="lbl" style="margin:0" data-ro="Buget maxim" data-en="Max budget">Buget maxim</span>
+          <span class="num" id="pretLbl" style="font-size:14px;font-weight:500;color:var(--brand)">1.000.000 €</span>
+        </div>
+        <input id="fPret" type="range" min="50000" max="1000000" step="25000" value="1000000" aria-label="Buget maxim">
+      </div>
+      <button class="btn btn-primary" id="btnCauta" type="button" style="height:48px" data-ro="Caută" data-en="Search">Caută</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LISTINGS ══ -->
+<section id="proprietati">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="kicker rule" data-ro="Portofoliu" data-en="Portfolio">Portofoliu</p>
+        <h2 class="display" data-ro="Proprietăți selectate" data-en="Selected properties">Proprietăți selectate</h2>
+      </div>
+      <p class="muted" style="font-size:14px;max-width:40ch" data-ro="Fiecare ofertă este vizitată de unul dintre cei trei consultanți înainte să apară aici." data-en="Every listing is visited by one of the three consultants before it appears here.">Fiecare ofertă este vizitată de unul dintre cei trei consultanți înainte să apară aici.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p id="empty" class="muted" style="display:none;text-align:center;padding:52px 0" data-ro="Nicio proprietate nu corespunde filtrelor. Încearcă un buget mai mare sau altă zonă." data-en="No property matches these filters. Try a wider budget or another area.">Nicio proprietate nu corespunde filtrelor.</p>
+  </div>
+</section>
+
+<!-- ══ MOTTO ══ -->
+<section class="motto">
+  <div class="wrap">
+    <p class="kicker rule" data-ro="Principiul casei" data-en="The house principle">Principiul casei</p>
+    <p class="mottoq display rise">
+      <span data-ro="Pentru noi calitatea este mai importantă decât" data-en="For us, quality matters more than">Pentru noi calitatea este mai importantă decât</span>
+      <em data-ro="cantitatea" data-en="quantity">cantitatea</em>
+    </p>
+    <!-- „Zeci … nu sute" păstrează contrastul, dar rămâne adevărat de la
+         patruzeci de oferte la nouăzeci. Cifra exactă era scrisă de mână în
+         patru șiruri, în două limbi, și derivase deja. -->
+    <p class="mottosub rise" data-ro="Zeci de oferte, nu sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba." data-en="Dozens of listings, not hundreds. Every property is seen by one of us before it goes online — which is why the list grows slowly, and why we never send you to a viewing for nothing.">Zeci de oferte, nu sute. Fiecare proprietate este văzută de unul dintre noi înainte să ajungă pe site — de aceea lista crește încet și de aceea nu vă trimitem niciodată la o vizionare degeaba.</p>
+  </div>
+</section>
+
+<!-- ══ COMISION 0 ══ -->
+<section class="plaster" id="comision">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="kicker rule">Comision 0%</p>
+        <!-- Written by JS from the data, both languages. It used to say "trei"
+             while one listing carried the badge; a hand-typed count drifts the
+             moment the portfolio does. -->
+        <h2 class="display" style="max-width:22ch" id="c0head"></h2>
+      </div>
+      <p class="muted" style="font-size:14px;max-width:34ch" data-ro="Comisionul îl plătește proprietarul. Pentru aceste oferte, dumneavoastră nu plătiți nimic agenției." data-en="The owner pays the fee. On these listings you pay the agency nothing.">Comisionul îl plătește proprietarul. Pentru aceste oferte, dumneavoastră nu plătiți nimic agenției.</p>
+    </div>
+    <!-- The offers themselves, rather than a button pointing at a grid that is
+         filtered to one transaction type and may not contain all of them. -->
+    <div class="grid" id="c0grid"></div>
+  </div>
+</section>
+
+<!-- ══ ZONE ══ -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="kicker rule" data-ro="Zone" data-en="Areas">Zone</p>
+        <h2 class="display" data-ro="Zonele din portofoliu" data-en="Areas we cover">Zonele din portofoliu</h2>
+      </div>
+    </div>
+    <div class="zonelist" id="zonelist"></div>
+  </div>
+</section>
+
+<!-- ══ SERVICII ══ -->
+<section class="dark">
+  <div class="wrap" id="servicii">
+    <div class="head">
+      <div>
+        <p class="kicker rule" data-ro="Servicii" data-en="Services">Servicii</p>
+        <h2 class="display" data-ro="Ce facem, de la prima vizionare până la cheie" data-en="What we do, from first viewing to keys">Ce facem, de la prima vizionare până la cheie</h2>
+      </div>
+    </div>
+    <div class="svc">
+      <div><h3 data-ro="Evaluare" data-en="Valuation">Evaluare</h3><p class="muted" style="font-size:14.5px" data-ro="Îți spunem în 24 de ore ce preț susține piața pentru proprietatea ta, cu comparabile din aceeași zonă." data-en="Within 24 hours we tell you what the market supports for your property, with comparables from the same area.">Îți spunem în 24 de ore ce preț susține piața pentru proprietatea ta, cu comparabile din aceeași zonă.</p></div>
+      <div><h3 data-ro="Verificare juridică" data-en="Legal checks">Verificare juridică</h3><p class="muted" style="font-size:14.5px" data-ro="Extras de carte funciară, sarcini, servituți și istoricul actelor — verificate înainte de avans." data-en="Land registry extract, charges, easements and deed history — checked before any deposit.">Extras de carte funciară, sarcini, servituți și istoricul actelor — verificate înainte de avans.</p></div>
+      <div><h3 data-ro="Negociere" data-en="Negotiation">Negociere</h3><p class="muted" style="font-size:14.5px" data-ro="Negocierea o poartă consultantul tău, nu un call-center care nu a văzut niciodată casa." data-en="Your consultant negotiates — not a call centre that has never seen the house.">Negocierea o poartă consultantul tău, nu un call-center care nu a văzut niciodată casa.</p></div>
+      <div><h3 data-ro="Până la notar" data-en="Through to closing">Până la notar</h3><p class="muted" style="font-size:14.5px" data-ro="Programare la notar, dosar de credit, predarea cheilor și citirea contoarelor." data-en="Notary appointment, mortgage file, handover of keys and meter readings.">Programare la notar, dosar de credit, predarea cheilor și citirea contoarelor.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ECHIPA ══ -->
+<section id="echipa">
+  <div class="wrap">
+    <div class="team">
+      <div class="archframe">
+        <div class="arch" style="aspect-ratio:4/3.4">
+          <img src="sorin-bratu.jpg" alt="Sorin Traian Bratu, consultant imobiliar THE HOUSE" width="640" height="544" loading="lazy" onerror="this.style.opacity=0">
+        </div>
+      </div>
+      <div>
+        <p class="kicker rule" data-ro="Echipa" data-en="Team">Echipa</p>
+        <h2 class="display" style="margin-top:14px" data-ro="Trei consultanți. Nu un call-center." data-en="Three consultants. Not a call centre.">Trei consultanți. Nu un call-center.</h2>
+        <p class="lede" data-ro="Sună direct persoana care se ocupă de oferta ta. Suntem o familie de consultanți, aceleași trei numere de șaisprezece ani." data-en="Call the person handling your listing directly. We are a family of consultants — the same three numbers for sixteen years.">Sună direct persoana care se ocupă de oferta ta. Suntem o familie de consultanți, aceleași trei numere de șaisprezece ani.</p>
+        <div class="roster">
+          <div class="rrow">
+            <div class="who">
+              <img src="avatar-sorin-bratu.jpg" alt="" width="48" height="48" loading="lazy">
+              <div><p>Sorin Traian Bratu</p><span>Consultant imobiliar · sorin.bratu@the-house.ro</span></div>
+            </div>
+            <a class="tel" href="tel:+40735444408">0735.44.44.08</a>
+          </div>
+          <div class="rrow">
+            <div class="who">
+              <img src="avatar-mirela-bratu.jpg" alt="" width="48" height="48" loading="lazy">
+              <div><p>Mirela Bratu</p><span>Consultant imobiliar</span></div>
+            </div>
+            <a class="tel" href="tel:+40735444407">0735.44.44.07</a>
+          </div>
+          <div class="rrow">
+            <div class="who">
+              <img src="avatar-alexandru-bratu.jpg" alt="" width="48" height="48" loading="lazy">
+              <div><p>Alexandru Bratu</p><span>Consultant imobiliar</span></div>
+            </div>
+            <a class="tel" href="tel:+40735444406">0735.44.44.06</a>
+          </div>
+        </div>
+        <!-- WhatsApp click-to-chat: the dominant contact channel in RO, absent from design "a" -->
+        <a class="wa" href="https://wa.me/40735444408" style="margin-top:22px" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1s-.7 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1.1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.5-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"/></svg>
+          <span data-ro="Scrie-ne pe WhatsApp" data-en="Message us on WhatsApp">Scrie-ne pe WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CAPTURE ══ -->
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="capture">
+      <div>
+        <p class="kicker rule" data-ro="Vinde prin noi" data-en="Sell with us">Vinde prin noi</p>
+        <h2 class="display" style="margin-top:14px;max-width:24ch" data-ro="Îți spunem în 24 de ore cât face proprietatea ta." data-en="We'll tell you what your property is worth within 24 hours.">Îți spunem în 24 de ore cât face proprietatea ta.</h2>
+        <p class="muted" style="margin-top:18px;max-width:46ch;font-size:15.5px" data-ro="Fără obligații și fără exclusivitate. Trimitem o estimare cu comparabile reale din aceeași zonă." data-en="No obligation, no exclusivity. We send an estimate backed by real comparables from the same area.">Fără obligații și fără exclusivitate. Trimitem o estimare cu comparabile reale din aceeași zonă.</p>
+      </div>
+      <form class="capform" id="capForm" novalidate>
+        <label class="lbl" style="color:rgba(255,255,255,.8)" for="cNume" data-ro="Nume" data-en="Name">Nume</label>
+        <input id="cNume" name="nume" required autocomplete="name">
+        <label class="lbl" style="color:rgba(255,255,255,.8)" for="cTel" data-ro="Telefon" data-en="Phone">Telefon</label>
+        <input id="cTel" name="telefon" type="tel" required autocomplete="tel">
+        <label class="consent">
+          <input type="checkbox" id="cGdpr" required>
+          <span data-ro="Sunt de acord ca datele mele să fie folosite pentru a-mi răspunde la această solicitare." data-en="I agree that my data may be used to respond to this enquiry.">Sunt de acord ca datele mele să fie folosite pentru a-mi răspunde la această solicitare.</span>
+        </label>
+        <button class="btn btn-amber" type="submit" style="margin-top:6px" data-ro="Cere evaluarea" data-en="Request the valuation">Cere evaluarea</button>
+        <p id="capMsg" style="font-size:13px;color:var(--amber);min-height:18px" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <img id="flogo" alt="THE HOUSE Imobiliare" style="height:46px;width:auto;filter:brightness(0) invert(1)">
+        <p style="font-size:14px;color:rgba(255,255,255,.6);margin-top:22px;line-height:1.8">
+          Timișoara, Bd. Revoluției din 1989, nr. 8, cam. 111<br>
+          <span data-ro="Luni–vineri 9:00–17:00" data-en="Monday–Friday 9:00–17:00">Luni–vineri 9:00–17:00</span>
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,.45);margin-top:16px">SC BRATU THE HOUSE SRL</p>
+      </div>
+      <div>
+        <h4 data-ro="Vânzare" data-en="For sale">Vânzare</h4>
+        <ul>
+          <li><a href="#proprietati">Apartamente 2 camere</a></li>
+          <li><a href="#proprietati">Apartamente 3 camere</a></li>
+          <li><a href="#proprietati">Case / vile</a></li>
+          <li><a href="#proprietati">Terenuri</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-ro="Închiriere" data-en="To rent">Închiriere</h4>
+        <ul>
+          <li><a href="#proprietati">Apartamente</a></li>
+          <li><a href="#proprietati">Case / vile</a></li>
+          <li><a href="#proprietati">Spații birouri</a></li>
+          <li><a href="#proprietati">Spații industriale</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-ro="Agenția" data-en="Agency">Agenția</h4>
+        <ul>
+          <li><a href="#echipa" data-ro="Echipa" data-en="Team">Echipa</a></li>
+          <li><a href="#servicii" data-ro="Servicii" data-en="Services">Servicii</a></li>
+          <li><a href="#comision">Comision 0%</a></li>
+          <li><a href="mailto:office@the-house.ro">office@the-house.ro</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbot">
+      <p>© <span id="yr"></span> SC BRATU THE HOUSE SRL</p>
+      <p data-ro="Acest site nu folosește cookie-uri și nu rulează analytics." data-en="This site sets no cookies and runs no analytics.">Acest site nu folosește cookie-uri și nu rulează analytics.</p>
+      <!-- Creditul fotografiei. CC BY 4.0 cere patru lucruri: autorul, titlul
+           cu link la original, licența cu link, și mențiunea că imaginea a
+           fost modificată. Toate patru sunt aici, la aceeași mărime ca restul
+           subsolului — o atribuire pe care trebuie s-o cauți cu lupa nu este
+           o atribuire. Textul traductibil stă în <span>-uri fără copii, ca
+           setLang() să nu șteargă link-urile când schimbă limba. -->
+      <p class="credit">
+        <span data-ro="Fotografia din antet:" data-en="Header photograph:">Fotografia din antet:</span>
+        <a href="https://commons.wikimedia.org/wiki/File:April_2023_-_Pia%C8%9Ba_Unirii_din_Timi%C8%99oara_-_img_05.jpg" rel="noopener">Piața Unirii din Timișoara</a>,
+        Chainwit., <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a><span class="sep"> · </span><span data-ro="redimensionată, decupată și desaturată" data-en="resized, cropped and desaturated">redimensionată, decupată și desaturată</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<div id="scrim"></div>
+<aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true"></aside>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   No Tailwind CDN in this build. Design "a" pulled ~120KB of
+   render-blocking JS from cdn.tailwindcss.com and compiled CSS in the
+   browser on every visit — the single largest LCP cost on the page,
+   and the reason the research's Core Web Vitals note matters here.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── DATA: real offers from the-house.ro, read 31.07.2026 ── */
+const IMG='https://www.the-house.ro/files/images/';
+const TIPL={apartament:'Apartament',casa:'Casă / vilă',teren:'Teren',industrial:'Spațiu industrial'};
+
+const L=[
+ /* Proprietatea săptămânii — see WEEK further down. */
+ {id:'HOUSE853',t:'Vilă de vis în zona Ghirodei',z:'Ghirodei',tx:'vanzare',tip:'casa',ag:'sorin',
+  cam:8,mp:402,mpT:1980,et:'P+1E',an:2017,pret:1000000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,epc:'A',
+  ph:['06075954img_1000.jpg'],
+  d:'Vilă din 2017 pe un teren de 1.980 mp, într-o zonă foarte liniștită. Se vinde complet mobilată și utilată. La parter: zona de zi cu ieșire pe terasă, bucătărie, home cinema, cameră de joacă (convertibilă în birou), cameră tehnică și garaj dublu. La etaj: două dormitoare cu baie proprie, două dressinguri și, cu intrare separată, un dormitor de oaspeți.',
+  hi:['Terasă cu deschidere la lac','3 dormitoare, fiecare cu baie proprie','Home cinema și cameră de joacă','Încălzire prin pardoseală și prin pereți','Carport pentru două mașini, plus garaj dublu','Teren de 1.980 mp, front 33 ml']},
+
+ {id:'HOUSE935',t:'Proprietate de excepție — lux, confort și liniște',z:'Ghirodei',tx:'vanzare',tip:'casa',ag:'sorin',
+  cam:6,mp:360,mpT:940,et:'D+P+1E',an:2003,pret:498000,neg:'negociabil',com:'2% din suma tranzacționată',c0:false,nou:true,epc:null,
+  ph:['08075104img_8167.jpg','08075001img_8160.jpg','08075021img_8165.jpg','08075038img_8166.jpg','08075135img_8169.jpg'],
+  d:'Vilă construită în 2003, aproape de baza sportivă Tivoli, pe o stradă foarte liniștită. Zidărie de cărămidă de 44 cm, ferestre cu tâmplărie de stejar stratificat, pardoseli din lemn de salcâm aburit.',
+  hi:['4 dormitoare, fiecare cu dressing încorporat','3 băi + baie de serviciu','Garaj și 2 locuri de parcare','Grădină cu irigare automatizată','Teren de 940 mp, front 20 ml']},
+
+ {id:'HOUSE872',t:'Casă spațioasă cu piscină',z:'Lunei',tx:'vanzare',tip:'casa',ag:'sorin',
+  cam:5,mp:254,mpT:705,et:'P+M',an:2005,pret:439000,neg:'preț final',com:'2% din suma tranzacționată',c0:false,nou:true,epc:'B',
+  ph:['03082649img_2861.jpg','03082706img_2864.jpg','03082617img_2871.jpg','03082732img_2876.jpg','03082810img_2881.jpg'],
+  d:'Edificată în 2005 și renovată impecabil în 2017, retrasă de la stradă. Se vinde mobilată și utilată. Ferestre cu trei rânduri de sticlă, parchet masiv la parter, șemineu.',
+  hi:['Piscină exterioară de 10 × 4 m','4 dormitoare și 4 băi','Carport pentru 3 autoturisme','Două terase acoperite','Grădină irigată automatizat, cu foraj']},
+
+ {id:'HOUSE920',t:'Apartament duplex de excepție, Toscana Residence',z:'Mehala',tx:'vanzare',tip:'apartament',ag:'sorin',
+  cam:5,mp:198,mpT:0,et:'3+M',an:2012,pret:295000,neg:'negociabil',com:'NU SE PERCEPE COMISION',c0:true,nou:true,epc:'A',
+  ph:['06112940img_7127.jpg','06112812img_7113.jpg','06112842img_7120.jpg','06112903img_7121.jpg','06112919img_7123.jpg'],
+  d:'Duplex pe două niveluri în ansamblul Toscana Residence. Finisaje de excepție: parchet exotic de 2 cm, pardoseli de marmură Carrara, băi placate integral cu marmură.',
+  hi:['Terasă de 64 mp','3 dormitoare, fiecare cu dressing și baie','Garaj închis la demisol','Scară placată cu marmură de Carrara','Centrală Viessmann în condensație']},
+
+ {id:'HOUSE324',t:'Proprietate premium în Ghiroda',z:'Ghiroda',tx:'vanzare',tip:'casa',ag:'sorin',
+  cam:6,mp:410,mpT:0,et:'P+1E',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
+  ph:['13101211img_6483.jpg'],
+  d:'Proprietate premium în Ghiroda, cu birou, sufragerie, zonă de zi și bucătărie la parter, plus baie de serviciu. Confort lux, 410 mp utili.',
+  hi:['6 camere, 410 mp utili','Regim de înălțime P+1E','Confort lux']},
+
+ {id:'HOUSE612',t:'Teren la stradă, zona Aeroportului Internațional',z:'Aeroport',tx:'vanzare',tip:'teren',ag:'sorin',
+  cam:0,mp:14300,mpT:14300,et:'—',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
+  ph:['25085852terenaeroport14300mp2.jpg'],
+  d:'Teren situat în zona aeroportului internațional Timișoara, la stradă, pe sensul Timișoara–aeroport.',
+  hi:['14.300 mp','Front stradal de 101,72 m','Un singur front, acces direct la stradă']},
+
+ {id:'HOUSE948',t:'Apartament superb, tip duplex, în Piața Unirii',z:'Piața Unirii',tx:'inchiriere',tip:'apartament',ag:'sorin',
+  cam:3,mp:72,mpT:0,et:'Mansardă',an:0,pret:650,neg:'negociabil',com:'80% din chiria unei luni',c0:false,nou:true,epc:null,
+  ph:['07113210img_9933.jpg','07113156img_9928.jpg','07113222img_9950.jpg','07113234img_9972.jpg'],
+  d:'Duplex renovat recent, într-un imobil din Piața Unirii. Primul nivel: salon de oaspeți, zonă de dining, bucătărie și baie. Etaj: living, dormitor și baie.',
+  hi:['Scară interioară proprie','Două băi','Centrală termică proprie pe gaz','Aer condiționat','Bucătărie mobilată și dotată']},
+
+ {id:'HOUSE941',t:'ReHabitat 56 — apartamente într-o clădire din 1900',z:'Piața Bălcescu',tx:'inchiriere',tip:'apartament',ag:'sorin',
+  cam:2,mp:53,mpT:0,et:'Parter înalt',an:1900,pret:430,neg:'preț final',com:'80% din chiria primei luni',c0:false,nou:true,epc:null,
+  ph:['13133922img_8512.jpg','13133943img_8518.jpg','13134002img_8521.jpg','13134023img_8527.jpg'],
+  d:'Clădire istorică din 1900, renovată exemplar de designerul Ciprian Șipoș după principii de economie circulară: pardoseli recuperate, detalii recondiționate, bolți salvate.',
+  hi:['Pardoseli și materiale recuperate','Parter înalt, cu curte','Centrală termică proprie','Parchet masiv','Zidărie de cărămidă']},
+
+ {id:'HOUSE841',t:'Apartament spațios în zona centrală',z:'Central',tx:'inchiriere',tip:'apartament',ag:'sorin',
+  cam:3,mp:99,mpT:0,et:'Etaj 3',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
+  ph:['06122507img_9889.jpg'],
+  d:'Apartament situat într-un imobil nou, foarte aproape de centru. Hol de acces prevăzut cu dulapuri de depozitare, confort 1.',
+  hi:['99,42 mp utili','Etaj 3, imobil nou','Confort 1']},
+
+ {id:'HOUSE636',t:'Hală de producție pe două niveluri',z:'Buziașului',tx:'inchiriere',tip:'industrial',ag:'sorin',
+  cam:0,mp:4200,mpT:0,et:'P+1',an:0,pret:null,neg:'',com:'se comunică la cerere',c0:false,nou:false,epc:null,
+  ph:['17094224img_0186.jpg'],
+  d:'Hală de producție pe Calea Buziașului, dispusă pe două niveluri, cu 2.355 mp destinați producției la parter.',
+  hi:['4.200 mp în total','2.355 mp de producție la parter','Acces direct din Calea Buziașului']},
+
+ /* The other two zero-commission offers. the-house.ro's own comision-0 category
+    says "Sunt 3 oferte imobiliare active" and lists these alongside HOUSE920 —
+    the page claimed three and showed one until they were carried over. */
+ {id:'HOUSE641',t:'Apartament de lux în regim hotelier',z:'Exterior Nord',tx:'inchiriere',tip:'apartament',ag:'sorin',
+  cam:2,mp:72,mpT:0,et:'Etaj 3',an:2013,pret:105,per:'zi',neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:false,epc:null,
+  ph:['31131740dsc_2929.jpg'],
+  d:'Apartament de lux închiriat în regim hotelier, într-un imobil din 2013. Zonă de zi, dormitor și baie cu jacuzzi, plus terasă exterioară. În preț sunt incluse toate serviciile hoteliere și micul dejun pentru două persoane.',
+  hi:['Baie cu jacuzzi','Terasă exterioară','Servicii hoteliere și mic dejun incluse','Încălzire prin pardoseală și ventiloconvectoare','Trei locuri de parcare']},
+
+ {id:'HOUSE945',t:'Apartament lângă parcul Bucovina',z:'Torontalului',tx:'inchiriere',tip:'apartament',ag:'mirela',
+  cam:3,mp:71,mpT:0,et:'Parter înalt',an:0,pret:390,neg:'preț final',com:'NU SE PERCEPE COMISION',c0:true,nou:true,epc:'B',
+  /* The source leaves the description field empty ("Nu au fost date detalii"),
+     so this is assembled strictly from its spec table — nothing invented. */
+  d:'Apartament de trei camere la parter înalt, lângă parcul Bucovina. Decomandat, 71 mp utili, două băi, centrală termică proprie și tâmplărie PVC.',
+  hi:['3 camere decomandate, 71 mp utili','Două băi','Centrală termică proprie pe gaz','Parchet masiv și tâmplărie PVC','Garanție: contravaloarea unei luni; contract minim 1 an']}
+];
+
+/* ── Consultanți ──────────────────────────────────────────────────────────
+   Who handles which offer, read off each listing's own detail page: eleven are
+   Sorin's, HOUSE945 is Mirela's. That is why `ag` is a per-listing field and
+   not one office number printed twelve times — the drawer's phone button has
+   to ring the person named above it.
+
+   Alexandru is on the roster but currently holds none of these twelve, and his
+   address is published nowhere on the source site, so `mail` is simply absent
+   rather than guessed; the drawer omits the line when it is. */
+const AG={
+  sorin:{n:'Sorin Traian Bratu',tel:'+40735444408',dial:'0735.44.44.08',
+         mail:'sorin.bratu@the-house.ro',img:'avatar-sorin-bratu.jpg'},
+  mirela:{n:'Mirela Bratu',tel:'+40735444407',dial:'0735.44.44.07',
+          mail:'mirela.bratu@the-house.ro',img:'avatar-mirela-bratu.jpg'},
+  alex:{n:'Alexandru Bratu',tel:'+40735444406',dial:'0735.44.44.06',
+        img:'avatar-alexandru-bratu.jpg'}
+};
+/* The fallback exists only so a listing added without `ag` still has a dialable
+   number; every record above carries one. */
+const agent=l=>AG[l.ag]||AG.sorin;
+
+
+/* ── Full listing spec, lifted off the-house.ro's detail pages ──────────
+   The source buries all of this behind six tab panels plus a thumbnail
+   slider — 272 rows and 121 photos across the nine listings, none of it
+   visible without clicking, none of it in the initial DOM order that a
+   screen reader or Ctrl+F would follow. We keep the source's own grouping
+   (its vocabulary is domain-accurate) but render every group open. Labels
+   and values are re-set in diacritic-correct Romanian; the source has none.
+
+   Deliberately NOT carried over: the "Numar de afisari" view counter. It is
+   real data, but a high view count on an unsold property reads as staleness,
+   not popularity. ── */
+const SPEC={
+ HOUSE853:{g:[["Caracteristici",[["An construcție","2017"],["Regim de înălțime","P+1E"],["Suprafață teren","1980 mp"],["Suprafață construită","521 mp"],["Suprafață utilă","402 mp"],["Fronturi","1"],["Front stradal","33 ml"],["Camere","8"],["Dormitoare","3"],["Birouri","1"],["Bucătării","1"],["Băi","5"],["Terase","2"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","2"],["Locuri de parcare","5"],["Zidărie","Ytong"],["Izolație","exterior"],["Clasă energetică","A"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","aluminiu"],["Încălzire prin pardoseală",1],["Încălzire prin pereți",1]]],["Finisaje",[["Tâmplărie","aluminiu"],["Pereți","vopsea lavabilă, faianță"],["Podele","gresie, mochetă, parchet triplu stratificat"],["Uși de interior","lemn"],["Uși de exterior","metal"]]],["Spații utile",[["Dependințe",1],["Dressing",1],["Anexe",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Teren de sport",1],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Videointerfon",1],["Alarmă cu senzori",1],["Camere video zi / noapte",1],["Telecomandă garaj / curte",1],["Seif",1]]]],ph:["06075954img_1000.jpg","06075840img_0943.jpg","06080050img_0973.jpg","06075817img_0952.jpg","06075905img_0991.jpg","06075921img_0990.jpg","06080017img_0964.jpg","06080116img_1024.jpg","06080139img_1015.jpg","06080243img_1043.jpg","06080337img_1058.jpg","06080401img_1068.jpg","06080420img_1078.jpg","06080454img_1102.jpg","06080547img_1105.jpg","06080516img_1115.jpg","06080614img_1085.jpg","06080721img_1148.jpg","06080634img_1150.jpg","06080657img_1160.jpg","06075753img_1195.jpg"]},
+ HOUSE935:{g:[["Caracteristici",[["An construcție","2003"],["Regim de înălțime","D+P+1E"],["Suprafață teren","940 mp"],["Suprafață construită","480 mp"],["Suprafață utilă","360 mp"],["Fronturi","1"],["Front stradal","20 ml"],["Camere","6"],["Dormitoare","4"],["Birouri","1"],["Bucătării","1"],["Băi","3"],["Terase","1"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Locuri de parcare","2"],["Izolație","nu necesită"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Curent","monofazic"],["Telefon",1],["Internet",1],["Climatizare","ventiloconvectoare"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Demisol",1],["Dressing",1],["Debara",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Scară interioară",1]]],["Securizare",[["Telecomandă garaj / curte",1]]]],ph:["08075104img_8167.jpg","08075001img_8160.jpg","08075021img_8165.jpg","08075038img_8166.jpg","08075135img_8169.jpg","08075204img_8186.jpg","08074940img_8187.jpg","08075235img_8183.jpg","08075306img_8190.jpg","08075352img_8193.jpg","08075417img_8196.jpg","08075329img_8192.jpg","08075440img_8199.jpg","08075509img_8202.jpg","08075529img_8203.jpg","08075548img_8205.jpg","08075617img_8210.jpg","08075639img_8212.jpg"]},
+ HOUSE872:{g:[["Caracteristici",[["An construcție","2005, renovată 2017"],["Regim de înălțime","P+M"],["Suprafață teren","705 mp"],["Suprafață utilă","254 mp"],["Fronturi","1"],["Front stradal","14 ml"],["Camere","5"],["Dormitoare","4"],["Bucătării","1"],["Băi","4"],["Terase","2"],["Compartimentare","decomandat"],["Confort","1"],["Garaje","3"],["Locuri de parcare","5"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie, parchet dublu stratificat"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1],["Anexe",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Piscină","exterioară"],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Alarmă cu senzori",1],["Camere video zi / noapte",1],["Telecomandă garaj / curte",1]]]],ph:["03082649img_2861.jpg","03082706img_2864.jpg","03082617img_2871.jpg","03082732img_2876.jpg","03082810img_2881.jpg","03082835img_2892.jpg","03082923img_2900.jpg","03082947img_2902.jpg","03083008img_2891.jpg","03083029img_2882.jpg","03083055img_2903.jpg","03083124img_2932.jpg","03083200img_2938.jpg","03083216img_2917.jpg","03083239img_2922.jpg","05140429plancasa.jpg"]},
+ HOUSE920:{g:[["Caracteristici",[["An construcție","2012"],["Regim de înălțime","D+P+3+M"],["Etaj","3+M"],["Suprafață construită","290 mp"],["Suprafață utilă","198 mp"],["Mențiuni suprafață","exactă, înscrisă în RLX"],["Camere","5"],["Dormitoare","3"],["Bucătării","1"],["Băi","4"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","A"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, marmură"],["Podele","parchet din esență rară, marmură"],["Uși de exterior","lemn"]]],["Spații utile",[["Boxă",1],["Demisol",1],["Dressing",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Telecomandă garaj / curte",1]]]],ph:["06112940img_7127.jpg","06112812img_7113.jpg","06112842img_7120.jpg","06112903img_7121.jpg","06112919img_7123.jpg","06112754img_7134.jpg","06113008img_7129.jpg","06113028img_7130.jpg","06113043img_7136.jpg","06113100img_7138.jpg","06113126img_7144.jpg","06113142img_7145.jpg","06113202img_7153.jpg","06113220img_7157.jpg","06113241img_7159.jpg","06113258img_7161.jpg","06113315rlv.jpg","06113325rlvetaj.jpg"]},
+ HOUSE324:{g:[["Caracteristici",[["An construcție","2007"],["Regim de înălțime","P+1E"],["Suprafață teren","800 mp"],["Suprafață grădină","600 mp"],["Suprafață construită","492 mp"],["Suprafață utilă","410 mp"],["Fronturi","1"],["Front stradal","17 ml"],["Camere","6"],["Dormitoare","3"],["Birouri","1"],["Bucătării","1"],["Băi","3"],["Terase","2"],["Balcoane","1"],["Compartimentare","decomandat"],["Confort","lux"],["Garaje","1"],["Locuri de parcare","2"],["Zidărie","cărămidă"],["Izolație","exterior"],["Structură de rezistență","beton"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","PVC"]]],["Spații utile",[["Dressing",1],["Debara",1],["Cameră tehnică",1]]],["Alte dotări",[["Grădină","cu irigare automatizată"],["Iluminat grădină / curte",1],["Șemineu",1],["Scară interioară",1]]],["Securizare",[["Interfon",1],["Alarmă cu senzori",1]]]],ph:["13101211img_6483.jpg","13101242img_6473.jpg","13101312img_6475.jpg","13101330img_0033.jpg","13101345img_0032.jpg","13101423img_6471.jpg","13101520img_6479.jpg","13101541img_6484.jpg","13101609img_6484.jpg","13101647img_6486.jpg","13101720img_0086.jpg","13101739img_0074.jpg","13101801img_0093.jpg","13101824img_0101.jpg","13101846img_0110.jpg","13101909img_0105.jpg","13101932img_0121.jpg"]},
+ HOUSE612:{g:[["Caracteristici",[["Suprafață teren","14300 mp"],["Construcție pe teren","nu"],["Fronturi","1"],["Front stradal","101.72 ml"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Curent","monofazic"]]],["Alte dotări",[["Acces auto",1],["La stradă",1]]]],ph:["25085852terenaeroport14300mp2.jpg","25085903terenaeroport14300mp.jpg","25085910terenaeroport14300mp3.jpg"]},
+ HOUSE948:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","P+2E+M"],["Etaj","mansardă"],["Suprafață utilă","72 mp"],["Camere","3"],["Dormitoare","1"],["Bucătării","1"],["Băi","2"],["Compartimentare","decomandat"]]],["Utilități, încălzire, climatizare",[["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Apă","la rețea"],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, granit"],["Rulouri / obloane","lemn"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Alte dotări",[["Scară interioară",1]]]],ph:["07113210img_9933.jpg","07113156img_9928.jpg","07113222img_9950.jpg","07113234img_9972.jpg","07113257img_9912.jpg","07113313img_9946.jpg","07113345img_9938.jpg","07113358img_9940.jpg","07113411img_9942.jpg","07113446img_9910.jpg","07113506img_9981.jpg","07113520img_9983.jpg","07113538img_9995.jpg","07113601img_9984.jpg","07113824img_9995.jpg","07113838img_9992.jpg"]},
+ HOUSE941:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","D+P+1+M"],["Etaj","parter înalt"],["Suprafață utilă","53 mp"],["Camere","2"],["Dormitoare","1"],["Bucătării","1"],["Băi","1"],["Compartimentare","semidecomandat"],["Confort","1"],["Zidărie","cărămidă"],["Izolație","fără"]]],["Utilități, încălzire, climatizare",[["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Alte dotări",[["Curte",1]]],["Securizare",[["Camere video zi / noapte",1]]]],ph:["13133922img_8512.jpg","13133943img_8518.jpg","13134002img_8521.jpg","13134023img_8527.jpg","13134108img_8528.jpg","13134153img_8530.jpg","13134222img_8534.jpg","13134541img_8533.jpg","13134514img_8538.jpg"]},
+ HOUSE841:{g:[["Caracteristici",[["An construcție","2009"],["Regim de înălțime","P+5E+Er"],["Etaj","3"],["Suprafață utilă","99, 42 mp"],["Mențiuni suprafață","exactă, conform RLV"],["Camere","3"],["Dormitoare","2"],["Bucătării","1"],["Băi","2"],["Balcoane","2"],["Compartimentare","decomandat"],["Confort","1"],["Locuri de parcare","1"],["Zidărie","cărămidă"],["Izolație","exterior"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Climatizare","aer condiționat"],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","lemn stratificat"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]],["Spații utile",[["Dressing",1],["Debara",1]]],["Alte dotări",[["Lift",1]]],["Securizare",[["Videointerfon",1],["Alarmă cu senzori",1]]]],ph:["06122507img_9889.jpg","06122814img_9892.jpg","06122430img_9915.jpg","06122550img_9887.jpg","06122855img_9901.jpg","06122942img_9910.jpg","06123115img_9916.jpg","06123220img_9908.jpg","06123305img_9911.jpg","06123507img_9921.jpg","06123546img_9926.jpg","06123702img_9930.jpg","06123821img_9938.jpg"]},
+ HOUSE636:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Suprafață utilă","4200 mp"],["Băi","4"],["Zidărie","BCA"],["Structură de rezistență","beton"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic și trifazic"],["Telefon",1],["Internet",1],["Centrală termică","a imobilului, pe gaz"]]],["Finisaje",[["Uși de exterior","lemn"]]],["Alte dotări",[["Lift",1]]]],ph:["17094224img_0186.jpg","17094233img_0187.jpg","17094239img_0182.jpg","17094250img_0190.jpg","17094259img_0194.jpg","17094307img_0195.jpg","17094315img_0198.jpg","17094332img_0210.jpg","17094344img_0212.jpg","17094357img_0220.jpg","17094406img_0216.jpg"]},
+ HOUSE641:{g:[["Caracteristici",[["An construcție","2013"],["Regim de înălțime","P+3E"],["Etaj","3"],["Suprafață utilă","72 mp"],["Camere","2"],["Dormitoare","1"],["Băi","1"],["Terase","1"],["Compartimentare","decomandat"],["Confort","lux"],["Locuri de parcare","3"],["Zidărie","cărămidă"],["Izolație","exterior"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","a imobilului, pe gaz"],["Climatizare","ventiloconvectoare"],["Calorifere","aluminiu"],["Încălzire prin pardoseală",1]]],["Finisaje",[["Tâmplărie","aluminiu"],["Pereți","vopsea lavabilă, faianță, tapet"],["Podele","gresie, mochetă"],["Uși de interior","sticlă"],["Uși de exterior","metal"]]],["Alte dotări",[["Curte",1]]],["Securizare",[["Camere video zi / noapte",1],["Seif",1]]]],ph:["31131740dsc_2929.jpg","31131800img_0244.jpg","31131818img_0246.jpg","31131834img_0253.jpg","31131911img_0260.jpg","31131934img_0265.jpg","31132010img_0272.jpg","31132028img_0275.jpg","31132049img_0280.jpg"]},
+ HOUSE945:{g:[["Caracteristici",[["An construcție","înainte de 1990"],["Regim de înălțime","P+4E"],["Etaj","parter înalt"],["Suprafață utilă","71 mp"],["Camere","3"],["Dormitoare","2"],["Bucătării","1"],["Băi","2"],["Compartimentare","decomandat"],["Confort","1"],["Zidărie","cărămidă"],["Izolație","fără"],["Clasă energetică","B"]]],["Utilități, încălzire, climatizare",[["Apă","la rețea"],["Gaz",1],["Canalizare","la rețea"],["Curent","monofazic"],["Telefon",1],["Internet",1],["Televiziune prin cablu",1],["Centrală termică","proprie, pe gaz"],["Calorifere","oțel"]]],["Finisaje",[["Tâmplărie","PVC"],["Pereți","vopsea lavabilă, faianță"],["Podele","parchet masiv, gresie"],["Uși de interior","lemn"],["Uși de exterior","lemn"]]]],ph:["20184641img_9646.jpg","20184703img_9558111.jpg","20184715img_96051111.jpg","20184734img_9582.jpg","20184807img_9592.jpg","20184828img_9574.jpg","20184840img_9599.jpg","20184852img_9602.jpg","20184925img_9628.jpg","20184945img_9630.jpg","20185012img_9644.jpg","20185027img_9647.jpg","20185039img_9652.jpg","20185104img_9637111.jpg","20185119img_9633.jpg"]},
+};
+
+const ZONA={
+ HOUSE853:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+ HOUSE935:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+ HOUSE872:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
+ HOUSE920:{z:[["Transport","autobuz"],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
+ HOUSE324:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Nivel de zgomot","mediu"]],ud:"Cu programare prealabilă",av:"La cerere"},
+ HOUSE612:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1]],ud:null,av:"Disponibil imediat"},
+ HOUSE948:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Instituții administrative",1],["Farmacii",1],["Piețe",1],["Nivel de zgomot","scăzut"]],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
+ HOUSE941:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil"},
+ HOUSE841:{z:[["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Instituții administrative",1],["Farmacii",1],["Piețe",1],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere, în 3 ore de la solicitare",av:"Disponibil imediat"},
+ HOUSE636:{z:[["Transport","tramvai, autobuz"]],ud:"Cu programare prealabilă",av:"Disponibil la cerere"},
+ HOUSE641:{z:[["Transport","autobuz"],["Străzi","asfaltate"],["Iluminat stradal",1],["Școli și grădinițe",1],["Supermarket","Kaufland Dumbrăvița, Auchan"],["Farmacii",1],["Piețe",1],["Parcuri",1],["Nivel de zgomot","scăzut"]],ud:"La cerere",av:"La cerere"},
+ HOUSE945:{z:[],ud:"Cu programare prealabilă",av:"Disponibil imediat"},
+};
+
+/* The gallery on each card stays the first photo; the drawer gets the lot. */
+L.forEach(l=>{ if(SPEC[l.id]) l.ph=SPEC[l.id].ph; });
+/* Floor plans must never be cropped, so they are detected and shown contained. */
+const isPlan=f=>/plan|rlv/i.test(f);
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>n.toLocaleString('ro-RO');
+const MAXP={vanzare:1000000,inchiriere:5000},MINP={vanzare:50000,inchiriere:200},STEP={vanzare:25000,inchiriere:50};
+/* Seeded from MAXP so the slider's ceiling and the filter's ceiling cannot
+   disagree — they did, and the top listing silently vanished from the grid. */
+const S={tx:'vanzare',zona:'toate',tip:'toate',cam:'',pret:MAXP.vanzare};
+
+/* Logo travels as a data URI: zero extra requests, and it survives even
+   if the-house.ro is unreachable. */
+const LOGO='data:image/png;base64,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';
+$('#logo').src=LOGO; $('#flogo').src=LOGO;
+$('#yr').textContent=new Date().getFullYear();
+
+/* ── €/m² — computed, not authored. Only meaningful for sales with a
+      published price and a usable area. ── */
+const ppm=l=>(l.tx==='vanzare'&&l.pret&&l.mp)?Math.round(l.pret/l.mp):null;
+/* `per` overrides the monthly default — HOUSE641 is let in regim hotelier and
+   is quoted per night, so printing "/lună" would be off by a factor of thirty. */
+const per=l=>l.tx==='inchiriere'?(l.per||'lună'):null;
+const priceHTML=l=>l.pret===null
+  ?`<span class="muted" style="font-size:16px">Preț la cerere</span>`
+  :`<span class="price">${fmt(l.pret)} €${per(l)?`<span class="muted" style="font-size:13px;font-weight:400">/${per(l)}</span>`:''}</span>`;
+
+function card(l){
+  const p=ppm(l), b=document.createElement('button');
+  b.className='card'; b.type='button';
+  b.setAttribute('aria-label',`${l.t} — ${l.z}`);
+  b.innerHTML=`
+    <div class="ph">
+      <img src="${IMG}${l.ph[0]}" alt="${l.t}, ${l.z}, Timișoara" loading="lazy" decoding="async"
+           referrerpolicy="no-referrer" width="640" height="440" onerror="this.style.opacity=0">
+      ${l.c0?`<span class="badge">Comision 0%</span>`:l.nou?`<span class="badge plain">Nou</span>`:''}
+      ${l.ph.length>1?`<span class="phcount">${l.ph.length} foto</span>`:''}
+    </div>
+    <div class="cbody">
+      <p style="font:400 19px/1.35 var(--serif)">${l.t}</p>
+      <p class="muted" style="font-size:13px;margin-top:6px">${TIPL[l.tip]} · ${l.z}</p>
+      <div class="specs">
+        ${l.cam?`<span class="spec">${l.cam} camere</span>`:''}
+        <span class="spec">${fmt(l.mp)} mp</span>
+        ${l.mpT?`<span class="spec">teren ${fmt(l.mpT)} mp</span>`:''}
+        ${l.epc?`<span class="epc ${l.epc.toLowerCase()}">Clasa ${l.epc}</span>`:''}
+      </div>
+      <div style="margin-top:auto;padding-top:16px">
+        ${priceHTML(l)}
+        ${p?`<p class="ppm">${fmt(p)} €/mp</p>`:''}
+      </div>
+    </div>`;
+  b.addEventListener('click',()=>openDrawer(l));
+  return b;
+}
+
+function apply(){
+  const out=L.filter(l=>l.tx===S.tx
+    &&(S.zona==='toate'||l.z===S.zona)
+    &&(S.tip==='toate'||l.tip===S.tip)
+    &&(!S.cam||(S.cam==='4'?l.cam>=4:l.cam==+S.cam))
+    &&(l.pret===null||l.pret<=S.pret));
+  const g=$('#grid'); g.replaceChildren(...out.map(card));
+  $('#empty').style.display=out.length?'none':'block';
+  const n=out.length;
+  $('#hitLbl').textContent=n===1?'1 proprietate':`${n} proprietăți`;
+  return out;
+}
+
+/* ── zone list, derived from the data rather than hard-coded ── */
+const zones=[...new Set(L.map(l=>l.z))].sort((a,b)=>a.localeCompare(b,'ro'));
+$('#fZona').innerHTML=`<option value="toate">Toată Timișoara</option>`+zones.map(z=>`<option value="${z}">${z}</option>`).join('');
+$('#zonelist').innerHTML=zones.map(z=>`<button class="zonechip" type="button" data-z="${z}">${z}</button>`).join('');
+$$('.zonechip').forEach(c=>c.addEventListener('click',()=>{
+  S.zona=c.dataset.z; $('#fZona').value=c.dataset.z; apply();
+  $('#proprietati').scrollIntoView({behavior:'smooth'});
+}));
+
+/* ── Proprietatea săptămânii ──────────────────────────────────────────
+   One id, one place. The hero photo above is the same listing's lead shot,
+   and the card opens the same drawer as any grid card — so the most
+   prominent property on the page is no longer the only one you can't open. */
+const WEEK='HOUSE853';
+const week=L.find(l=>l.id===WEEK);
+if(week){
+  const p=ppm(week);
+  $('#weekCard').innerHTML=`
+    <span class="kicker" data-ro="Proprietatea săptămânii" data-en="Property of the week">Proprietatea săptămânii</span>
+    <span style="display:block;font:400 19px/1.3 var(--serif);margin-top:9px">${week.t}</span>
+    <span class="muted" style="display:block;font-size:12.5px;margin-top:5px">${fmt(week.mp)} mp utili${week.mpT?` · teren ${fmt(week.mpT)} mp`:''}</span>
+    <span class="wk">${priceHTML(week)}<span class="muted" style="font-size:11px">${week.id}</span></span>
+    ${p?`<span class="ppm" style="display:block">${fmt(p)} €/mp</span>`:''}
+    <span class="go"><span data-ro="Vezi detaliile" data-en="See the details">Vezi detaliile</span><em aria-hidden="true">→</em></span>`;
+  $('#weekCard').setAttribute('aria-label',`Proprietatea săptămânii: ${week.t}. Vezi detaliile.`);
+  $('#weekCard').addEventListener('click',()=>openDrawer(week));
+}
+
+/* ── Comision 0% ──────────────────────────────────────────────────────
+   Heading and grid both derived, so the claim and the badges cannot drift
+   apart again. The three offers span both transaction types, which is why
+   they are shown here rather than as a filter over the main grid. */
+const c0=L.filter(l=>l.c0);
+const WORD={ro:['','O','Două','Trei','Patru','Cinci'],en:['','One','Two','Three','Four','Five']};
+const c0h=$('#c0head'), n0=c0.length;
+c0h.dataset.ro=`${WORD.ro[n0]||n0} propriet${n0===1?'ate':'ăți'} la care nu plătiți comision.`;
+c0h.dataset.en=`${WORD.en[n0]||n0} propert${n0===1?'y':'ies'} where you pay no fee.`;
+c0h.textContent=c0h.dataset.ro;
+$('#c0n').textContent=n0;
+$('#c0grid').replaceChildren(...c0.map(card));
+
+/* Statul din hero, scris din rosterul de consultanți — vezi AG. */
+$('#agN').textContent=Object.keys(AG).length;
+
+$('#fZona').addEventListener('change',e=>{S.zona=e.target.value;apply()});
+$('#fTip').addEventListener('change',e=>{S.tip=e.target.value;apply()});
+$('#fCam').addEventListener('change',e=>{S.cam=e.target.value;apply()});
+$('#fPret').addEventListener('input',e=>{
+  S.pret=+e.target.value;
+  $('#pretLbl').textContent=fmt(S.pret)+' €'+(S.tx==='inchiriere'?'/lună':'');
+  apply();
+});
+$('#btnCauta').addEventListener('click',()=>$('#proprietati').scrollIntoView({behavior:'smooth'}));
+
+$$('.tabs button').forEach(t=>t.addEventListener('click',()=>{
+  $$('.tabs button').forEach(x=>x.setAttribute('aria-selected',String(x===t)));
+  S.tx=t.dataset.tx;
+  const r=$('#fPret');
+  r.min=MINP[S.tx]; r.max=MAXP[S.tx]; r.step=STEP[S.tx]; r.value=MAXP[S.tx];
+  S.pret=MAXP[S.tx];
+  $('#pretLbl').textContent=fmt(S.pret)+' €'+(S.tx==='inchiriere'?'/lună':'');
+  apply();
+}));
+
+/* ── Drawer: the split-panel listing pattern — gallery left, sticky
+      facts and contact right on wide screens. ── */
+let lastFocus=null, cur=null, gi=0;
+
+/* Gallery. The source site paginates 16-18 photos behind a thumbnail slider
+   whose arrows move the *thumbnails*, not the photo — so reaching the last
+   shot takes several clicks with no indication of how many remain. Here the
+   count is stated up front and every thumbnail is one click away. */
+function galleryHTML(l){
+  const n=l.ph.length;
+  return `
+    <div class="gal">
+      <div class="stage">
+        <img id="dMain" src="${IMG}${l.ph[0]}" class="${isPlan(l.ph[0])?'plan':''}"
+             alt="${l.t} — fotografia 1 din ${n}" referrerpolicy="no-referrer">
+      </div>
+      ${n>1?`
+        <button class="galnav prev" type="button" aria-label="Fotografia anterioară">‹</button>
+        <button class="galnav next" type="button" aria-label="Fotografia următoare">›</button>
+        <p class="galcount"><span id="dIdx">1</span> / ${n}</p>`:''}
+    </div>
+    ${n>1?`<div class="thumbs" style="margin-top:12px">${l.ph.map((p,i)=>
+      `<button type="button" data-i="${i}" aria-label="Fotografia ${i+1} din ${n}${isPlan(p)?', plan':''}">
+         <img src="${IMG}${p}" alt="" class="${i?'':'on'}" loading="lazy" referrerpolicy="no-referrer">
+         ${isPlan(p)?'<span class="planbadge">PLAN</span>':''}
+       </button>`).join('')}</div>`:''}
+    <p class="muted" style="font-size:12.5px;margin-top:10px" aria-live="polite" id="dCap"></p>`;
+}
+function showPhoto(i){
+  const ph=cur.ph; gi=(i+ph.length)%ph.length;
+  const m=$('#dMain'), plan=isPlan(ph[gi]);
+  m.src=IMG+ph[gi];
+  m.classList.toggle('plan',plan);
+  m.alt=`${cur.t} — fotografia ${gi+1} din ${ph.length}`;
+  const idx=$('#dIdx'); if(idx)idx.textContent=gi+1;
+  $('#dCap').textContent=plan?'Plan al locuinței':'';
+  const btns=$$('#drawer .thumbs button');
+  btns.forEach((b,j)=>b.querySelector('img').classList.toggle('on',j===gi));
+  if(btns[gi])btns[gi].scrollIntoView({block:'nearest',inline:'nearest'});
+}
+
+/* Spec groups, rendered open. The source hides these behind six tabs; that was
+   a 2010 space constraint, not an editorial decision, and hiding them costs
+   Ctrl+F, screen-reader reading order and the ability to compare two listings
+   without clicking through both. Quantity of *detail* is not the thing the
+   motto is against. */
+const val=v=>v===1?'Da':v;
+function specHTML(id){
+  const s=SPEC[id]; if(!s)return'';
+  return s.g.map(([name,items])=>`
+    <div class="sgroup">
+      <h3>${name}</h3>
+      <div class="sgrid">${items.map(([k,v])=>
+        `<div class="srow"><span class="muted">${k}</span><b>${val(v)}</b></div>`).join('')}</div>
+    </div>`).join('');
+}
+function zonaHTML(id){
+  const z=ZONA[id]; if(!z||!z.z.length)return'';
+  return `<div class="sgroup"><h3>Zona</h3><div class="sgrid">${z.z.map(([k,v])=>
+    `<div class="srow"><span class="muted">${k}</span><b>${val(v)}</b></div>`).join('')}</div></div>`;
+}
+
+/* The named consultant. Decorative alt on the photo — the name is right beside
+   it — and no "sună-l / sună-o" anywhere, because the roster is mixed. */
+function agentHTML(l){
+  const a=agent(l);
+  return `
+    <div class="dagent">
+      <!-- No loading="lazy": the node only exists once the drawer is open, so
+           it is already deferred, and 2 KB should not arrive after the name. -->
+      <img src="${a.img}" alt="" width="58" height="58">
+      <div class="da-id">
+        <p class="kicker">Consultantul ofertei</p>
+        <p class="da-name">${a.n}</p>
+        <p class="da-role">Consultant imobiliar${a.mail
+          ?`<span class="sep"> · </span><a href="mailto:${a.mail}?subject=${encodeURIComponent(l.id+' — '+l.t)}">${a.mail}</a>`
+          :''}</p>
+      </div>
+      <a class="tel" href="tel:${a.tel}">${a.dial}</a>
+    </div>`;
+}
+
+function openDrawer(l){
+  lastFocus=document.activeElement; cur=l; gi=0;
+  const p=ppm(l), z=ZONA[l.id]||{}, a=agent(l);
+  $('#drawer').innerHTML=`
+    <div class="dhead">
+      <p class="kicker">${l.id}</p>
+      <button class="btn btn-ghost btn-sm" id="dClose" type="button">Închide ✕</button>
+    </div>
+    <div style="padding:24px">
+      ${galleryHTML(l)}
+      <h2 id="dTitle" class="display" style="font-size:27px;margin-top:22px">${l.t}</h2>
+      <p class="muted" style="margin-top:8px">${TIPL[l.tip]} · ${l.z}, Timișoara</p>
+      <div style="display:flex;align-items:baseline;gap:14px;margin-top:18px">
+        ${priceHTML(l)} ${p?`<span class="ppm">${fmt(p)} €/mp</span>`:''}
+      </div>
+      ${agentHTML(l)}
+      ${(z.av||z.ud)?`<div class="avail">
+        ${z.av?`<div><span>Disponibilitate</span><b>${z.av}</b></div>`:''}
+        ${z.ud?`<div><span>Vizionare</span><b>${z.ud}</b></div>`:''}
+      </div>`:''}
+      <p style="margin-top:22px;line-height:1.8">${l.d}</p>
+      <ul style="margin-top:20px;padding-left:18px;line-height:2">${l.hi.map(h=>`<li>${h}</li>`).join('')}</ul>
+      <div class="sgroup">
+        <h3>Preț și comision</h3>
+        <div class="sgrid">
+          <div class="srow"><span class="muted">Preț</span><b>${l.pret===null?'la cerere':fmt(l.pret)+' €'+(per(l)?'/'+per(l):'')}</b></div>
+          ${l.neg?`<div class="srow"><span class="muted">Negociere</span><b>${l.neg}</b></div>`:''}
+          ${p?`<div class="srow"><span class="muted">Preț pe mp</span><b>${fmt(p)} €/mp</b></div>`:''}
+          <div class="srow"><span class="muted">Comision</span><b>${l.com}</b></div>
+        </div>
+      </div>
+      ${specHTML(l.id)}
+      ${zonaHTML(l.id)}
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
+        <a class="btn btn-primary" href="tel:${a.tel}">Sună ${a.dial}</a>
+        <a class="wa" href="https://wa.me/${a.tel.slice(1)}?text=${encodeURIComponent('Bună ziua, sunt interesat de '+l.id+' — '+l.t)}" rel="noopener">
+          WhatsApp despre ${l.id}</a>
+      </div>
+    </div>`;
+  const d=$('#drawer');
+  d.classList.add('open'); d.setAttribute('aria-hidden','false');
+  $('#scrim').classList.add('open'); document.body.classList.add('noscroll');
+  d.scrollTop=0;
+  $('#dClose').focus();
+  $('#dClose').addEventListener('click',closeDrawer);
+  const prev=d.querySelector('.galnav.prev'), next=d.querySelector('.galnav.next');
+  if(prev)prev.addEventListener('click',()=>showPhoto(gi-1));
+  if(next)next.addEventListener('click',()=>showPhoto(gi+1));
+  $$('#drawer .thumbs button').forEach(b=>
+    b.addEventListener('click',()=>showPhoto(+b.dataset.i)));
+}
+function closeDrawer(){
+  const d=$('#drawer');
+  d.classList.remove('open'); d.setAttribute('aria-hidden','true');
+  $('#scrim').classList.remove('open'); document.body.classList.remove('noscroll');
+  if(lastFocus)lastFocus.focus();
+}
+$('#scrim').addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{
+  if(!$('#drawer').classList.contains('open'))return;
+  if(e.key==='Escape'){closeDrawer();return}
+  /* Arrows page the gallery, but not while the user is inside a form field. */
+  if(cur&&cur.ph.length>1&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){
+    if(e.key==='ArrowLeft'){e.preventDefault();showPhoto(gi-1)}
+    if(e.key==='ArrowRight'){e.preventDefault();showPhoto(gi+1)}
+  }
+});
+
+/* ── RO / EN layer. The research flags expat and investor buyers as an
+      untapped segment; this is the shell for it. Listing prose stays
+      Romanian until it is professionally translated — a half-translated
+      page reads worse than an honest monolingual one. ── */
+function setLang(lang){
+  document.documentElement.lang=lang;
+  $$('[data-'+lang+']').forEach(el=>{el.textContent=el.dataset[lang]});
+  $$('.langtog button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
+}
+$$('.langtog button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+/* ── header, menu, reveal ── */
+addEventListener('scroll',()=>$('#hdr').classList.toggle('solid',scrollY>12),{passive:true});
+$('#burger').addEventListener('click',()=>{
+  const m=$('#mmenu'), open=m.classList.toggle('open');
+  $('#burger').setAttribute('aria-expanded',String(open));
+});
+$$('#mmenu a').forEach(a=>a.addEventListener('click',()=>{
+  $('#mmenu').classList.remove('open'); $('#burger').setAttribute('aria-expanded','false');
+}));
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}
+}),{threshold:.12});
+$$('.rise').forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+'ms';io.observe(el)});
+
+/* Form is a front-end demo: no endpoint is wired, so nothing leaves the
+   browser. Wire to a Netlify Form or your CRM before going live. */
+$('#capForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const ok=$('#cNume').value.trim()&&$('#cTel').value.trim()&&$('#cGdpr').checked;
+  $('#capMsg').textContent=ok
+    ?'Demo: formularul nu este încă conectat la un endpoint.'
+    :'Completează numele, telefonul și bifează acordul.';
+});
+
+apply();
+</script>
+</body>
+</html>
