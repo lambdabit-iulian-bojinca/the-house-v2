@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>THE HOUSE Imobiliare — Proprietăți în Timișoara din 2010</title>
 <meta name="description" content="Agenție de familie din Timișoara. Proprietăți văzute de noi înainte să ajungă pe site: vile, apartamente în clădiri de patrimoniu, terenuri și spații industriale.">
-<link rel="canonical" href="https://the-house-2026.netlify.app/c">
+<link rel="canonical" href="https://the-house-2026.netlify.app/d">
 
-<!-- The hero photograph is the largest thing above the fold, so it is the LCP
-     candidate and must not wait for the CSS to be parsed before it is asked
-     for. The two media queries are the exact complement of the <picture>
-     sources below — a preload that does not match a source is a wasted
-     download, not a speed-up. Browsers that cannot decode AVIF skip both
-     because of `type`, and fall back to the JPEG the normal way. -->
-<link rel="preload" as="image" href="hero-piata-unirii-1200.avif" type="image/avif" media="(max-width:900px)">
-<link rel="preload" as="image" href="hero-piata-unirii-2400.avif" type="image/avif" media="(min-width:901px)">
+<!-- Aici fotografia nu mai este un accent la baza hero-ului, ci fundalul
+     lui: este cel mai mare lucru de pe ecran, deci este aproape sigur
+     elementul LCP și nu are voie să aștepte parsarea CSS-ului ca să fie
+     cerut. Cele trei media queries sunt complementul exact al <source>-urilor
+     de mai jos — un preload care nu se potrivește cu niciun source nu
+     accelerează nimic, doar descarcă de două ori. Browserele fără AVIF le
+     sar pe toate din cauza lui `type` și iau JPEG-ul pe drumul obișnuit. -->
+<link rel="preload" as="image" href="hero-unirii13-1000.avif" type="image/avif" media="(max-width:700px)">
+<link rel="preload" as="image" href="hero-unirii13-1600.avif" type="image/avif" media="(min-width:701px) and (max-width:1200px)">
+<link rel="preload" as="image" href="hero-unirii13-2400.avif" type="image/avif" media="(min-width:1201px)">
 <!-- Inline SVG favicon: the segmental arch in brand teal/amber. Kills the
      automatic /favicon.ico 404 without adding a request. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F4C5A'/%3E%3Cpath d='M10 25V15a6 6 0 0 1 12 0v10' fill='none' stroke='%23F9A51A' stroke-width='3'/%3E%3C/svg%3E">
@@ -234,130 +236,155 @@ nav.main{display:none;gap:30px;margin-left:8px}
 @keyframes para{from{transform:translateY(-5%) scale(1.14)}to{transform:translateY(5%) scale(1.14)}}
 @keyframes paraslow{from{transform:translateY(10%)}to{transform:translateY(-10%)}}
 
-/* Fotografia din bandă folosește view(), la fel ca restul paginii, și nu
-   scroll(). Motivul este cursa: cu scroll() trebuie să alegi tu un interval
-   arbitrar din derularea documentului („primele 100vh"), iar dacă banda intră
-   pe ecran în afara lui, animația e deja terminată când omul o vede. view()
-   măsoară exact intervalul în care banda traversează fereastra, adică fix cât
-   timp există ceva de privit — și se recalculează singur când hero-ul își
-   schimbă înălțimea, ceea ce se întâmplă la fiecare lățime de ecran.
-   Aceleași două porți ca mai sus — @supports pentru browserele fără
-   scroll-driven animations, prefers-reduced-motion pentru că paralaxa
-   este un declanșator vestibular documentat. */
-@supports (animation-timeline:view()){
+/* Fotografia de fundal folosește scroll(), nu view(), și aici motivul este
+   invers față de bandă: hero-ul este pe ecran din prima secundă și ocupă tot
+   ecranul, deci un view() timeline ar fi deja pe la jumătatea cursei în
+   momentul în care omul se uită la pagină. scroll() pornește de la zero — de
+   unde pornește și pagina — și se termină după o fereastră de derulare, adică
+   exact cât timp hero-ul mai are ceva de arătat.
+   Aceleași două porți — @supports pentru browserele fără scroll-driven
+   animations, prefers-reduced-motion pentru că paralaxa este un declanșator
+   vestibular documentat. */
+@supports (animation-timeline:scroll()){
   @media(prefers-reduced-motion:no-preference){
-    .herobg img{animation:herodrift linear both;animation-timeline:view();
-      animation-range:cover 0% cover 100%;will-change:transform}
+    .hero.shot .heroshot img{animation:herodrift linear both;
+      animation-timeline:scroll();animation-range:0 100vh;will-change:transform}
   }
 }
-/* ±14% din înălțimea imaginii (150% din bandă) = ±71px pe o bandă de 340,
-   deci circa 143px de cursă totală în timp ce banda traversează fereastra.
-   Rezerva este de ±85px, deci rămân 14px de margine la fiecare capăt: muchia
-   fotografiei nu apare nici în cadrul extrem. Raportat la cei ~1240px de
-   derulare cât banda e vizibilă, înseamnă un factor de ~0,11 — destul cât
-   fațadele să pară că stau în spatele paginii, prea puțin cât să pară că
-   alunecă. Prima versiune avea ±3% dintr-o cutie de 340px, adică 20px cu
-   totul: măsurabil, dar sub pragul la care ochiul observă ceva. */
-@keyframes herodrift{from{transform:translateY(-14%)}to{transform:translateY(14%)}}
+/* Imaginea are 118% din înălțimea hero-ului, ancorată la -9%, deci are 9%
+   rezervă sus și 9% jos. Keyframe-ul folosește 6,5%, adică rămân 2,5 puncte
+   procentuale de margine la fiecare capăt: fundalul nu-și descoperă muchia
+   nici la sfârșitul cursei. Pe un hero de 820px înseamnă circa 126px de
+   deplasare — vizibil, dar sub pragul la care fotografia pare că se desprinde
+   de pagină. */
+@keyframes herodrift{from{transform:translateY(-6.5%)}to{transform:translateY(6.5%)}}
 
 /* ── Hero ── */
 /* The gradient stays as the base layer, not as decoration: it is what the
    section looks like if the photograph 404s, fails to decode, or is still
    in flight. Nothing below assumes the image arrived. */
-.hero{padding-top:132px;position:relative;overflow:hidden;overflow:clip;background:
+/* Gradientul rămâne baza — adică exact ce se vede dacă fotografia dă 404,
+   nu se decodează sau este încă pe drum. Nimic de mai jos nu presupune că
+   imaginea a ajuns. */
+.hero{padding-top:132px;padding-bottom:76px;position:relative;
+  overflow:hidden;overflow:clip;background:
   linear-gradient(180deg,#fff 0%,var(--plaster) 70%)}
 .hero-grid{display:grid;gap:52px;align-items:center}
 @media(min-width:1024px){.hero{padding-top:158px}.hero-grid{grid-template-columns:1.04fr .96fr;gap:60px}}
 
-/* ── Fotografia din hero ─────────────────────────────────────────────
-   Piața Unirii — exact clădirile pe care le numește lede-ul de deasupra.
-   Fotografie liberă (CC BY 4.0), găzduită local, creditată în subsol.
-
-   De ce bandă jos și nu fundal pe toată secțiunea. Sursa este o panoramă
-   de 2400×1097, raport 2,19. Hero-ul, pe un laptop, este aproximativ
-   1440×1100, adică raport 1,31. Un `cover` peste toată secțiunea ar tăia
-   aproape jumătate din lățimea panoramei și ar mări restul până când
-   fațadele devin pastă — se pierde exact lucrul pentru care a fost aleasă
-   fotografia, șirul de fronturi. Iar dedesubt ar trebui apoi un văl atât
-   de dens încât textul să reziste, și atunci imaginea nu se mai vede
-   deloc: plătești 167 KB pentru o fantomă.
-
-   Banda de jos rezolvă ambele. Este lată și joasă, ca panorama, deci
-   imaginea intră aproape nemodificată; și ocupă fâșia în care hero-ul nu
-   are oricum niciun cuvânt, așa că nu există text peste care să se pună
-   un văl. Consola de căutare urcă peste ea cu -58px și o taie exact cum
-   taie o carte de vizită o fotografie. */
-.herobg{position:absolute;inset:auto 0 0 0;height:var(--band);display:block;
-  pointer-events:none;
-  /* `clip`, nu `hidden`, și diferența nu este cosmetică: `overflow:hidden`
-     face din element un scroll container, iar un scroll container care nu
-     poate fi derulat are o linie de timp de scroll INACTIVĂ. Prima versiune
-     avea `hidden` aici, iar paralaxa de mai jos era atașată corect —
-     getAnimations() o raporta cu un ScrollTimeline — și nu producea nimic:
-     transform rămânea `none` la orice poziție. `clip` taie la fel, dar nu
-     creează scroll container. Cele două cuvinte stau în ordinea asta ca
-     browserele fără `clip` să primească măcar tăierea. */
-  overflow:hidden;overflow:clip;
-  /* Culoarea de sub imagine cât timp se descarcă: fără ea, primul cadru
-     este alb și fotografia „sare" în pagină când sosește. */
-  background:var(--plaster)}
-/* Imaginea este mai înaltă decât banda, și exact de aceea poate exista o
-   paralaxă. 150% din bandă, centrată cu -25%, înseamnă 25% spațiu de manevră
-   sus și 25% jos; keyframe-ul de mai jos folosește 14%, deci imaginea nu-și
-   poate descoperi propria margine nici la capătul cursei. Fără această rezervă
-   singura variantă ar fi `scale()`, care ar mări și moliciunea fișierului —
-   aici sursa are 2400px lățime pentru o bandă de 1440, deci înălțimea în plus
-   este gratis din punct de vedere al detaliului. */
-.herobg img{position:absolute;left:0;top:-25%;width:100%;height:150%;
-  object-fit:cover;object-position:50% 46%;
-  /* Desaturată pentru că fațadele sunt galben, roșu și verde-mentă — la
-     saturație plină se bat cap în cap cu ambra din logo și cu fotografiile
-     proprietăților. Aici trebuie să fie fundal, nu subiect. */
-  filter:saturate(.62) contrast(1.02)}
-/* Muchia de sus a benzii nu are voie să se vadă ca o dungă: pornește din
-   exact culoarea în care se termină gradientul secțiunii și se stinge în
-   circa o treime din înălțime. Restul rămâne aproape neatins — acolo se
-   uită omul. Jos revine un pic de alb, ca fotografia să nu concureze cu
-   consola care stă peste ea. */
-/* Ambele muchii ale benzii trebuie să dispară, nu să se termine.
-   Sus: pornește exact din culoarea în care se stinge gradientul secțiunii
-   (--plaster la 70%), deci nu există prag.
-   Jos: consola urcă 58px peste bandă și îi acoperă mijlocul, dar are numai
-   1240px lățime — pe un ecran lat rămân două culoare în care fotografia se
-   termina tăiat, cu clădirile retezate în linie dreaptă. Ultimii 14% se
-   sting în --paper, adică exact fundalul paginii de dedesubt. */
-.herobg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,
-  var(--plaster) 0%,rgba(247,244,239,.86) 10%,rgba(250,248,244,.42) 26%,
-  rgba(255,255,255,.12) 52%,rgba(255,255,255,.22) 78%,
-  rgba(255,255,255,.62) 92%,var(--paper) 100%)}
-/* Conținutul trece peste bandă. Fără asta .wrap este static, iar stratul
-   absolut ar acoperi partea de jos a statisticilor. */
 .hero>.wrap{position:relative;z-index:1}
 
-/* Spațiul în care trăiește banda, și singura regulă care ține contrastul.
-   Prima versiune avea padding-ul scris de mână, iar pe două coloane banda
-   urca 71–85px peste rândul de statistici: „consultanți în echipă" ajungea
-   la 2,61:1 pe o fereastră din fotografie, adică sub AA. Nu se vedea cu
-   ochiul — de aceea este măsurat, nu apreciat.
+/* ── Fotografia de fundal ────────────────────────────────────────────
+   Varianta "d": aceeași pagină ca "c", dar fotografia nu mai este o bandă la
+   baza hero-ului, ci fundalul întregii secțiuni, cu un văl peste ea.
 
-   Legarea padding-ului de --band face garanția structurală: banda începe
-   întotdeauna sub ultimul rând de text, oricât ar fi de înaltă și
-   indiferent ce fotografie stă în ea. Dacă cineva mărește banda mâine,
-   spațiul crește cu ea; nu există combinație în care textul să ajungă
-   deasupra fotografiei. Alternativa — un văl mai opac sus — ar fi legat
-   lizibilitatea de ce pixeli se nimeresc acolo, ceea ce nu este o
-   garanție, este un noroc. */
-/* Pe telefon banda este legată de fereastră, nu de o cifră fixă. Motivul:
-   pe o singură coloană hero-ul are peste 1500px, iar fotografia ajunge sub
-   cardul proprietății — dacă rămâne la 300px fixe, pe un ecran de 844px arată
-   ca o fâșie rămasă dintr-o imagine, nu ca o imagine. 40vh o ține la aceeași
-   proporție din ecran indiferent de telefon; clamp-ul o oprește să devină o
-   dungă pe un ecran în peisaj și să înghită pagina pe o tabletă. */
-.hero{--band:clamp(288px,40vh,360px);padding-bottom:calc(var(--band) + 22px)}
-@media(min-width:1024px){.hero{--band:340px}}
-/* Pusă de onerror-ul imaginii — vezi nota din markup. */
-.hero.nobg{--band:0px}
-.hero.nobg .herobg{display:none}
+   Clădirea din Piața Unirii 13 — una dintre casele de patrimoniu pe care le
+   numește chiar lede-ul de dedesubt. Fotografie liberă (CC BY 4.0), găzduită
+   local, creditată în subsol.
+
+   Tot ce inversează culorile stă sub `.hero.shot`, și clasa aceea este pusă
+   în markup, nu de JS. Dacă imaginea nu ajunge, `onerror` o SCOATE, iar
+   hero-ul se întoarce la text închis pe fundal deschis — adică exact varianta
+   "b". Este singura structură în care o fotografie lipsă nu produce text alb
+   pe alb; un `.nobg` care doar ascunde imaginea ar produce fix asta. */
+.hero.shot{background:var(--brand-deep);color:#fff;
+  padding-bottom:96px;min-height:min(88vh,860px);display:flex;align-items:center}
+/* Flex item, deci altfel s-ar strânge pe lățimea conținutului și marginile
+   automate din .wrap l-ar centra pe o coloană mai îngustă decât grila. */
+.hero.shot>.wrap{width:100%}
+@media(min-width:1024px){.hero.shot{padding-bottom:120px}}
+.heroshot{position:absolute;inset:0;display:block;pointer-events:none;
+  /* Culoarea de sub fotografie cât timp se descarcă. Este închisă, nu
+     deschisă, pentru că textul de deasupra este alb: dacă primul cadru ar fi
+     alb, titlul ar dispărea pentru o clipă la fiecare încărcare. */
+  background:var(--brand-deep);
+  /* clip, nu hidden — hidden ar face din asta un scroll container, iar
+     linia de timp a paralaxei de mai sus ar deveni inactivă. Aceeași
+     capcană ca la .herobg din varianta c. */
+  overflow:hidden;overflow:clip}
+/* 118% înălțime cu ancora la -9% este rezerva din care trăiește paralaxa;
+   vezi aritmetica de la @keyframes herodrift. */
+.heroshot img{position:absolute;left:0;top:-9%;width:100%;height:118%;
+  object-fit:cover;object-position:50% 38%}
+
+/* Vălul. Două straturi, fiecare cu o treabă:
+   1. gradientul pe orizontală ține partea stângă suficient de închisă cât
+      textul alb să treacă de AA peste ORICE pixel, inclusiv peste cer alb;
+   2. cel pe verticală închide marginea de sus (sub bara fixă) și marginea de
+      jos, unde consola de căutare urcă peste fotografie.
+
+   Cifrele nu sunt alese din ochi. Alb (L=1) are nevoie de un fundal cu
+   luminanță ≤0,183 ca să atingă 4,5:1. Peste cel mai rău pixel posibil — alb
+   pur — un văl rgba(7,38,45,α) atinge pragul la α≈0,62, și rămâne peste el
+   până la circa 62% din lățime. De aceea coloana de text este limitată la
+   ~44% din lățime mai jos: nu ca să arate bine, ci ca să nu poată ieși din
+   zona în care garanția este structurală, indiferent ce fotografie stă
+   dedesubt. ISHO, ca să dau exemplul din care am pornit, are exact vălul
+   care lipsește: titlul lor măsoară 2,14:1 peste cerul propriei fotografii. */
+.heroshot::after{content:'';position:absolute;inset:0;background:
+  linear-gradient(100deg,rgba(7,38,45,.88) 0%,rgba(7,38,45,.83) 38%,
+    rgba(7,38,45,.46) 66%,rgba(7,38,45,.14) 100%),
+  linear-gradient(180deg,rgba(7,38,45,.42) 0%,rgba(7,38,45,.06) 26%,
+    rgba(7,38,45,.10) 62%,rgba(7,38,45,.52) 100%)}
+/* Pe ecran îngust nu mai există „stânga" și „dreapta": textul ocupă toată
+   lățimea, deci gradientul orizontal nu mai poate proteja nimic. Se schimbă
+   pe verticală — închis sus, unde stă titlul, mai deschis la mijloc, unde se
+   vede clădirea, și închis iar jos, sub card. */
+@media(max-width:900px){
+  /* Pragul de .80 nu este estetică, este aritmetică: peste alb pur un văl
+     rgba(7,38,45,.80) coboară fundalul la luminanță 0,068, adică 8,9:1 pentru
+     alb și 6,0:1 pentru gri-ul din statistici. Se ține deci .80 pe toți cei
+     62% în care există text, și abia sub ei se deschide, în dreptul arcului,
+     unde singurul lucru de deasupra este cardul, care are propria suprafață.
+     Prima versiune se deschidea la .62 pe la jumătate și rândul „oferte cu
+     comision 0%" cădea la 4,28:1 — sub AA, și nu se vedea cu ochiul. */
+  .heroshot::after{background:
+    linear-gradient(180deg,rgba(7,38,45,.88) 0%,rgba(7,38,45,.84) 34%,
+      rgba(7,38,45,.80) 62%,rgba(7,38,45,.52) 77%,rgba(7,38,45,.74) 100%)}
+  .heroshot img{object-position:50% 44%}
+  /* Pe telefon hero-ul are ~1315px într-o fereastră de 844: cu cursa legată de
+     100vh imaginea îngheață când mai are un ecran întreg de arătat. Intervalul
+     se întinde deci cât ține secțiunea pe ecran. */
+  .hero.shot .heroshot img{animation-range:0 130vh}
+}
+/* Cine cere contrast maxim primește un văl aproape opac: fotografia devine
+   textură, nu imagine. Mai bine o fotografie pierdută decât un titlu pierdut. */
+@media(prefers-contrast:more){
+  .heroshot::after{background:rgba(7,38,45,.93)}
+}
+
+/* ── Inversarea culorilor din hero ───────────────────────────────────
+   Nimic din blocul ăsta nu se aplică fără `.shot`, adică fără fotografie. */
+.hero.shot .kicker{color:#fff}
+.hero.shot h1{color:#fff}
+/* În "b" și "c" cuvântul-promisiune stă pe o bară de ambră, cu litere închise.
+   Pe fundal întunecat bara nu mai poate rămâne: alb peste ambră dă 2,14:1.
+   Devine deci text de ambră — 4,74:1 peste văl, adică peste pragul de 3,0
+   cerut de textul mare, și păstrează exact același accent de brand. */
+.hero.shot h1 em{background-image:none;color:var(--amber)}
+.hero.shot .lede{color:#E6EDEF}
+.hero.shot .stats b{color:#fff}
+.hero.shot .stats span{color:#CFDBDE}
+.hero.shot .stats>div+div{border-left-color:rgba(255,255,255,.22)}
+/* Cifra „comision 0%" este teal în restul paginii — pe fundalul închis ar
+   dispărea. Marcajul din "d" nu mai poartă culoarea inline tocmai ca regula
+   asta să nu aibă nevoie de !important. */
+.hero.shot .stats b.accent{color:var(--amber)}
+/* Butonul principal trece pe ambră: teal pe un văl tot teal s-ar topi în
+   fundal. Ambra cu text închis dă 7,88:1 și este singura suprafață de pe
+   ecran care nu are nimic în spate. */
+.hero.shot .btn-primary{background:var(--amber);color:var(--ink)}
+.hero.shot .btn-primary:hover{background:#ffb43c}
+/* Cardul proprietății este o suprafață proprie, cu fundalul ei deschis. Dacă
+   moștenește inversarea, textul lui devine alb pe sticlă deschisă: măsurat,
+   1,19:1 pentru supratitlu și 1,31:1 pentru preț. Se rupe deci moștenirea
+   explicit, iar supratitlul își primește înapoi regula pentru sticlă. */
+.hero.shot .hero-card{color:var(--ink)}
+.hero.shot .hero-card .kicker{color:var(--brand-deep)}
+.hero.shot .archframe::before{border-color:rgba(255,255,255,.45);opacity:.55}
+/* Coloana de text nu are voie să treacă de zona în care vălul garantează
+   contrastul — vezi calculul de la .heroshot::after. */
+@media(min-width:1024px){.hero.shot .hero-grid{grid-template-columns:minmax(0,44%) minmax(0,1fr)}}
 .hero h1{margin-top:24px}
 /* Underline as a background on the inline box: it paints behind the
    glyphs with no stacking-context games. The previous ::after used
@@ -372,6 +399,9 @@ nav.main{display:none;gap:30px;margin-left:8px}
 .stats>div:first-child{padding-left:0}
 .stats>div+div{border-left:1px solid var(--stone)}
 .stats b{display:block;font:300 34px/1.05 var(--serif);font-variant-numeric:tabular-nums}
+/* Era un style="" inline în "b" și "c". Ca o clasă, poate fi rescrisă de
+   regula pentru hero-ul fotografic fără !important. */
+.stats b.accent{color:var(--brand)}
 .stats span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:7px;line-height:1.35}
 
 /* Segmental arch — the Secession/Habsburg window profile, the single
@@ -705,29 +735,35 @@ footer a:hover{color:#fff}
 <main id="main">
 
 <!-- ══ HERO ══ -->
-<section class="hero" id="top">
-  <!-- Piața Unirii, aprilie 2023, foto Chainwit., CC BY 4.0 — creditul complet
-       este în subsol, unde licența cere să fie și unde poate fi citit.
-       alt="" pentru că este decor: numele pieței apare deja în lede, iar un
+<section class="hero shot" id="top">
+  <!-- Piața Unirii 13, noiembrie 2023, foto Tournasol7, CC BY 4.0 — creditul
+       complet este în subsol, unde licența cere să fie și unde poate fi citit.
+       alt="" pentru că este decor: piața este numită deja în lede, iar un
        cititor de ecran nu câștigă nimic dacă i se descrie tapetul.
-       width/height sunt dimensiunile reale ale fișierului AVIF de 2400.
 
-       Toate cele trei fișiere au înălțime PARĂ, și nu din întâmplare: sips
-       scrie AVIF-uri cu înălțime impară pe care Chrome le raportează încărcate
-       și decodate, apoi le desenează complet transparente. Prima versiune avea
-       2400×1097 și banda era pur și simplu goală, fără nicio eroare în consolă
-       și cu 200 pe rețea. De aceea imaginile se verifică desenându-le și
-       citind pixelii înapoi, nu uitându-te la codul de răspuns. -->
-  <picture class="herobg">
-    <source media="(max-width:900px)" srcset="hero-piata-unirii-1200.avif" type="image/avif">
-    <source srcset="hero-piata-unirii-2400.avif" type="image/avif">
-    <!-- Dacă imaginea nu ajunge deloc, banda nu trebuie doar ascunsă: fâșia
-         rezervată ei ar rămâne un gol de 340px sub statistici. Clasa duce
-         --band la zero, deci dispar odată și înălțimea benzii, și padding-ul
-         care o găzduiește — hero-ul se întoarce exact la varianta b. -->
-    <img src="hero-piata-unirii-1600.jpg" alt="" width="2400" height="1096"
+       Trei tăieturi, nu una redimensionată de trei ori. Pe telefon hero-ul
+       este mai înalt decât lat, iar o panoramă orizontală tăiată la raportul
+       ăla ar arăta 30% din lățimea ei: colțul clădirii, subiectul, ar cădea
+       în afara cadrului. Fișierul de 1000 este decupat separat, pe verticală,
+       în jurul colțului. Asta face <picture> cu `media`, și pentru asta
+       există: nu ca să economisească octeți, ci ca să schimbe cadrul.
+
+       Toate fișierele au înălțime PARĂ. sips scrie AVIF-uri cu înălțime
+       impară pe care Chrome le raportează încărcate și decodate, apoi le
+       desenează complet transparente — 200 pe rețea, zero în consolă, ecran
+       gol. De aceea se verifică desenându-le și citind pixelii înapoi. -->
+  <picture class="heroshot">
+    <source media="(max-width:700px)" srcset="hero-unirii13-1000.avif" type="image/avif">
+    <source media="(max-width:700px)" srcset="hero-unirii13-1000.jpg">
+    <source media="(max-width:1200px)" srcset="hero-unirii13-1600.avif" type="image/avif">
+    <source srcset="hero-unirii13-2400.avif" type="image/avif">
+    <!-- Dacă fotografia nu ajunge, nu este de ajuns s-o ascunzi: textul din
+         hero este alb, iar fundalul de rezervă este deschis. Se scoate deci
+         clasa care a inversat culorile, și hero-ul redevine exact varianta
+         "b" — text închis pe gradient deschis. -->
+    <img src="hero-unirii13-1600.jpg" alt="" width="2400" height="1694"
          fetchpriority="high" decoding="async"
-         onerror="this.closest('.hero').classList.add('nobg')">
+         onerror="this.closest('.hero').classList.remove('shot')">
   </picture>
   <div class="wrap">
     <div class="hero-grid">
@@ -758,7 +794,7 @@ footer a:hover{color:#fff}
                cu cratimă la capăt de rând. Argumentul stă oricum în secțiunea
                Echipa, unde are loc să respire. -->
           <div><b class="num" id="agN">3</b><span data-ro="consultanți în echipă" data-en="consultants on the team">consultanți în echipă</span></div>
-          <div><b class="num" id="c0n" style="color:var(--brand)">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
+          <div><b class="num accent" id="c0n">3</b><span data-ro="oferte cu comision 0%" data-en="listings at 0% fee">oferte cu comision 0%</span></div>
         </div>
       </div>
       <div class="archframe rise">
@@ -1021,8 +1057,8 @@ footer a:hover{color:#fff}
            setLang() să nu șteargă link-urile când schimbă limba. -->
       <p class="credit">
         <span data-ro="Fotografia din antet:" data-en="Header photograph:">Fotografia din antet:</span>
-        <a href="https://commons.wikimedia.org/wiki/File:April_2023_-_Pia%C8%9Ba_Unirii_din_Timi%C8%99oara_-_img_05.jpg" rel="noopener">Piața Unirii din Timișoara</a>,
-        Chainwit., <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a><span class="sep"> · </span><span data-ro="redimensionată, decupată și desaturată" data-en="resized, cropped and desaturated">redimensionată, decupată și desaturată</span>
+    <a href="https://commons.wikimedia.org/wiki/File:Piata_Unirii_13_in_Timisoara_(1).jpg" rel="noopener">Piața Unirii 13 din Timișoara</a>,
+    Tournasol7, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a><span class="sep"> · </span><span data-ro="redimensionată și decupată" data-en="resized and cropped">redimensionată și decupată</span>
       </p>
     </div>
   </div>

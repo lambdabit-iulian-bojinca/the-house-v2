@@ -18,6 +18,14 @@
   to = "/the-house-imobiliare-2026-b.html"
   status = 200
 
+# Design "d" — design "c" with the photograph promoted from a band at the foot
+# of the hero to the background of the whole section. Same rule as /b and /c:
+# its own path, nothing replaced, so all four can be shown in sequence.
+[[redirects]]
+  from = "/d"
+  to = "/the-house-imobiliare-2026-d.html"
+  status = 200
+
 # Design "c" — design "b" with a photographic header. Same rule as /b: it gets
 # its own path rather than replacing anything, so the three can be shown in
 # sequence during the pitch.
