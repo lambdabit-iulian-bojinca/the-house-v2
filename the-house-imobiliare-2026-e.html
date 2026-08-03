@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  THE HOUSE — versiunea „e"
+
+  Aceasta NU este o propunere de design. Este situl de acum, the-house.ro, adus
+  pe telefon: aceleași culori, aceleași cuvinte, aceeași ordine a secțiunilor,
+  aceleași sigle și fotografii. Singurul lucru care se schimbă este că se poate
+  citi și atinge pe un ecran de 390px.
+
+  Diagnosticul, într-o linie: situl actual nu are <meta name="viewport">. Fără
+  ea, orice browser de telefon presupune o fereastră de 980px și micșorează
+  pagina ca să încapă — de aceea captura de pe Pixel 7 arată un sit întreg de
+  mărimea unei timbre, cu text de 4px. Nu este o problemă de design, este o
+  linie lipsă și un aranjament construit pe lățimi fixe.
+
+  Ce s-a păstrat literă cu literă:
+    · textul, inclusiv lipsa diacriticelor („Cauti ceva special ?", „va rugam
+      apelati"). Comentariile din fișierul acesta sunt scrise cu diacritice,
+      conținutul sitului nu — pentru că așa este el astăzi și nu se rescrie
+      copy într-o operațiune care nu are voie să schimbe designul;
+    · culorile, măsurate din bitmap-urile originale, nu ghicite: #034c5a
+      (fundalul categoriilor), #295562 (linia de sus), #f8a831 (accentul),
+      #d10005 (linkurile), #444/#707070/#dcdcdc (barele);
+    · siglele, pictogramele, ștampila „imobiliare de top", bannerul
+      imobiliare.ro, creditul de design și fontul Futura Medium BT;
+    · cele 62 de oferte, contorul, categoriile cu numerele lor, fotografiile
+      ofertelor (încărcate direct de pe the-house.ro).
+
+  Ce s-a schimbat, și de ce nu se putea altfel:
+    · lățimile fixe (968px, 958px, 270px, 220px) devin fluide. Un aranjament
+      construit din numere nu poate intra pe un telefon oricâte media query-uri
+      i-ai pune deasupra;
+    · fundalurile care erau bitmap-uri de 968px lățime — colțurile rotunjite ale
+      panourilor, bara meniului, filele — sunt redesenate în CSS, cu culorile
+      citite din ele. Un PNG de 968px nu se poate întinde pe 390 fără să se
+      întindă și rotunjimile;
+    · caruselul mootools devine o bandă cu scroll-snap: pe telefon se trage cu
+      degetul, ceea ce un carusel cu două săgeți de 28px nu permite. Săgețile
+      rămân pe desktop și fac același lucru;
+    · mootools-core + mootools-more + Carousel + Carousel.Extra + mooquee +
+      my_mootools_index + scroller (șapte fișiere JS) sunt înlocuite de ~70 de
+      rânduri de JavaScript simplu, la finalul fișierului;
+    · numerele de telefon devin linkuri tel:. Pe un telefon, un număr care nu se
+      poate apăsa este un număr pierdut — și telefonul este canalul principal al
+      acestei agenții, are trei numere în antet;
+    · acordeoanele devin butoane reale, cu aria-expanded, ca să funcționeze la
+      tastatură și cu cititorul de ecran;
+    · corpul de text urcă de la 12px la 15px sub 1000px. 12px pe un telefon nu
+      este o alegere de design, este text pe care nu îl citește nimeni.
+
+  Ce NU s-a reparat, intenționat, pentru că ar fi însemnat design:
+    · #f8a831 pe alb măsoară 1,97:1. Numerele de telefon, „Cauti ceva special ?"
+      și „Scrie-ne aici !" sunt sub pragul WCAG AA (4,5:1) de patru ori. La fel
+      și numele consultanților, #c9c9c9 pe alb: 1,66:1. Sunt cele mai importante
+      elemente de pe pagină și sunt și cele mai greu de citit. Se rezolvă cu
+      două valori schimbate — nu s-au schimbat aici pentru că era cerut explicit
+      „fără redesign", și o culoare de brand nu se modifică pe tăcute;
+    · Google Analytics (UA-39095788-1) a fost scos: proprietatea nu mai există
+      din 2023, iar o pagină de prezentare nu are de ce să pună cookie-uri.
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<!-- Linia care lipsește de pe the-house.ro. Tot ce urmează depinde de ea. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#295562">
+<title>Imobiliare Timisoara | Agentie imobiliara | Vanzari si inchirieri de apartamente si case | The House</title>
+<meta name="description" content="Imobiliare Timisoara. Agentie imobiliara din Timisoara ce ofera o gama larga de oferte si servicii imobiliare clientilor sai. Seriozitate si promptitudine">
+<meta name="keywords" content="imobiliare timisoara, oferte imobiliare timisoara">
+<link rel="icon" href="legacy/logo-mini.png">
+
+<style>
+/* ── Fontul sitului actual, adus lângă pagină. the-house.ro îl servește fără
+      Access-Control-Allow-Origin, iar fonturile sunt cerute cu CORS: legat de
+      acolo, browserul l-ar refuza în tăcere și pagina ar cădea pe Arial fără
+      să spună nimic. De verificat licența Bitstream înainte de a-l muta pe un
+      domeniu nou — este singurul fișier de aici care nu e evident al agenției. ── */
+@font-face{font-family:'futuramedium';
+  src:url('legacy/futura-medium-bt.woff2') format('woff2');
+  font-weight:normal;font-style:normal;font-display:swap}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:arial,helvetica,sans-serif;font-size:15px;line-height:1.45;
+  color:#333;
+  /* bg_body.png: 2000×5px, #f8f8f8 la mijloc, #a4a4a4 în margini, repetat.
+     Pe telefon nu se vede decât centrul, dar pe desktop rama închisă e o parte
+     din felul în care arată situl, deci se reface ca gradient. */
+  background:#f8f8f8;
+  background-image:linear-gradient(to right,#a4a4a4 0,#f8f8f8 24%,#f8f8f8 76%,#a4a4a4 100%);
+  background-attachment:fixed}
+img{border:0;max-width:100%;height:auto;display:block}
+a{color:#d10005;text-decoration:none}
+a:hover{color:#000}
+a:focus-visible,button:focus-visible{outline:3px solid #f8a831;outline-offset:2px}
+h1,h2,h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── Panourile albe. Pe situl actual sunt trei bitmap-uri suprapuse per panou
+      (ctn-top / ctn-middle / ctn-bottom, fiecare de 968px lățime). Aici sunt un
+      element cu border-radius și box-shadow: aceeași formă, orice lățime. ── */
+.wrap{width:100%;max-width:968px;margin:0 auto;padding:0 8px}
+.panel{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.28)}
+.panel+.panel{margin-top:22px}
+
+/* ══ ANTET ══ */
+.topline{height:12px;background:#295562;border-radius:14px 14px 0 0}
+.hdr{padding:14px 14px 0}
+.hdr-logo img{width:150px;height:auto;margin:0 auto}
+
+/* Căutarea și telefoanele: pe telefon, rânduri lățime plină, unul sub altul.
+   Pe desktop redevin cele trei coloane de acum. */
+.hdr-search{display:flex;align-items:center;gap:12px;justify-content:center;
+  margin-top:14px;padding:12px 8px;min-height:48px;
+  border-top:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3}
+.hdr-search img{width:31px;height:25px;flex:none}
+.emphasis-text{font-size:15px;color:#f8a831;font-family:'futuramedium',arial,sans-serif}
+.soft-grey-emphasis{color:#c9c9c9;font-size:15px;font-family:'futuramedium',arial,sans-serif}
+.search-text span{display:block;line-height:1.25}
+
+.phones-head{padding:12px 4px 6px;text-align:center;border-bottom:1px solid #c9c9c9}
+.phones li+li{border-top:1px solid #efefef}
+/* 52px, nu 30: ținta de atingere este singurul motiv pentru care versiunea asta
+   există. Numărul devine link tel: — restul rândului rămâne exact ce era. */
+.phones a{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 4px;
+  color:inherit}
+.phones a:hover{color:inherit;background:#fafafa}
+.phones .phone-icon{flex:none;width:9px}
+.phones .phone-name{flex:1 1 auto;min-width:0}
+.phones .phone-number{flex:none;font-weight:bold;font-size:16px}
+
+/* ── Banda cu motto-ul. Pe situl actual e un scroller mooquee. Pe telefon o
+      bandă care fuge lateral este ilizibilă și nu se poate opri, deci acolo
+      textul stă pe loc și se încadrează pe două rânduri; animația revine pe
+      desktop, unde este și azi. ── */
+.mooquee{display:flex;align-items:center;gap:10px;justify-content:center;
+  padding:12px 14px;font-family:'futuramedium',arial,sans-serif;font-size:14px;
+  color:#333;overflow:hidden}
+.mooquee img{width:13px;height:25px;flex:none}
+/* A doua copie a textului există numai ca banda să nu aibă gol când prima iese
+   din cadru: se derulează exact 50% și se reia, deci nu se vede niciodată o
+   pauză. Prima încercare împingea un singur exemplar cu padding-left:100%, iar
+   efectul era că pagina se deschidea cu banda goală și textul apărea abia peste
+   zece secunde. Copia este aria-hidden — se vede de două ori, nu se citește de
+   două ori. */
+/* Fără animație (telefon, sau „reduced motion") copia a doua nu are niciun rost
+   și ar apărea pur și simplu de două ori sub prima. */
+.mq-track>span[aria-hidden]{display:none}
+
+/* ══ FILELE DE MENIU ══
+   Pe situl actual sunt patru PNG-uri de 193×29 cu textul desenat în ele. Un
+   bitmap de text nu se poate mări, nu se poate selecta, nu se poate citi de un
+   cititor de ecran și se încețoșează pe orice ecran retina. Aici sunt refăcute
+   în CSS, cu culorile luate din chiar bitmap-urile acelea: #f8a831 pentru fila
+   activă, #dcdcdc pentru restul, pe bara gri #767676→#606060. */
+.topmenu{margin-top:14px;padding:8px 8px 0;
+  background:linear-gradient(#767676 0%,#606060 58%,#666666 100%);
+  border-radius:0 0 14px 14px;box-shadow:inset 0 1px 0 #9e9a9b}
+.topmenu ul{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.topmenu a{display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:44px;padding:6px 8px;font-size:13px;font-weight:bold;color:#3d3c3c;
+  background:#dcdcdc;border-radius:7px 7px 0 0;line-height:1.2}
+.topmenu a:hover{background:#eaeaea;color:#000}
+.topmenu .current a{background:#f8a831;color:#3d3c3c}
+.topmenu .current a:hover{background:#ffb849}
+
+/* ══ FILTRE / ACORDEOANE ══ */
+.filters{margin-top:22px}
+.filter-head{background:#444;color:#fff;border-radius:14px 14px 0 0;padding:10px 14px}
+.filter-head h2{font-size:16px}
+.filter-desc{font-size:12px;color:#fff;margin-top:3px}
+
+.acc+.acc{border-top:1px solid #fff}
+/* Titlul acordeonului era un <h2> cu cursor:pointer și un handler mootools:
+   nefocusabil, fără stare anunțată. Devine un buton adevărat. */
+.acc-btn{display:flex;width:100%;align-items:center;gap:10px;text-align:left;
+  background:#707070;color:#fff;padding:12px 14px;min-height:48px}
+.acc-btn:hover{background:#7c7c7c}
+.acc-h{font-size:16px;font-weight:bold}
+.acc-btn .acc-title{font-size:16px;font-weight:bold}
+.acc-btn .chev{flex:none;width:14px;transition:transform .18s ease;font-size:13px}
+.acc-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
+/* Alb, ca pe situl actual, unde descrierea moștenește culoarea barei. O
+   nuanță de gri „mai discretă" ar fi fost o alegere de design — și una
+   proastă: #e0e0e0 pe #707070 măsoară 3,75:1, sub prag, iar albul dă 4,95:1. */
+.acc-btn .acc-desc{display:none;font-size:12px;color:#fff;font-weight:normal}
+.acc-body[hidden]{display:none}
+
+/* Fundalul categoriilor: green-background.png, 1×90px, un gradient vertical
+   #054c5a → #265461 → #054c5a peste #034c5a. Se repetă la orice lățime, deci
+   aici este exact acela, refăcut ca gradient ca să nu depindă de un fișier. */
+.cats{background:linear-gradient(#054c5a 0%,#265461 50%,#054c5a 100%),#034c5a;
+  padding:4px 0}
+.cats li+li{border-top:1px solid rgba(255,255,255,.14)}
+.cats a{display:block;padding:13px 14px;min-height:48px;color:#fff;
+  font-size:15px;font-weight:bold}
+.cats a:hover{color:#fff;background:rgba(255,255,255,.09)}
+
+/* ══ BANDA DE OFERTE ══
+   Aceleași cartonașe de 220px, dar într-un container care se trage cu degetul.
+   scroll-snap le oprește aliniate, exact ca la caruselul original. */
+.strip-wrap{position:relative;background:#dcdcdc;padding:16px 0}
+.strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:0 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth}
+.strip::-webkit-scrollbar{display:none}
+.card{flex:0 0 220px;scroll-snap-align:start}
+.card>a{display:block;font-size:13px;color:#555;font-weight:bold;
+  min-height:34px;line-height:1.3}
+.card>a:hover{color:#000}
+/* Situl actual pune style="width:218px" fără înălțime, deci fotografiile au
+   înălțimi diferite și rândul sare pe măsură ce se încarcă. Într-o bandă pe
+   care o tragi cu degetul, saltul acela se simte. Cutie fixă 218×145 —
+   dimensiunea pe care agenția o folosește deja în altă parte (vezi
+   comision-0-218-145px.png din CSS-ul lor) — cu object-fit:cover. */
+.card .shot{margin-top:8px;width:100%;aspect-ratio:218/145;background:#cfcfcf;
+  border-radius:2px;overflow:hidden}
+.card .shot img{width:100%;height:100%;object-fit:cover}
+.strip-nav{display:none}
+
+.counter{padding:14px;font-size:14px;color:#333}
+
+/* ══ OFERTE DE TOP ══ */
+/* 46px sus, nu 16: ștampila „imobiliare de top" este de 52px și stă călare pe
+   colțul panoului, ca pe situl actual. Pe desktop are un panou de 968px sub ea
+   și nu încurcă pe nimeni; pe un telefon de 390px cădea peste titlul celui
+   de-al doilea cartonaș. */
+.top-offers{position:relative;padding:46px 0 16px}
+.top-offers .strip{padding:0 14px}
+.top-offers .card>a{color:#d10005}
+.stamp{position:absolute;top:-14px;right:6px;width:52px;height:52px;z-index:2}
+
+/* ══ DESCRIERE ══ */
+.descriere{padding:18px 16px;color:#666}
+.descriere h1{font-size:17px;margin-bottom:4px;color:#666}
+.descriere h2{font-size:15px;margin-bottom:4px;color:#666}
+.descriere p{margin-bottom:16px}
+.descriere p:last-child{margin-bottom:0}
+
+/* ══ HARTA SITULUI ══ */
+.sitemap{display:grid;gap:0;padding:16px 8px 4px;color:#565656}
+.sitemap a{color:#565656;display:block;padding:11px 6px;min-height:44px;font-size:14px}
+.sitemap a:hover{color:#d10005}
+.sitemap ul+ul{margin-top:14px;border-top:1px solid #dcdcdc;padding-top:8px}
+
+/* ══ SUBSOL ══ */
+.footset{padding:16px;color:#565656;font-size:13px;line-height:1.5;
+  display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
+.footbanners{display:flex;flex-direction:column;align-items:center;gap:8px}
+.footbanners a,.footgame>a{display:block;padding:13px 0}
+.footgame{display:flex;flex-direction:column;align-items:center;gap:12px;
+  padding:16px 8px 26px}
+.footgame ul{display:flex;gap:18px}
+.footgame a{color:#d10005}
+.footgame .fm a{display:block;padding:8px 4px;min-height:44px;line-height:28px}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DESKTOP — de la 1000px situl redevine ce este azi: trei coloane în antet,
+   file pe un rând, categorii pe trei coloane, hartă pe trei coloane, săgeți la
+   carusel. Nimic din ce urmează nu se aplică pe telefon.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (min-width:1000px){
+  body{font-size:12px}
+  .wrap{padding:0}
+  .topline{height:17px}
+  .hdr{display:grid;grid-template-columns:300px 1fr auto;align-items:start;
+    gap:0 40px;padding:15px 20px 0}
+  .hdr-logo img{width:186px;margin:0}
+  .hdr-search{border:0;justify-content:flex-start;margin-top:8px;padding:0}
+  .search-text{width:150px}
+  .emphasis-text,.soft-grey-emphasis{font-size:14px}
+  .hdr-logo{display:flex;justify-content:flex-end}
+  .phones{width:300px}
+  /* `height` fix, nu: linia de sub „Pentru contact rapid…" este un border-bottom,
+     iar la 21px înălțime impusă textul de 14px trecea pe sub el și linia ajungea
+     deasupra. min-height lasă chenarul acolo unde îi este locul. */
+  .phones-head{text-align:right;padding:0 0 5px;min-height:21px}
+  .phones li+li{border:0}
+  .phones a{min-height:30px;line-height:30px;padding:0;gap:8px}
+  .phones a:hover{background:none}
+  .phones .phone-name{text-align:right}
+  .phones .phone-number{font-size:14px}
+  .mooquee{justify-content:flex-start;padding:6px 20px 10px;white-space:nowrap}
+  /* Banda care fuge, ca astăzi — dar numai unde există spațiu pentru ea, și
+     numai dacă vizitatorul nu a cerut mai puțină mișcare. */
+  @media (prefers-reduced-motion:no-preference){
+    /* Distanța dintre copii este padding, nu gap: cu padding, banda are exact
+       două jumătăți identice, deci -50% este fix un exemplar plus spațiul lui
+       și reluarea nu se vede. Cu gap, cele două jumătăți nu mai sunt egale și
+       la fiecare ciclu ar sări câțiva zeci de pixeli. */
+    .mq-track{display:flex;animation:mooquee 26s linear infinite}
+    .mq-track>span{white-space:nowrap;padding-right:70px}
+    .mq-track>span[aria-hidden]{display:block}
+    .mooquee:hover .mq-track{animation-play-state:paused}
+  }
+  .topmenu{padding:12px 10px 0}
+  .topmenu ul{display:flex;justify-content:flex-end;gap:20px}
+  .topmenu a{min-height:29px;width:193px;font-size:13px;padding:0}
+
+  .filter-head{display:flex;align-items:baseline;justify-content:space-between;
+    padding:8px 15px 6px;border-radius:20px 20px 0 0}
+  .filter-desc{margin:0;font-size:11px}
+  .acc-btn{padding:0 14px;min-height:35px;align-items:center}
+  .acc-btn .acc-title{flex:none}
+  .acc-btn .acc-desc{display:block;margin-left:auto;text-align:right;font-size:11px}
+  .cats{padding:10px 0 16px}
+  .cats ul{display:grid;grid-template-columns:repeat(3,1fr);
+    padding:0 10px;column-gap:20px}
+  .cats li+li{border:0}
+  .cats a{padding:9px 0;min-height:0;font-size:14px}
+  .cats a:hover{background:none;text-decoration:underline}
+
+  .strip-wrap{padding:20px 0 10px}
+  .strip{padding:0 16px;scroll-snap-type:none}
+  .top-offers{padding:16px 0}
+  .stamp{top:-26px;right:-10px}
+
+  .descriere{padding:20px 30px}
+  .descriere h1{font-size:16px}
+  .descriere h2{font-size:14px}
+  .sitemap{grid-template-columns:130px 210px 1fr;gap:0 10px;padding:16px 20px}
+  .sitemap ul+ul{margin:0;border:0;padding:0}
+  .sitemap a{padding:3px 0;min-height:0;font-size:12px}
+  .footset{flex-direction:row;justify-content:space-between;align-items:flex-start;
+    text-align:left;padding:16px 20px;font-size:12px}
+  .footbanners{flex-direction:row;align-items:center;gap:6px}
+  .footgame{flex-direction:row;justify-content:space-between;padding:6px 20px 24px}
+  .footgame .fm a{min-height:0;line-height:normal;padding:0}
+  /* Spațiul adăugat în jurul siglelor din subsol există doar ca să existe ce
+     atinge cu degetul. Cu mouse, ținta e cursorul, deci dispare. */
+  .footbanners a,.footgame>a{padding:0}
+  .sitemap a{min-height:0}
+}
+/* ── Săgețile caruselului stau, ca astăzi, în afara panoului: 28px lățime plus
+      14px joc, de fiecare parte. Sub 1060px nu mai există loc pentru ele lângă
+      un panou de 968px, iar dacă le-ai lăsa acolo ar împinge pagina pe
+      orizontală — exact defectul pe care versiunea asta îl repară. Sub acel
+      prag banda rămâne derulabilă cu degetul, cu trackpad-ul și cu tastatura
+      (are tabindex), deci nimic nu devine inaccesibil. ── */
+@media (min-width:1060px){
+  .strip-nav{display:block;position:absolute;top:50%;transform:translateY(-50%);
+    width:28px;height:24px;padding:0;z-index:3;opacity:.75}
+  .strip-nav:hover{opacity:1}
+  .strip-nav[disabled]{opacity:.2;cursor:default}
+  .strip-nav.prev{left:-42px}
+  .strip-nav.next{right:-42px}
+}
+@keyframes mooquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ══ ANTET ══ -->
+  <div class="panel">
+    <div class="topline"></div>
+
+    <div class="hdr">
+      <div class="hdr-logo">
+        <a href="https://www.the-house.ro/" title="imobiliare timisoara">
+          <img src="legacy/logo.png" width="186" height="135"
+               alt="THE HOUSE — agentie imobiliare timisoara">
+        </a>
+      </div>
+
+      <a class="hdr-search" href="https://www.the-house.ro/cauta.php"
+         title="cere oferte imobiliare timisoara">
+        <img src="legacy/search.png" width="31" height="25" alt="">
+        <span class="search-text">
+          <span class="emphasis-text">Cauti ceva special ?</span>
+          <span class="emphasis-text">Scrie-ne aici !</span>
+        </span>
+      </a>
+
+      <div class="phones">
+        <div class="phones-head">
+          <span class="soft-grey-emphasis">Pentru contact rapid, va rugam apelati</span>
+        </div>
+        <!-- Trei numere, trei linkuri tel:. Pe situl actual sunt text simplu:
+             pe un telefon trebuie selectate cu degetul și copiate de mână. -->
+        <ul>
+          <li><a href="tel:+40735444408">
+            <img class="phone-icon" src="legacy/phone.png" width="9" height="21" alt="">
+            <span class="soft-grey-emphasis phone-name">Sorin Traian Bratu</span>
+            <span class="phone-number emphasis-text">0735.44.44.08</span></a></li>
+          <li><a href="tel:+40735444407">
+            <img class="phone-icon" src="legacy/phone.png" width="9" height="21" alt="">
+            <span class="soft-grey-emphasis phone-name">Mirela Bratu</span>
+            <span class="phone-number emphasis-text">0735.44.44.07</span></a></li>
+          <li><a href="tel:+40735444406">
+            <img class="phone-icon" src="legacy/phone.png" width="9" height="21" alt="">
+            <span class="soft-grey-emphasis phone-name">Alexandru Bratu</span>
+            <span class="phone-number emphasis-text">0735.44.44.06</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="mooquee">
+      <img src="legacy/logo-mini.png" width="13" height="25" alt="">
+      <span class="mq-track">
+        <span>THE HOUSE IMOBILIARE : Pentru noi calitatea este mai importanta decat cantitatea</span>
+        <span aria-hidden="true">THE HOUSE IMOBILIARE : Pentru noi calitatea este mai importanta decat cantitatea</span>
+      </span>
+    </p>
+
+    <nav class="topmenu" aria-label="Meniu principal">
+      <ul>
+        <li class="current"><a href="https://www.the-house.ro/category.php?scop=comision-0"
+          aria-current="page">Comision 0%</a></li>
+        <li><a href="https://www.the-house.ro/category.php">Toate ofertele</a></li>
+        <li><a href="https://www.the-house.ro/servicii.php">Servicii / Comisioane</a></li>
+        <li><a href="https://www.the-house.ro/contact.php">Contacteaza-ne!</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- ══ FILTRE ══ -->
+  <div class="panel filters">
+    <div class="filter-head">
+      <h2>Filtre cautare imobiliare</h2>
+      <div class="filter-desc">Foloseste filtrele de mai jos pentru a obtine un rezultat cat mai apropiat de dorintele tale</div>
+    </div>
+
+    <div class="acc">
+      <!-- Titlul acordeonului este un <h2> care conține butonul, nu un buton
+           care conține un <h2>: <button> acceptă doar conținut de tip frază,
+           iar un titlu în interiorul lui este markup invalid. -->
+      <h2 class="acc-h"><button class="acc-btn" type="button" aria-expanded="true" aria-controls="acc-vanzare">
+        <span class="chev" aria-hidden="true">&#9656;</span>
+        <span class="acc-title">Imobiliare de vanzare</span>
+        <span class="acc-desc">Vezi ofertele imobiliare de vanzare disponibile prin The House</span>
+      </button></h2>
+      <div class="acc-body" id="acc-vanzare">
+        <div class="cats">
+          <ul>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-2-camere">Apartamente cu 2 camere (2)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-3-camere">Apartamente cu 3 camere (5)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-4-camere">Apartamente cu 4 camere (3)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-peste-4-camere">Apartamente cu peste 4 camere (1)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=case-vile">Case / Vile (14)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=terenuri-pentru-constructii">Terenuri pentru constructii (6)</a></li>
+          </ul>
+        </div>
+        <div class="strip-wrap">
+          <button class="strip-nav prev" type="button" aria-label="Ofertele anterioare"><img src="legacy/arrow-left.png" width="28" height="24" alt=""></button>
+          <div class="strip" tabindex="0" role="group" aria-label="Oferte de vanzare">
+            <div class="card">
+              <a href="https://www.the-house.ro/single.php?cod=HOUSE935" title="proprietate  de exceptie in Timisoara.Lux,confort si liniste intr-un singur loc">proprietate  de exceptie ...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE935" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/08075104img_8167.jpg" alt="" loading="lazy"></a></div>
+            </div>
+            <div class="card">
+              <a href="https://www.the-house.ro/single.php?cod=HOUSE872" title="casa spatioasa cu piscina.">casa spatioasa cu piscina.</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE872" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/03082649img_2861.jpg" alt="" loading="lazy"></a></div>
+            </div>
+            <div class="card">
+              <a href="https://www.the-house.ro/single.php?cod=HOUSE484" title="apartament cu 4 camere mobilat si utilat+garaj.VANDUT">apartament cu 4 camere mo...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE484" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/17092451img_0079.jpg" alt="" loading="lazy"></a></div>
+            </div>
+          </div>
+          <button class="strip-nav next" type="button" aria-label="Ofertele urmatoare"><img src="legacy/arrow-right.png" width="28" height="24" alt=""></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc">
+      <h2 class="acc-h"><button class="acc-btn" type="button" aria-expanded="false" aria-controls="acc-inchiriat">
+        <span class="chev" aria-hidden="true">&#9656;</span>
+        <span class="acc-title">Imobiliare de inchiriat</span>
+        <span class="acc-desc">Vezi ofertele imobiliare de inchiriat disponibile prin The House</span>
+      </button></h2>
+      <div class="acc-body" id="acc-inchiriat" hidden>
+        <div class="cats">
+          <ul>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-o-camera">Apartamente cu o camera (2)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-2-camere">Apartamente cu 2 camere (4)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-3-camere">Apartamente cu 3 camere (8)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-peste-4-camere">Apartamente cu peste 4 camere (1)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=case-vile">Case / Vile (8)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=spatii-pentru-birouri">Spatii pentru birouri (5)</a></li>
+            <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=spatii-industriale">Spatii industriale (2)</a></li>
+          </ul>
+        </div>
+        <div class="strip-wrap">
+          <button class="strip-nav prev" type="button" aria-label="Ofertele anterioare"><img src="legacy/arrow-left.png" width="28" height="24" alt=""></button>
+          <div class="strip" tabindex="0" role="group" aria-label="Oferte de inchiriat">
+            <div class="card">
+              <a href="https://www.the-house.ro/single.php?cod=HOUSE841" title="apartament spatios in zona centrala">apartament spatios in zon...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE841" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/06122507img_9889.jpg" alt="" loading="lazy"></a></div>
+            </div>
+            <div class="card">
+              <a href="https://www.the-house.ro/single.php?cod=HOUSE285" title="Apartament spatios cu 3 camere .INCHIRIAT">Apartament spatios cu 3 c...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE285" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/01131957img_6621.jpg" alt="" loading="lazy"></a></div>
+            </div>
+          </div>
+          <button class="strip-nav next" type="button" aria-label="Ofertele urmatoare"><img src="legacy/arrow-right.png" width="28" height="24" alt=""></button>
+        </div>
+      </div>
+    </div>
+
+    <p class="counter">Sunt <strong>62</strong> de oferte <strong>imobiliare</strong> active.</p>
+  </div>
+
+  <!-- ══ OFERTE DE TOP ══ -->
+  <div class="panel top-offers">
+    <img class="stamp" src="legacy/stamp.png" width="52" height="52" alt="imobiliare de top">
+    <button class="strip-nav prev" type="button" aria-label="Ofertele anterioare"><img src="legacy/arrow-left.png" width="28" height="24" alt=""></button>
+    <div class="strip" tabindex="0" role="group" aria-label="Oferte de top">
+      <div class="card">
+        <a href="https://www.the-house.ro/single.php?cod=HOUSE948" title="apartament superb,tip duplex in piata Unirii">apartament superb,tip duplex i...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE948" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/07113210img_9933.jpg" alt="" loading="lazy"></a></div>
+      </div>
+      <div class="card">
+        <a href="https://www.the-house.ro/single.php?cod=HOUSE941" title="apartamente de vis...piata Balcescu">apartamente de vis...piata Bal...</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE941" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/13133922img_8512.jpg" alt="" loading="lazy"></a></div>
+      </div>
+      <div class="card">
+        <a href="https://www.the-house.ro/single.php?cod=HOUSE939" title="apartamente unice in Timisoara">apartamente unice in Timisoara</a>
+              <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE939" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/13083637img_8499.jpg" alt="" loading="lazy"></a></div>
+      </div>
+      <div class="card">
+        <!-- Oferta HOUSE925 nu are titlu în baza de date, deci pe situl actual
+             linkul ei este complet gol: un <a> fără nume accesibil, invizibil
+             pentru cititorul de ecran și fără nimic de atins în afară de poză.
+             Textul nu se inventează — rămâne gol, ca acolo — dar linkul de pe
+             fotografie primește un nume, ca să existe. -->
+        <a href="https://www.the-house.ro/single.php?cod=HOUSE925" aria-label="Vezi oferta HOUSE925"></a>
+        <div class="shot"><a href="https://www.the-house.ro/single.php?cod=HOUSE925" tabindex="-1" aria-hidden="true"><img src="https://www.the-house.ro/files/images/24085654img_7457.jpg" alt="" loading="lazy"></a></div>
+      </div>
+    </div>
+    <button class="strip-nav next" type="button" aria-label="Ofertele urmatoare"><img src="legacy/arrow-right.png" width="28" height="24" alt=""></button>
+  </div>
+
+  <!-- ══ DESCRIERE ══ -->
+  <div class="panel descriere">
+    <h1>Imobiliare in Timisoara: de peste 16 ani</h1>
+    <p><strong>THE HOUSE IMOBILIARE</strong> are o experienta de peste 16 ani pe <strong>piata imobiliara din Timisoara</strong> si o familie de consultanti imobiliari profesionisti care va stau la dispozitie NON STOP cu informatii si detalii privind ofertele care va intereseaza. Cu noi: cumperi, vinzi si inchiriezi garsoniere,apartamente, case, vile, terenuri, birouri, spatii comerciale, rezidentiale sau industriale.</p>
+
+    <h2>THE HOUSE IMOBILIARE: seriozitate si respect</h2>
+    <p>Seriozitatea si respectul de care dam dovada, atat in relatia cu clientii cat si in relatia cu proprietarii, ne recomanda drept cel mai bun partener pentru dumneavoastra.</p>
+
+    <p><strong>THE HOUSE IMOBILIARE</strong> inseamna pentru Dumneavoastra o echipa de consultanti imobiliari profesionisti si cu experienta, o echipa deschisa spre o colaborare onesta si spre construirea unor relatii pe termen lung cu partenerii din Timisoara si imprejurimi. De fiecare data cand te vei gandi la proprietati corecte din Timisoara, te vei gandi la THE HOUSE.</p>
+
+    <h2>Imobiliare: calitate</h2>
+    <p>Inca de la inceput, principiul de baza dupa care <strong>THE HOUSE IMOBILIARE</strong> isi ghideaza intreaga activitate este : Pentru noi calitatea este mai importanta decat cantitatea.</p>
+
+    <h2>PROTECTIA DATELOR CU CARACTER PERSONAL</h2>
+    <p>Prelucrare date cu caracter personal : SC BRATU THE HOUSE SRL este inregistrata in registrul de evidenta a prelucrarilor de date cu caracter personal cu Nr. 0012979</p>
+  </div>
+
+  <!-- ══ HARTA SITULUI ══ -->
+  <nav class="sitemap" aria-label="Harta sitului">
+    <ul>
+      <li><a href="https://www.the-house.ro/" rel="nofollow">Prima pagina</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=comision-0" rel="nofollow">Comision 0</a></li>
+      <li><a href="https://www.the-house.ro/category.php" rel="nofollow">Toate ofertele</a></li>
+      <li><a href="https://www.the-house.ro/servicii.php" rel="nofollow">Servicii / Comisioane</a></li>
+      <li><a href="https://www.the-house.ro/contact.php" rel="nofollow">Contacteaza-ne!</a></li>
+    </ul>
+    <ul>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-2-camere" rel="nofollow">Vanzare Apartamente cu 2 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-3-camere" rel="nofollow">Vanzare Apartamente cu 3 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-4-camere" rel="nofollow">Vanzare Apartamente cu 4 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=apartamente-cu-peste-4-camere" rel="nofollow">Vanzare Apartamente cu peste 4 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=case-vile" rel="nofollow">Vanzare Case / Vile</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=vanzare&amp;categorie=terenuri-pentru-constructii" rel="nofollow">Vanzare Terenuri pentru constructii</a></li>
+    </ul>
+    <ul>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-o-camera" rel="nofollow">Inchiriere Apartamente cu o camera</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-2-camere" rel="nofollow">Inchiriere Apartamente cu 2 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-3-camere" rel="nofollow">Inchiriere Apartamente cu 3 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=apartamente-cu-peste-4-camere" rel="nofollow">Inchiriere Apartamente cu peste 4 camere</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=case-vile" rel="nofollow">Inchiriere Case / Vile</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=spatii-pentru-birouri" rel="nofollow">Inchiriere Spatii pentru birouri</a></li>
+      <li><a href="https://www.the-house.ro/category.php?scop=inchiriere&amp;categorie=spatii-industriale" rel="nofollow">Inchiriere Spatii industriale</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ SUBSOL ══ -->
+  <div class="panel">
+    <div class="footset">
+      <div>
+        Tot continutul &copy; 2010-2026 <strong>THE HOUSE</strong>. Toate drepturile rezervate.<br>
+        Timisoara, Bdul. Revolutiei din 1989, nr.8, cam. 111
+      </div>
+      <div class="footbanners">
+        <a href="https://www.the-house.ro" rel="nofollow" title="apartamente timisoara">
+          <img src="legacy/the-house-web.png" width="165" height="22" alt="www.the-house.ro"></a>
+        <a href="http://www.imobiliare.ro" target="_blank" rel="noopener nofollow" title="Imobiliare.ro">
+          <img src="legacy/imobiliare-ro.jpg" width="163" height="50" alt="imobiliare.ro"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footgame">
+    <a href="http://www.jmihai.ro/blog" target="_blank" rel="noopener" title="web design timisoara">
+      <img src="legacy/jmihai.png" width="113" height="19" alt="design de J Mihai"></a>
+    <nav class="fm" aria-label="Legaturi subsol">
+      <ul>
+        <li><a href="https://www.the-house.ro/feedback.php">Feedback</a></li>
+        <li><a href="https://www.the-house.ro/harta.php">Sitemap</a></li>
+        <li><a href="https://www.the-house.ro/harta.php">Harta Locatii</a></li>
+      </ul>
+    </nav>
+  </div>
+
+</div>
+
+<script>
+/* ── Tot JavaScript-ul acestei pagini. Situl actual încarcă pentru aceleași
+      două comportamente șapte fișiere: mootools-core, mootools-more, Carousel,
+      Carousel.Extra, mooquee, my_mootools_index și scroller. ── */
+'use strict';
+
+/* Acordeon. Butonul poartă starea, panoul o urmează — nu invers. */
+document.querySelectorAll('.acc-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    document.getElementById(btn.getAttribute('aria-controls')).hidden = open;
+  });
+});
+
+/* Banda de oferte. Pe telefon derularea o face degetul și codul de aici nu
+   intervine deloc; săgețile există doar de la 1000px în sus, unde nu există
+   deget. Un singur cartonaș pe apăsare, ca la caruselul original. */
+document.querySelectorAll('.strip-wrap, .top-offers').forEach(function (box) {
+  var strip = box.querySelector('.strip');
+  var prev = box.querySelector('.strip-nav.prev');
+  var next = box.querySelector('.strip-nav.next');
+  if (!strip || !prev || !next) return;
+
+  function step() {
+    var card = strip.querySelector('.card');
+    return card ? card.getBoundingClientRect().width + 16 : 236;
+  }
+  /* Săgeata care nu poate merge nicăieri se stinge. Pe situl actual amândouă
+     rămân aprinse la capăt și apăsarea nu face nimic. */
+  function sync() {
+    var max = strip.scrollWidth - strip.clientWidth;
+    prev.disabled = strip.scrollLeft <= 1;
+    next.disabled = strip.scrollLeft >= max - 1;
+  }
+  prev.addEventListener('click', function () { strip.scrollBy({left: -step(), behavior: 'smooth'}); });
+  next.addEventListener('click', function () { strip.scrollBy({left: step(), behavior: 'smooth'}); });
+  strip.addEventListener('scroll', sync, {passive: true});
+  addEventListener('resize', sync, {passive: true});
+  sync();
+});
+</script>
+</body>
+</html>
